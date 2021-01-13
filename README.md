@@ -21,9 +21,9 @@
 - 📕 [팀 노션](https://www.notion.so/DND-4-6-ed7064bca9be45b887a39240e27f7c2b)
 
 ## 🧨 컨벤션
-- Front-End Coding Convention
-- Back-End Coding Convention
-- Commit Message Convention
+- 프론트엔드
+- 백엔드
+- 커밋 메세지
 
 ## 📢 브랜치 전략
 - 작성 중..
