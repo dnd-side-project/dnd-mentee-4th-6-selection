@@ -20,8 +20,10 @@
 ## 협업 일정 관리
 - 📕 [팀 노션](https://www.notion.so/DND-4-6-ed7064bca9be45b887a39240e27f7c2b)
 
-## 🧨 커밋 메시지 컨벤션
-- 작성 중..
+## 🧨 컨벤션
+- Front-End Coding Convention
+- Back-End Coding Convention
+- Commit Message Convention
 
 ## 📢 브랜치 전략
 - 작성 중..
