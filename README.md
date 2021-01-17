@@ -14,9 +14,6 @@
 | 디자인   	  | [로지텍]()                             |<img src="https://i.imgur.com/hSLnAb7.png" alt="XD" width="100px"> <img src="https://i.imgur.com/crWCka7.png" alt="Figma" width="100px"> |
 | 디자인   	  | [워니]()                               |<img src="https://i.imgur.com/hSLnAb7.png" alt="XD" width="100px"> |
 
-## 프로젝트 구조
-[프로젝트 구조](./project-architecture.md)
-
 ## 협업 일정 관리
 - 📕 [팀 노션](https://www.notion.so/DND-4-6-ed7064bca9be45b887a39240e27f7c2b)
 
