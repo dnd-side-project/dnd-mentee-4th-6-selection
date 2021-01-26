@@ -4,7 +4,6 @@ import { Header } from "../components/header";
 import { NotFound } from "../pages/404";
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
-import { SignUp } from "../pages/signup";
 
 export const CommonRouter = () => {
   return (
@@ -13,9 +12,6 @@ export const CommonRouter = () => {
       <Switch>
         <Route exact path="/">
           <Home />
-        </Route>
-        <Route exact path="/sign-up">
-          <SignUp />
         </Route>
         <Route exact path="/login">
           <Login />
