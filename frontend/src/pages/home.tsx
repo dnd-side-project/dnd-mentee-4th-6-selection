@@ -11,19 +11,21 @@ export const Home = () => {
   };
 
   return (
-    <div>
-      <Helmet>
-        <title>Selection</title>
-      </Helmet>
-      <button onClick={sidebarOnClick}>
-        <FontAwesomeIcon icon={faBars} />
-      </button>
+    <>
+      <div>
+        <Helmet>
+          <title>Selection</title>
+        </Helmet>
+        <button onClick={sidebarOnClick}>
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+        <h2>Home</h2>
+      </div>
       {toggleSidebar && (
         <>
           <Sidebar onClick={sidebarOnClick} />
         </>
       )}
-      <h2>Home</h2>
-    </div>
+    </>
   );
 };

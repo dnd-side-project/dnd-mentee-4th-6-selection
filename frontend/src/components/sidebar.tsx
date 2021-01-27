@@ -11,14 +11,18 @@ interface IStyleProps {
   isActive: boolean;
 }
 
-const SideActive = styled.div`
+const SideContainer = styled.div`
   position: fixed;
+  margin: 0 auto;
   top: 0;
   left: 0;
+  right: 0;
   width: 100vw;
+  max-width: 600px;
   height: 100vh;
-  background-color: rgba(50, 50, 50, 0.3);
-  padding: 0;
+  overflow: hidden;
+  display: flex;
+  background-color: rgba(50, 50, 50, 0.5);
   animation: ${(props: IStyleProps) =>
       props.isActive ? "boxFadeOut" : "boxFadeIn"}
     0.3s ease-in-out forwards;
@@ -26,7 +30,6 @@ const SideActive = styled.div`
   @keyframes boxFadeOut {
     from {
       opacity: 0;
-      transform: translateX(-100%);
     }
     to {
       opacity: 1;
@@ -39,15 +42,11 @@ const SideActive = styled.div`
     }
     to {
       opacity: 0;
-      transform: translateX(-100%);
     }
   }
 `;
 
 const SidebarMenu = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
   background-color: white;
   width: 190px;
   height: 100vh;
@@ -58,10 +57,10 @@ const SidebarMenu = styled.div`
   padding: 70px 0;
   box-sizing: border-box;
   animation: ${(props: IStyleProps) =>
-      props.isActive ? "boxFadeOut" : "boxFadeIn"}
+      props.isActive ? "boxMoveOut" : "boxMoveIn"}
     0.3s ease-in-out forwards;
 
-  @keyframes boxFadeOut {
+  @keyframes boxMoveOut {
     from {
       opacity: 0;
       transform: translateX(-100%);
@@ -71,7 +70,7 @@ const SidebarMenu = styled.div`
     }
   }
 
-  @keyframes boxFadeIn {
+  @keyframes boxMoveIn {
     from {
       opacity: 1;
     }
@@ -136,6 +135,11 @@ const CursorPointer = styled.span`
   cursor: pointer;
 `;
 
+const OutBackground = styled.div`
+  width: 410px;
+  height: 100%;
+`;
+
 export const Sidebar: React.FC<IProps> = ({ onClick }) => {
   const [isActive, setIsActive] = useState(true);
   const onClickOut = () => {
@@ -144,39 +148,41 @@ export const Sidebar: React.FC<IProps> = ({ onClick }) => {
   };
   return (
     <>
-      <SideActive onClick={onClickOut} isActive={isActive}></SideActive>
-      <SidebarMenu isActive={isActive}>
-        <div>
-          <MenuBox>
-            <ImgBox>
-              <FontAwesomeIcon icon={faUser} />
-            </ImgBox>
-            <RankedTitle>생 고구마</RankedTitle>
-            <UserName>
-              김구마 <FontAwesomeIcon icon={faChevronRight} />
-            </UserName>
-            <LogoutBtn>로그아웃</LogoutBtn>
-          </MenuBox>
-          <MenuBox>
-            <span>마이페이지</span>
-            <span>내가 쓴 글</span>
-            <span>댓글 단글</span>
-          </MenuBox>
-          <MenuBox>
-            <CursorPointer onClick={onClickOut}>메인페이지</CursorPointer>
-            <span>인기글</span>
-            <span>최신글</span>
-          </MenuBox>
-        </div>
-        <div>
-          <MenuBox>
-            <span>공지사항</span>
-            <span>환경설정</span>
-            <span>의견 보내기</span>
-          </MenuBox>
-          <VersionTitle>V.01.1</VersionTitle>
-        </div>
-      </SidebarMenu>
+      <SideContainer isActive={isActive}>
+        <SidebarMenu isActive={isActive}>
+          <div>
+            <MenuBox>
+              <ImgBox>
+                <FontAwesomeIcon icon={faUser} />
+              </ImgBox>
+              <RankedTitle>생 고구마</RankedTitle>
+              <UserName>
+                김구마 <FontAwesomeIcon icon={faChevronRight} />
+              </UserName>
+              <LogoutBtn>로그아웃</LogoutBtn>
+            </MenuBox>
+            <MenuBox>
+              <span>마이페이지</span>
+              <span>내가 쓴 글</span>
+              <span>댓글 단글</span>
+            </MenuBox>
+            <MenuBox>
+              <CursorPointer onClick={onClickOut}>메인페이지</CursorPointer>
+              <span>인기글</span>
+              <span>최신글</span>
+            </MenuBox>
+          </div>
+          <div>
+            <MenuBox>
+              <span>공지사항</span>
+              <span>환경설정</span>
+              <span>의견 보내기</span>
+            </MenuBox>
+            <VersionTitle>V.01.1</VersionTitle>
+          </div>
+        </SidebarMenu>
+        <OutBackground onClick={onClickOut}></OutBackground>
+      </SideContainer>
     </>
   );
 };
