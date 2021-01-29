@@ -1,6 +1,11 @@
 import React from "react";
+import GoogleLogin from "react-google-login";
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
+import dotenv from "dotenv";
+import { useHistory } from "react-router-dom";
+
+dotenv.config();
 
 const Container = styled.div`
   width: 100%;
@@ -30,19 +35,20 @@ const LoginBtn = styled.button`
   border: 1px solid #303030;
 `;
 
-const kakaoLoginOnClick = () => {
-  console.log("kakao login");
-};
-
-const googleLoginOnClick = () => {
-  console.log("google login");
-};
-
-const naverLoginOnClick = () => {
-  console.log("naver login");
-};
-
 export const Login = () => {
+  const history = useHistory();
+
+  const kakaoLoginOnClick = () => {
+    console.log("kakao login");
+  };
+  const naverLoginOnClick = () => {
+    console.log("naver login");
+  };
+  const responseGoogle = async (response: any) => {
+    console.log(response);
+    history.push(`/`);
+  };
+
   return (
     <>
       <Helmet>
@@ -53,7 +59,13 @@ export const Login = () => {
         <LoginBtn onClick={kakaoLoginOnClick} color="#e7e600">
           카카오톡으로 로그인
         </LoginBtn>
-        <LoginBtn onClick={googleLoginOnClick}>구글으로 로그인</LoginBtn>
+        <GoogleLogin
+          clientId={`${process.env.REACT_APP_GOOGLE_OAUTH}`}
+          buttonText="Sign in with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
         <LoginBtn onClick={naverLoginOnClick} color="#2DB400">
           네이버로 로그인
         </LoginBtn>
