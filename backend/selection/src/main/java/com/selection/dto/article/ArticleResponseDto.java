@@ -1,6 +1,7 @@
 package com.selection.dto.article;
 
 import com.selection.domain.article.Article;
+import com.selection.dto.SuccessResponseDto;
 import com.selection.dto.question.QuestionResponseDto;
 import com.selection.dto.tag.TagResponseDto;
 import lombok.Getter;
