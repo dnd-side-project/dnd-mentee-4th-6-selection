@@ -25,4 +25,10 @@ public class ArticleService {
         Article article = articleRepository.save(requestDto.toEntity());
         return new ArticleResponseDto(article);
     }
+
+    @Transactional
+    public ArticleResponseDto findArticleFromId(Long id) {
+        Article article = articleRepository.findById(id).orElse(null);
+        return article == null ? null : new ArticleResponseDto(article);
+    }
 }
