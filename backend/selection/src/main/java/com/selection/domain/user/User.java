@@ -1,7 +1,7 @@
 package com.selection.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.security.AuthProvider;
+import com.selection.domain.AuthProvider;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,12 +13,16 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
     @UniqueConstraint(columnNames = "email")
 })
+@Getter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +34,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = true)
     private String imageUrl;
 
     @Column(nullable = false)
@@ -44,5 +49,19 @@ public class User {
 
     private String providerId;
 
-    // Getters and Setters (Omitted for brevity)
+    @Builder
+    public User(String email, AuthProvider provider, String providerId) {
+        this("익명의 사람", email, provider, providerId);
+    }
+
+    private User(String name, String email, AuthProvider provider, String providerId) {
+        this.name = name;
+        this.email = email;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
+
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
+    }
 }
