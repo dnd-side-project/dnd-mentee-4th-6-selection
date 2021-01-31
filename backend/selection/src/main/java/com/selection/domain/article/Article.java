@@ -3,15 +3,20 @@ package com.selection.domain.article;
 import com.selection.domain.BaseEntity;
 import com.selection.domain.question.Question;
 import com.selection.domain.tag.Tag;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -33,7 +38,7 @@ public class Article extends BaseEntity {
     private String author;
 
     @Column(nullable = false)
-    private String backgroundColor = "#FFFFFFF";
+    private String backgroundColor = "#FFFFFF";
 
     @Column(nullable = false)
     private Long numOfShares = 0L;
