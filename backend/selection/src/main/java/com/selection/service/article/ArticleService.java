@@ -22,12 +22,11 @@ public class ArticleService {
 
     @Transactional
     public ArticleResponseDto create(ArticleSaveRequestDto requestDto) {
-        Article article = articleRepository.save(requestDto.toEntity());
-        return new ArticleResponseDto(article);
+        return new ArticleResponseDto(articleRepository.save(requestDto.toEntity()));
     }
 
     @Transactional
-    public ArticleResponseDto findArticleFromId(Long id) {
+    public ArticleResponseDto getArticle(Long id) {
         Article article = articleRepository.findById(id).orElse(null);
         return article == null ? null : new ArticleResponseDto(article);
     }

@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class QuestionResponseDto {
+
+    private Long id;
     private String description;
 
     @JsonCreator
@@ -16,6 +17,7 @@ public class QuestionResponseDto {
     }
 
     public QuestionResponseDto(Question question) {
+        this.id = question.getId();
         this.description = question.getDescription();
     }
 }
