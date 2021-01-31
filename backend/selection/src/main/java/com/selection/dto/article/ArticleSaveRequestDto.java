@@ -30,6 +30,7 @@ public class ArticleSaveRequestDto {
         Article article = Article.builder()
                 .title(title)
                 .content(content)
+                .author("애플")
                 .build();
 
         tags.forEach(tag -> article.addTags(tag.toEntity(article)));

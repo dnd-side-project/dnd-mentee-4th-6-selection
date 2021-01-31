@@ -2,13 +2,14 @@ package com.selection.domain.tag;
 
 import com.selection.domain.BaseEntity;
 import com.selection.domain.article.Article;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name="TAGS")

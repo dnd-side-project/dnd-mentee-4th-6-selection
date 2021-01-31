@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 public class ArticleResponseDto {
 
     private Long id;
     private String title;
     private String content;
+    private String author;
+    private String backgroundColor;
     private Long numOfShares;
+
     private List<TagResponseDto> tags = new ArrayList<>();
     private List<QuestionResponseDto> questions = new ArrayList<>();
 
@@ -26,6 +28,8 @@ public class ArticleResponseDto {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.numOfShares = article.getNumOfShares();
+        this.author = article.getAuthor();
+        this.backgroundColor = article.getBackgroundColor();
 
         article.getTags().forEach(tag -> tags.add(new TagResponseDto(tag)));
         article.getQuestions().forEach(question -> questions.add(new QuestionResponseDto(question)));

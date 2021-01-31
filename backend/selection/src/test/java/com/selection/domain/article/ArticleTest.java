@@ -32,15 +32,23 @@ class ArticleTest {
         // given
         String articleTitle = "질문지 1";
         String articleContent = "질문 내용";
-        Article article = Article.builder().title(articleTitle).content(articleContent).build();
+        String author = "애플";
+
+        Article article = Article.builder()
+                .title(articleTitle)
+                .content(articleContent)
+                .author(author)
+                .build();
+
         articleRepository.save(article);
 
-        //when
+        // when
         Article latestArticle = articleRepository.findAll().get(0);
 
         // then
         assertThat(latestArticle.getTitle()).isEqualTo(articleTitle);
         assertThat(latestArticle.getContent()).isEqualTo(articleContent);
-        assertThat(latestArticle.getNumOfShares()).isEqualTo(0);
+        assertThat(latestArticle.getBackgroundColor()).isEqualTo("#FFFFFF");
+        assertThat(latestArticle.getAuthor()).isEqualTo(author);
     }
 }
