@@ -1,75 +1,74 @@
 import React from "react";
-import GoogleLogin from "react-google-login";
-import { Helmet } from "react-helmet-async";
+import { Redirect } from "react-router-dom";
 import styled from "styled-components";
-import dotenv from "dotenv";
-import { useHistory } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
-dotenv.config();
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
+const LoginContainer = styled.div`
+  margin-top: 200px;
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const TitleText = styled.span`
-  margin-top: 30px;
-  margin-bottom: 15px;
-  font-size: 32px;
-  font-weight: 900;
-`;
-
-const LoginBtn = styled.button`
-  border: none;
-  padding: 20px;
-  width: 300px;
-  font-size: 24px;
+const SocialLink = styled.a`
+  text-decoration: none;
+  color: black;
+  width: 380px;
+  height: 40px;
   display: flex;
   justify-content: center;
-  font-weight: bold;
-  margin-bottom: 15px;
-  background-color: ${props => props.color || "white"};
-  border: 1px solid #303030;
+  align-items: center;
+  border-radius: 10px;
+  font-weight: 600;
+  background-color: #dddddd;
+  margin-bottom: 13px;
+  transition: background-color 0.1s ease-in-out;
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    background-color: #bbbbbb;
+  }
+  &:active {
+    background-color: #909090;
+  }
 `;
 
-export const Login = () => {
-  const history = useHistory();
+interface IProps {
+  authenticated: boolean;
+}
 
-  const kakaoLoginOnClick = () => {
-    console.log("kakao login");
-  };
-  const naverLoginOnClick = () => {
-    console.log("naver login");
-  };
-  const responseGoogle = async (response: any) => {
-    console.log(response);
-    history.push(`/`);
-  };
-
+export const Login: React.FC<IProps> = ({ authenticated }) => {
   return (
     <>
-      <Helmet>
-        <title>로그인 - Selection</title>
-      </Helmet>
-      <Container>
-        <TitleText>로그인</TitleText>
-        <LoginBtn onClick={kakaoLoginOnClick} color="#e7e600">
-          카카오톡으로 로그인
-        </LoginBtn>
-        <GoogleLogin
-          clientId={`${process.env.REACT_APP_GOOGLE_OAUTH}`}
-          buttonText="Sign in with Google"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
-        <LoginBtn onClick={naverLoginOnClick} color="#2DB400">
-          네이버로 로그인
-        </LoginBtn>
-      </Container>
+      {authenticated && <Redirect to={`/`} />}
+      {!authenticated && (
+        <div>
+          <Helmet>
+            <title>로그인 - GO!GUMA</title>
+          </Helmet>
+          <div>
+            <LoginContainer>
+              <SocialLink
+                href={`http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect`}
+              >
+                <span>구글 계정으로 로그인</span>
+              </SocialLink>
+              <SocialLink
+                href={`http://localhost:8080/oauth2/authorize/naver?redirect_uri=http://localhost:3000/oauth2/redirect`}
+              >
+                <span>네이버 계정으로 로그인</span>
+              </SocialLink>
+              <SocialLink
+                href={`http://localhost:8080/oauth2/authorize/kakaotalk?redirect_uri=http://localhost:3000/oauth2/redirect`}
+              >
+                <span>카카오 계정으로 로그인</span>
+              </SocialLink>
+            </LoginContainer>
+          </div>
+        </div>
+      )}
     </>
   );
 };
