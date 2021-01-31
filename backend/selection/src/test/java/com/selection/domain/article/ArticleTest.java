@@ -23,16 +23,15 @@ class ArticleTest {
 
     @Autowired
     private ArticleRepository articleRepository;
-    @Autowired
-    private TagRepository tagRepository;
 
     @Test
     @DisplayName("질문지 생성 테스트")
     public void createArticle() {
         // given
-        String articleTitle = "질문지 1";
-        String articleContent = "질문 내용";
-        String author = "애플";
+        final String articleTitle = "질문지 1";
+        final String articleContent = "질문 내용";
+        final String author = "애플";
+        final String defaultBackgroundColor = "#FFFFFF";
 
         Article article = Article.builder()
                 .title(articleTitle)
@@ -48,7 +47,7 @@ class ArticleTest {
         // then
         assertThat(latestArticle.getTitle()).isEqualTo(articleTitle);
         assertThat(latestArticle.getContent()).isEqualTo(articleContent);
-        assertThat(latestArticle.getBackgroundColor()).isEqualTo("#FFFFFF");
+        assertThat(latestArticle.getBackgroundColor()).isEqualTo(defaultBackgroundColor);
         assertThat(latestArticle.getAuthor()).isEqualTo(author);
     }
 }
