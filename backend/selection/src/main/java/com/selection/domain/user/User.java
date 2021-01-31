@@ -23,6 +23,8 @@ import lombok.Getter;
 @Getter
 public class User {
 
+    public static final String DEFAULT_NAME = "익명의 사용자";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,15 +52,15 @@ public class User {
     private String providerId;
 
     @Builder
-    public User(String email, AuthProvider provider, String providerId) {
-        this("익명의 사람", email, provider, providerId);
-    }
-
-    private User(String name, String email, AuthProvider provider, String providerId) {
+    public User(String name, String email, AuthProvider provider, String providerId) {
         this.name = name;
         this.email = email;
         this.provider = provider;
         this.providerId = providerId;
+    }
+
+    public void changeName(String name) {
+        this.name = name;
     }
 
     public void setImageUrl(String url) {
