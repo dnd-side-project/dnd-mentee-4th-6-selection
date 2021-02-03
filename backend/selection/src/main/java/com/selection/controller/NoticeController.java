@@ -1,4 +1,4 @@
-package com.selection.controller.notice;
+package com.selection.controller;
 
 import com.selection.dto.notice.NoticeResponse;
 import com.selection.dto.notice.PageRequest;

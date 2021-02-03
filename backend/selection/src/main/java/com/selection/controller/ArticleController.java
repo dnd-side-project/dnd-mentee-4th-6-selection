@@ -1,4 +1,4 @@
-package com.selection.controller.article;
+package com.selection.controller;
 
 import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleSaveRequest;
@@ -54,6 +54,4 @@ public class ArticleController {
     public ResponseEntity<List<ArticleResponse>> getFavoriteArticles() {
         return null;
     }
-
-
 }
