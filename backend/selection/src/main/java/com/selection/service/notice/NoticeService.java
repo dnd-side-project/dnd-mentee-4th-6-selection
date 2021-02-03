@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class NoticeService {
 
-  private final NoticeReposiotry noticeReposiotry;
+    private final NoticeReposiotry noticeReposiotry;
 
-  @Transactional
-  public List<NoticeResponse> getNotices(PageRequest pageRequest) {
-    Page<Notice> notices = noticeReposiotry.findAll(pageRequest.of());
-    return notices.stream().map(NoticeResponse::new).collect(Collectors.toList());
-  }
+    @Transactional
+    public List<NoticeResponse> getNotices(PageRequest pageRequest) {
+        Page<Notice> notices = noticeReposiotry.findAll(pageRequest.of());
+        return notices.stream().map(NoticeResponse::new).collect(Collectors.toList());
+    }
 }

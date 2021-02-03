@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class NoticeApiController {
+public class NoticeController {
 
-  private final NoticeService noticeService;
+    private final NoticeService noticeService;
 
-  @GetMapping("/notices")
-  public ResponseEntity<List<NoticeResponse>> getNotices(PageRequest pageRequest) {
-    List<NoticeResponse> notices = noticeService.getNotices(pageRequest);
-    return ResponseEntity.ok(notices);
-  }
+    @GetMapping("/notices")
+    public ResponseEntity<List<NoticeResponse>> getNotices(PageRequest pageRequest) {
+        List<NoticeResponse> notices = noticeService.getNotices(pageRequest);
+        return ResponseEntity.ok(notices);
+    }
 }

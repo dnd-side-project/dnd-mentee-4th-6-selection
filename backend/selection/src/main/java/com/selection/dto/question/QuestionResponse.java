@@ -7,16 +7,16 @@ import lombok.Getter;
 @Getter
 public class QuestionResponse {
 
-  private Long id;
-  private String description;
+    private Long id;
+    private String description;
 
-  @JsonCreator
-  public QuestionResponse(String description) {
-    this.description = description;
-  }
+    @JsonCreator
+    public QuestionResponse(String description) {
+        this.description = description;
+    }
 
-  public QuestionResponse(Question question) {
-    this.id = question.getId();
-    this.description = question.getDescription();
-  }
+    public QuestionResponse(Question question) {
+        this.id = question.getId();
+        this.description = question.getDescription();
+    }
 }

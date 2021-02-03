@@ -5,7 +5,6 @@ import com.selection.domain.question.Questions;
 import com.selection.domain.tag.Tags;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -19,44 +18,40 @@ import lombok.NoArgsConstructor;
 @Table(name = "ARTICLES")
 public class Article extends BaseEntity {
 
-  @Id
-  @Column(name = "ARTICLE_ID")
-  private Long id;
+    @Column(nullable = false, length = 30)
+    private String title;
 
-  @Column(nullable = false, length = 30)
-  private String title;
+    @Lob
+    private String content;
 
-  @Lob
-  private String content;
+    @Column(nullable = false)
+    private String author;
 
-  @Column(nullable = false)
-  private String author;
+    @Column(nullable = false)
+    private String backgroundColor = "#FFFFFF";
 
-  @Column(nullable = false)
-  private String backgroundColor = "#FFFFFF";
+    @Column(nullable = false)
+    private Long numOfShares = 0L;
 
-  @Column(nullable = false)
-  private Long numOfShares = 0L;
+    @Column(nullable = false)
+    private Questions questions = new Questions();
 
-  @Column(nullable = false)
-  private Questions questions = new Questions();
+    @Column(nullable = false)
+    private Tags tags = new Tags();
 
-  @Column(nullable = false)
-  private Tags tags = new Tags();
+    @Builder
+    public Article(String title, String content, String author) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+    }
 
-  @Builder
-  public Article(String title, String content, String author) {
-    this.title = title;
-    this.content = content;
-    this.author = author;
-  }
+    public void share() {
+        this.numOfShares++;
+    }
 
-  public void share() {
-    this.numOfShares++;
-  }
-
-  public void changeBackgroundColor(String backgroundColor) {
-    this.backgroundColor = backgroundColor;
-  }
+    public void changeBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
 
 }

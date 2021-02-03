@@ -15,19 +15,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleService {
 
-  private final ArticleRepository articleRepository;
-  private final TagRepository tagRepository;
-  private final QuestionRepository questionRepository;
+    private final ArticleRepository articleRepository;
+    private final TagRepository tagRepository;
+    private final QuestionRepository questionRepository;
 
 
-  @Transactional
-  public ArticleResponse create(ArticleSaveRequest requestDto) {
-    return new ArticleResponse(articleRepository.save(requestDto.toEntity()));
-  }
+    @Transactional
+    public ArticleResponse create(ArticleSaveRequest requestDto) {
+        return new ArticleResponse(articleRepository.save(requestDto.toEntity()));
+    }
 
-  @Transactional
-  public ArticleResponse getArticle(Long id) {
-    Article article = articleRepository.findById(id).orElse(null);
-    return article == null ? null : new ArticleResponse(article);
-  }
+    @Transactional
+    public ArticleResponse getArticle(Long id) {
+        Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException(id + "는 존재하지 않는 게시글 번호입니다."));
+        return new ArticleResponse(article);
+    }
 }

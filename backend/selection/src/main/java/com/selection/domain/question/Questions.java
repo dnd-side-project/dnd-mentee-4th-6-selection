@@ -15,23 +15,23 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Questions {
 
-  @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<Question> questions = new HashSet<>();
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Question> questions = new HashSet<>();
 
-  public Questions(List<Question> questions) {
-    this.questions = new HashSet<>(questions);
-  }
+    public Questions(List<Question> questions) {
+        this.questions = new HashSet<>(questions);
+    }
 
-  public void add(Question question) {
-    this.questions.add(question);
-  }
+    public void add(Question question) {
+        this.questions.add(question);
+    }
 
-  public void addAll(List<Question> questions) {
-    this.questions.addAll(questions);
-  }
+    public void addAll(List<Question> questions) {
+        this.questions.addAll(questions);
+    }
 
-  public List<QuestionResponse> toResponses() {
-    return questions.stream().map((QuestionResponse::new)).collect(Collectors.toList());
-  }
+    public List<QuestionResponse> toResponses() {
+        return questions.stream().map((QuestionResponse::new)).collect(Collectors.toList());
+    }
 
 }

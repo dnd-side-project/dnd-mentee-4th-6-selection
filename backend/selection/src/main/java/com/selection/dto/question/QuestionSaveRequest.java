@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 @Getter
 public class QuestionSaveRequest {
 
-  private String description;
+    private String description;
 
-  @JsonCreator
-  public QuestionSaveRequest(String description) {
-    this.description = description;
-  }
+    @JsonCreator
+    public QuestionSaveRequest(String description) {
+        this.description = description;
+    }
 
-  public Question toEntity(Article article) {
-    return Question.builder()
-        .description(description)
-        .article(article)
-        .build();
-  }
+    public Question toEntity(Article article) {
+        return Question.builder()
+            .description(description)
+            .article(article)
+            .build();
+    }
 }

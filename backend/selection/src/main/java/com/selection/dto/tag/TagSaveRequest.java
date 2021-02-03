@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TagSaveRequest {
 
-  private String name;
+    private String name;
 
-  @JsonCreator
-  public TagSaveRequest(String name) {
-    this.name = name;
-  }
+    @JsonCreator
+    public TagSaveRequest(String name) {
+        this.name = name;
+    }
 
-  public Tag toEntity(Article article) {
-    return Tag.builder()
-        .name(name)
-        .article(article)
-        .build();
-  }
+    public Tag toEntity(Article article) {
+        return Tag.builder()
+            .name(name)
+            .article(article)
+            .build();
+    }
 }

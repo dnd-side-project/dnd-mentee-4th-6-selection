@@ -15,23 +15,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Tags {
 
-  @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<Tag> tags = new HashSet<>();
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Tag> tags = new HashSet<>();
 
-  public Tags(List<Tag> tags) {
-    this.tags = new HashSet<>(tags);
-  }
+    public Tags(List<Tag> tags) {
+        this.tags = new HashSet<>(tags);
+    }
 
-  public void add(Tag tag) {
-    this.tags.add(tag);
-  }
+    public void add(Tag tag) {
+        this.tags.add(tag);
+    }
 
-  public void addAll(List<Tag> tags) {
-    this.tags.addAll(tags);
-  }
+    public void addAll(List<Tag> tags) {
+        this.tags.addAll(tags);
+    }
 
-  public List<TagResponse> toResponses() {
-    return tags.stream().map((TagResponse::new)).collect(Collectors.toList());
-  }
+    public List<TagResponse> toResponses() {
+        return tags.stream().map((TagResponse::new)).collect(Collectors.toList());
+    }
 
 }

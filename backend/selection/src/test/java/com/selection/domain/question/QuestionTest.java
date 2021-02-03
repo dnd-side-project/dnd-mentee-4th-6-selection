@@ -15,46 +15,46 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class QuestionTest {
 
-  @Autowired
-  private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
-  @Autowired
-  private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
-  @Test
-  @DisplayName("질문지 등록 테스트")
-  public void createQuestion() {
-    // given
-    final String title = "게시글 1";
-    final String content = "게시글 내용";
-    final String author = "애플";
-    final String questionDescription = "질문지 1";
+    @Test
+    @DisplayName("질문지 등록 테스트")
+    public void createQuestion() {
+        // given
+        final String title = "게시글 1";
+        final String content = "게시글 내용";
+        final String author = "애플";
+        final String questionDescription = "질문지 1";
 
-    Article article = Article.builder()
-        .title(title)
-        .content(content)
-        .author(author)
-        .build();
+        Article article = Article.builder()
+            .title(title)
+            .content(content)
+            .author(author)
+            .build();
 
-    Question question1 = Question.builder()
-        .description(questionDescription)
-        .article(article)
-        .build();
+        Question question1 = Question.builder()
+            .description(questionDescription)
+            .article(article)
+            .build();
 
-    article.getQuestions().add(question1);
-    articleRepository.save(article);
+        article.getQuestions().add(question1);
+        articleRepository.save(article);
 
-    // when
-    List<Question> questions = questionRepository.findAll();
-    Question loadQuestion1 = questions.get(0);
+        // when
+        List<Question> questions = questionRepository.findAll();
+        Question loadQuestion1 = questions.get(0);
 
-    // then
-    assertThat(loadQuestion1.getDescription()).isEqualTo(questionDescription);
-    assertThat(loadQuestion1.getArticle().getTitle()).isEqualTo(title);
-  }
+        // then
+        assertThat(loadQuestion1.getDescription()).isEqualTo(questionDescription);
+        assertThat(loadQuestion1.getArticle().getTitle()).isEqualTo(title);
+    }
 
-  @AfterEach
-  public void cleanUp() {
-    articleRepository.deleteAll();
-  }
+    @AfterEach
+    public void cleanUp() {
+        articleRepository.deleteAll();
+    }
 }
