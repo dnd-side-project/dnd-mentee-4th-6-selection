@@ -38,3 +38,4 @@ out/
 
 ### security ###
 /src/main/resources/application-oauth.*
+/src/test/resources/application-oauth.*
