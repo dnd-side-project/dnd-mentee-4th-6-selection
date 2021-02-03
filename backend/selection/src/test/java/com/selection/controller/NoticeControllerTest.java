@@ -1,4 +1,4 @@
-package com.selection.controller.article;
+package com.selection.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,7 +22,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class NoticeApiControllerTest {
+class NoticeControllerTest {
 
     private MockMvc mockMvc;
 
