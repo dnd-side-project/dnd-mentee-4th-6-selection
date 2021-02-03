@@ -2,33 +2,40 @@ package com.selection.domain.question;
 
 import com.selection.domain.BaseEntity;
 import com.selection.domain.article.Article;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name="QUESTIONS")
+@Table(name = "QUESTIONS")
 public class Question extends BaseEntity {
-    @Id
-    @Column(name="QUESTION_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String description;
+  @Id
+  @Column(name = "QUESTION_ID")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="ARTICLE_ID")
-    private Article article;
+  @Column(nullable = false, length = 100)
+  private String description;
 
-    @Builder
-    public Question(String description, Article article) {
-        this.description = description;
-        this.article = article;
-    }
+  @ManyToOne
+  @JoinColumn(name = "ARTICLE_ID")
+  private Article article;
+
+  @Builder
+  public Question(String description, Article article) {
+    this.description = description;
+    this.article = article;
+  }
 }

@@ -1,89 +1,71 @@
 package com.selection.controller.article;
 
-import com.selection.dto.BaseResponseDto;
-import com.selection.dto.ErrorResponseDto;
-import com.selection.dto.SuccessResponseDto;
-import com.selection.dto.article.ArticleResponseDto;
-import com.selection.dto.article.ArticleSaveRequestDto;
-import com.selection.dto.notice.NoticeResponseDto;
-import com.selection.dto.notice.PageRequestDto;
+import com.selection.dto.article.ArticleResponse;
+import com.selection.dto.article.ArticleSaveRequest;
+import com.selection.dto.notice.PageRequest;
 import com.selection.service.article.ArticleService;
-import com.selection.service.notice.NoticeService;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ArticleApiController {
 
-    private final ArticleService articleService;
+  private final ArticleService articleService;
 
-    @PostMapping("/article")
-    public ResponseEntity<BaseResponseDto> createArticle(@RequestBody ArticleSaveRequestDto requestDto) {
-        ArticleResponseDto article = articleService.create(requestDto);
+  @PostMapping("/article")
+  public ResponseEntity<ArticleResponse> createArticle(@RequestBody ArticleSaveRequest requestDto) {
+    ArticleResponse article = articleService.create(requestDto);
+    return ResponseEntity.ok(article);
+  }
 
-        SuccessResponseDto success = SuccessResponseDto.builder()
-                .message("게시글이 성공적으로 등록되었습니다.")
-                .data(article.getId())
-                .build();
+  @PutMapping({"/article/", "/article/{id}"})
+  public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Optional<Long> id) {
+    return null;
+  }
 
-        return new ResponseEntity<>(success, HttpStatus.valueOf(success.getStatus()));
+  @GetMapping({"/article/", "/article/{id}"})
+  public ResponseEntity<ArticleResponse> getArticle(@PathVariable Optional<Long> id) {
+
+    if (!id.isPresent()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PutMapping({"/article/", "/article/{id}"})
-    public ResponseEntity<BaseResponseDto> modifyArticle(@PathVariable Optional<Long> id) {
-        return null;
-    }
+    ArticleResponse article = articleService.getArticle(id.get());
+    return ResponseEntity.ok(article);
+  }
 
-    @GetMapping({"/article/", "/article/{id}"})
-    public ResponseEntity<BaseResponseDto> getArticle(@PathVariable Optional<Long> id) {
-        ErrorResponseDto error = ErrorResponseDto.builder()
-                .errorCode(1)
-                .errorMessage("올바르지 않은 게시글 번호입니다.")
-                .errorMessageDetail("해당 게시글은 삭제되었거나 존재하지 않습니다.")
-                .build();
+  @GetMapping("/articles")
+  public ResponseEntity<List<ArticleResponse>> getArticles(PageRequest pageRequest) {
+    return null;
+  }
 
-        if (!id.isPresent() ) {
-            return new ResponseEntity<>(error, HttpStatus.valueOf(error.getStatus()));
-        }
+  @DeleteMapping({"/article", "/article/{id}"})
+  public ResponseEntity<ArticleResponse> deleteArticle(@PathVariable Optional<Long> id) {
+    return null;
+  }
 
-        ArticleResponseDto article = articleService.getArticle(id.get());
-        if (article == null) {
-            return new ResponseEntity<>(error, HttpStatus.valueOf(error.getStatus()));
-        }
+  @GetMapping("/articles/latest")
+  public ResponseEntity<List<ArticleResponse>> getLatestArticles() {
+    return null;
+  }
 
-        SuccessResponseDto success = SuccessResponseDto.builder()
-                .message("게시글 정보를 성공적으로 불러왔습니다.")
-                .data(article)
-                .build();
-
-        return new ResponseEntity<>(success, HttpStatus.valueOf(success.getStatus()));
-    }
-
-    @GetMapping("/articles")
-    public ResponseEntity<BaseResponseDto> getArticles(PageRequestDto pageRequestDto) {
-        return null;
-    }
-
-    @DeleteMapping({"/article", "/article/{id}"})
-    public ResponseEntity<BaseResponseDto> deleteArticle(@PathVariable Optional<Long> id) {
-        return null;
-    }
-
-    @GetMapping("/articles/latest")
-    public ResponseEntity<BaseResponseDto> getLatestArticle() {
-        return null;
-    }
-
-    @GetMapping("/articles/favorite")
-    public ResponseEntity<BaseResponseDto> getFavoriteArticle() {
-        return null;
-    }
+  @GetMapping("/articles/favorite")
+  public ResponseEntity<List<ArticleResponse>> getFavoriteArticles() {
+    return null;
+  }
 
 
 }

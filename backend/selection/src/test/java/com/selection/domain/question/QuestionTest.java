@@ -1,52 +1,60 @@
 package com.selection.domain.question;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.selection.domain.article.Article;
 import com.selection.repository.ArticleRepository;
 import com.selection.repository.QuestionRepository;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class QuestionTest {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+  @Autowired
+  private QuestionRepository questionRepository;
 
-    @Autowired
-    private ArticleRepository articleRepository;
+  @Autowired
+  private ArticleRepository articleRepository;
 
-    @Test
-    @DisplayName("선택지 등록 테스트")
-    public void createQuestion() {
-        // given
-        String articleTitle = "설문지1";
-        String articleContent = "질문 내용";
+  @Test
+  @DisplayName("질문지 등록 테스트")
+  public void createQuestion() {
+    // given
+    final String title = "게시글 1";
+    final String content = "게시글 내용";
+    final String author = "애플";
+    final String questionDescription = "질문지 1";
 
-        Article article = Article.builder().title(articleTitle).content(articleContent).build();
+    Article article = Article.builder()
+        .title(title)
+        .content(content)
+        .author(author)
+        .build();
 
-        String description1 = "선택지 1";
-        String description2 = "선택지 2";
+    Question question1 = Question.builder()
+        .description(questionDescription)
+        .article(article)
+        .build();
 
-        Question question1 = Question.builder().description(description1).article(article).build();
-        article.addQuestions(question1);
-        articleRepository.save(article);
+    article.getQuestions().add(question1);
+    articleRepository.save(article);
 
-        // when'
-        List<Question> questions = questionRepository.findAll();
-        Question loadQuestion1 = questions.get(0);
+    // when
+    List<Question> questions = questionRepository.findAll();
+    Question loadQuestion1 = questions.get(0);
 
-        // then
-        assertThat(loadQuestion1.getDescription()).isEqualTo(description1);
-        assertThat(loadQuestion1.getArticle().getTitle()).isEqualTo(articleTitle);
+    // then
+    assertThat(loadQuestion1.getDescription()).isEqualTo(questionDescription);
+    assertThat(loadQuestion1.getArticle().getTitle()).isEqualTo(title);
+  }
 
-        assertThat(loadQuestion1.getArticle().getQuestions().size()).isEqualTo(1);
-    }
-
+  @AfterEach
+  public void cleanUp() {
+    articleRepository.deleteAll();
+  }
 }
