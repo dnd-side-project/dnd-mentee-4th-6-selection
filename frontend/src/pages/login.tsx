@@ -39,7 +39,7 @@ interface IProps {
   authenticated: boolean;
 }
 
-export const Login: React.FC<IProps> = ({ authenticated }) => {
+export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
   return (
     <>
       {authenticated && <Redirect to={`/`} />}

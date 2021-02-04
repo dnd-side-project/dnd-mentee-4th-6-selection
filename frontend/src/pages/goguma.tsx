@@ -16,7 +16,7 @@ const FAKE_GOGUMA_DATA = [
 헤어진거 알면서도 계속 친하게 지낸다.
 심지어 티도 내면서! 이런 상황일때,
 친구를 어떻게 해야할지 모르겠다.`,
-    tags: ["댓글", "태그", "태그"],
+    tags: ["댓글", "태그1", "태그2"],
     choices: ["친구랑 손절한다.", "모른척 하면서 지낸다."],
     goguma_response: [
       {
@@ -149,7 +149,7 @@ interface IParams {
   id: string;
 }
 
-export const Goguma = () => {
+export const Goguma: React.FC = () => {
   const history = useHistory();
   const { id } = useParams<IParams>();
   if (!id) {
@@ -166,14 +166,14 @@ export const Goguma = () => {
           <div>
             <TagBoxes>
               {data?.tags.map(tag => (
-                <TagBox>#{tag}</TagBox>
+                <TagBox key={tag}>#{tag}</TagBox>
               ))}
             </TagBoxes>
             <TitleBox>{data.title}</TitleBox>
             <ContentBox>{data.content}</ContentBox>
             <ChoiceBoxes>
               {data.choices.map(choice => (
-                <ChoiceBox>{choice}</ChoiceBox>
+                <ChoiceBox key={choice}>{choice}</ChoiceBox>
               ))}
             </ChoiceBoxes>
           </div>
