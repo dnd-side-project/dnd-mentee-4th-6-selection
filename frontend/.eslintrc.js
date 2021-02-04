@@ -19,6 +19,12 @@ module.exports = {
     // extends에서 적용한 룰셋을 덮어씌울 수 있습니다.
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: 'auto',
+      }
+    ]
   },
   settings: {
     react: {
