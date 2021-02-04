@@ -7,7 +7,7 @@ import { Home } from "../pages/home";
 import { Login } from "../pages/login";
 import { OAuth2Redirect } from "../pages/oauth2-redirect";
 
-export const CommonRouter = () => {
+export const CommonRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <Header />

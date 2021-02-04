@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
-export const NotFound = () => (
+export const NotFound: React.FC = () => (
   <div>
     <Helmet>
       <title>Not Found | Selection</title>

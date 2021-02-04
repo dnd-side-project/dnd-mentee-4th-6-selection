@@ -23,9 +23,8 @@ const SideContainer = styled.div`
   overflow: hidden;
   display: flex;
   background-color: rgba(50, 50, 50, 0.5);
-  animation: ${(props: IStyleProps) =>
-      props.isActive ? "boxFadeOut" : "boxFadeIn"}
-    0.3s ease-in-out forwards;
+  animation: ${(props: IStyleProps) => (props.isActive ? "boxFadeOut" : "boxFadeIn")} 0.3s
+    ease-in-out forwards;
 
   @keyframes boxFadeOut {
     from {
@@ -56,9 +55,8 @@ const SidebarMenu = styled.div`
   align-items: center;
   padding: 70px 0;
   box-sizing: border-box;
-  animation: ${(props: IStyleProps) =>
-      props.isActive ? "boxMoveOut" : "boxMoveIn"}
-    0.3s ease-in-out forwards;
+  animation: ${(props: IStyleProps) => (props.isActive ? "boxMoveOut" : "boxMoveIn")} 0.3s
+    ease-in-out forwards;
 
   @keyframes boxMoveOut {
     from {
@@ -140,7 +138,7 @@ const OutBackground = styled.div`
   height: 100%;
 `;
 
-export const Sidebar: React.FC<IProps> = ({ onClick }) => {
+export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
   const [isActive, setIsActive] = useState(true);
   const onClickOut = () => {
     setIsActive(false);
