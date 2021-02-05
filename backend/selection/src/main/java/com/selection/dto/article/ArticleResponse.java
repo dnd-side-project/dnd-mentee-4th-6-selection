@@ -3,6 +3,7 @@ package com.selection.dto.article;
 import com.selection.domain.article.Article;
 import com.selection.dto.question.QuestionResponse;
 import com.selection.dto.tag.TagResponse;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -20,6 +21,8 @@ public class ArticleResponse {
     private List<TagResponse> tags = new ArrayList<>();
     private List<QuestionResponse> questions = new ArrayList<>();
 
+    private final LocalDateTime createdAt;
+
     public ArticleResponse(Article article) {
         this.id = article.getId();
         this.title = article.getTitle();
@@ -30,5 +33,6 @@ public class ArticleResponse {
 
         this.questions.addAll(article.getQuestions().toResponses());
         this.tags.addAll(article.getTags().toResponses());
+        this.createdAt = article.getCreatedAt();
     }
 }

@@ -34,6 +34,7 @@ public class ArticleService {
 
         article.changeTitle(requestDto.getTitle());
         article.changeContent(requestDto.getContent());
+        article.changeBackgroundColor(requestDto.getBackgroundColor());
 
         Questions questions = article.getQuestions();
         Tags tags = article.getTags();
