@@ -9,10 +9,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable
 @NoArgsConstructor
+@Getter
+@Embeddable
 public class Tags {
 
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -28,6 +30,15 @@ public class Tags {
 
     public void addAll(List<Tag> tags) {
         this.tags.addAll(tags);
+    }
+
+
+    public void setTagName(Long id, String name) {
+        for (Tag tag : tags) {
+            if (tag.getId().equals(id)) {
+                tag.changeName(name);
+            }
+        }
     }
 
     public List<TagResponse> toResponses() {

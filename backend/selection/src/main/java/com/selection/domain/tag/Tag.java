@@ -31,4 +31,8 @@ public class Tag extends BaseEntity {
         this.article = article;
     }
 
+    public void changeName(String name) {
+        this.name = name;
+    }
+
 }

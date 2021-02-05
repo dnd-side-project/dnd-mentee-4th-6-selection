@@ -1,5 +1,6 @@
 package com.selection.controller;
 
+import com.selection.dto.article.ArticleModifyRequest;
 import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleSaveRequest;
 import com.selection.service.article.ArticleService;
@@ -23,26 +24,29 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<ArticleResponse> createArticle(
+    public ResponseEntity<Long> createArticle(
         @RequestBody ArticleSaveRequest requestDto) {
-        ArticleResponse article = articleService.create(requestDto);
-        return ResponseEntity.ok(article);
+        Long articleId = articleService.create(requestDto);
+        return ResponseEntity.ok(articleId);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Long id,
+        @RequestBody ArticleModifyRequest requestDto) {
+        ArticleResponse article = articleService.modify(id, requestDto);
+        return ResponseEntity.ok(article);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> getArticle(@PathVariable Long id) {
-        ArticleResponse article = articleService.getArticle(id);
+    public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long id) {
+        ArticleResponse article = articleService.lookUp(id);
         return ResponseEntity.ok(article);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ArticleResponse> deleteArticle(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<Long> deleteArticle(@PathVariable Long id) {
+        Long articleId = articleService.delete(id);
+        return ResponseEntity.ok(articleId);
     }
 
     @GetMapping("/latest")

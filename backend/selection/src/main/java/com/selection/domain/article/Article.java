@@ -54,4 +54,12 @@ public class Article extends BaseEntity {
         this.backgroundColor = backgroundColor;
     }
 
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
 }

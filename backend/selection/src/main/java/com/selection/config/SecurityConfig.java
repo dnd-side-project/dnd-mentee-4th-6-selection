@@ -91,11 +91,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .httpBasic()
                 .disable()
+                .headers()
+                .frameOptions()
+                .disable()
+            .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
             .and()
                 .authorizeRequests()
-                .antMatchers("/",
+                .antMatchers("/", "/h2-console/**", "/articles/**",
                     "/error",
                     "/favicon.ico",
                     "/**/*.png",
@@ -104,12 +108,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/**/*.jpg",
                     "/**/*.html",
                     "/**/*.css",
-                    "/**/*.js")
-                .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                    "/**/*.js").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .anyRequest().authenticated()
             .and()
                 .oauth2Login()
                 .authorizationEndpoint()

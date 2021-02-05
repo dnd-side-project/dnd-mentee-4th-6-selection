@@ -30,6 +30,14 @@ public class Questions {
         this.questions.addAll(questions);
     }
 
+    public void setQuestionDescription(Long id, String description) {
+        for (Question question : questions) {
+            if (question.getId().equals(id)) {
+                question.changeDescription(description);
+            }
+        }
+    }
+
     public List<QuestionResponse> toResponses() {
         return questions.stream().map((QuestionResponse::new)).collect(Collectors.toList());
     }
