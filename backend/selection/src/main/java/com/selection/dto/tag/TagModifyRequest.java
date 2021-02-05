@@ -9,4 +9,9 @@ public class TagModifyRequest {
 
     private Long id;
     private String name;
+
+    public TagModifyRequest(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

@@ -40,9 +40,10 @@ public class Article extends BaseEntity {
     private Tags tags = new Tags();
 
     @Builder
-    public Article(String title, String content, String author) {
+    public Article(String title, String content, String backgroundColor, String author) {
         this.title = title;
         this.content = content;
+        this.backgroundColor = backgroundColor;
         this.author = author;
     }
 

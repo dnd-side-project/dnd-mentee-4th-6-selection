@@ -15,14 +15,17 @@ public class ArticleSaveRequest {
 
     private String title;
     private String content;
+    private String backgroundColor;
     private List<QuestionSaveRequest> questions;
     private List<TagSaveRequest> tags;
 
     @Builder
-    public ArticleSaveRequest(String title, String content, List<QuestionSaveRequest> questions,
+    public ArticleSaveRequest(String title, String content, String backgroundColor,
+        List<QuestionSaveRequest> questions,
         List<TagSaveRequest> tags) {
         this.title = title;
         this.content = content;
+        this.backgroundColor = backgroundColor;
         this.questions = questions;
         this.tags = tags;
     }
@@ -31,6 +34,7 @@ public class ArticleSaveRequest {
         Article article = Article.builder()
             .title(title)
             .content(content)
+            .backgroundColor(backgroundColor)
             .author("애플")
             .build();
 

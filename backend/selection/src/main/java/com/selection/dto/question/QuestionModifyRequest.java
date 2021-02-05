@@ -9,4 +9,9 @@ public class QuestionModifyRequest {
 
     private Long id;
     private String description;
+
+    public QuestionModifyRequest(Long id, String description) {
+        this.id = id;
+        this.description = description;
+    }
 }
