@@ -4,7 +4,6 @@ package com.selection.service.article;
 import com.selection.domain.article.Article;
 import com.selection.domain.question.Questions;
 import com.selection.domain.tag.Tags;
-import com.selection.dto.ApiResponse;
 import com.selection.dto.article.ArticleModifyRequest;
 import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleSaveRequest;
@@ -32,18 +31,19 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException(id + "는 존재하지 않는 게시글 번호입니다."));
 
-        article.changeTitle(requestDto.getTitle());
-        article.changeContent(requestDto.getContent());
-        article.changeBackgroundColor(requestDto.getBackgroundColor());
+        article.modifyTitle(requestDto.getTitle());
+        article.modifyContent(requestDto.getContent());
+        article.modifyBackgroundColor(requestDto.getBackgroundColor());
 
         Questions questions = article.getQuestions();
         Tags tags = article.getTags();
 
         for (QuestionModifyRequest modifyQuestion : requestDto.getQuestions()) {
-            questions.setQuestionDescription(modifyQuestion.getId(), modifyQuestion.getDescription());
+            questions
+                .modifyQuestionDescription(modifyQuestion.getId(), modifyQuestion.getDescription());
         }
         for (TagModifyRequest modifyTag : requestDto.getTags()) {
-            tags.setTagName(modifyTag.getId(), modifyTag.getName());
+            tags.modifyTagName(modifyTag.getId(), modifyTag.getName());
         }
 
         return new ArticleResponse(article);

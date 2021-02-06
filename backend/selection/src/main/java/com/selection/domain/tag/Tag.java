@@ -31,7 +31,7 @@ public class Tag extends BaseEntity {
         this.article = article;
     }
 
-    public void changeName(String name) {
+    public void modifyName(String name) {
         this.name = name;
     }
 

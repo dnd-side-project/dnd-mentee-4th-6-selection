@@ -41,9 +41,11 @@ class ArticleControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-    private MockMvc mockMvc;
+
     @Autowired
     private WebApplicationContext ctx;
+
+    private MockMvc mockMvc;
 
     @BeforeEach
     @DisplayName("테스트 목업 준비")
@@ -52,14 +54,12 @@ class ArticleControllerTest {
             .addFilters(new CharacterEncodingFilter("UTF-8", true))  // UTF-8 인코딩 필터 추가
             .alwaysDo(print())
             .build();
-
     }
 
     @Test
     @Order(1)
     @DisplayName("게시글 작성 API 테스트")
     public void createArticle() throws Exception {
-
         // given
         final String title = "제목 1";
         final String content = "내용 1";
@@ -98,7 +98,6 @@ class ArticleControllerTest {
     @Order(2)
     @DisplayName("게시글 수정 API 테스트")
     public void modifyArticle() throws Exception {
-
         // given
         final String title = "제목 2";
         final String content = "내용 2";
@@ -140,7 +139,6 @@ class ArticleControllerTest {
     @Order(3)
     @DisplayName("게시글 조회 API 테스트")
     public void lookUpArticle() throws Exception {
-
         mockMvc.perform(
             get("/articles/1")
         )
@@ -160,6 +158,4 @@ class ArticleControllerTest {
             .andExpect(content().string("1"))
             .andDo(print());
     }
-
-
 }

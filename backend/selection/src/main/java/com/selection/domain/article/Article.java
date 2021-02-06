@@ -51,15 +51,15 @@ public class Article extends BaseEntity {
         this.numOfShares++;
     }
 
-    public void changeBackgroundColor(String backgroundColor) {
+    public void modifyBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
-    public void changeTitle(String title) {
+    public void modifyTitle(String title) {
         this.title = title;
     }
 
-    public void changeContent(String content) {
+    public void modifyContent(String content) {
         this.content = content;
     }
 

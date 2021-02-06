@@ -31,7 +31,7 @@ public class Question extends BaseEntity {
         this.article = article;
     }
 
-    void changeDescription(String description) {
+    void modifyDescription(String description) {
         this.description = description;
     }
 }

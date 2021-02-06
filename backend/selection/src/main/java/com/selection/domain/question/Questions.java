@@ -30,10 +30,10 @@ public class Questions {
         this.questions.addAll(questions);
     }
 
-    public void setQuestionDescription(Long id, String description) {
+    public void modifyQuestionDescription(Long id, String description) {
         for (Question question : questions) {
             if (question.getId().equals(id)) {
-                question.changeDescription(description);
+                question.modifyDescription(description);
             }
         }
     }

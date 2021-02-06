@@ -33,10 +33,10 @@ public class Tags {
     }
 
 
-    public void setTagName(Long id, String name) {
+    public void modifyTagName(Long id, String name) {
         for (Tag tag : tags) {
             if (tag.getId().equals(id)) {
-                tag.changeName(name);
+                tag.modifyName(name);
             }
         }
     }
