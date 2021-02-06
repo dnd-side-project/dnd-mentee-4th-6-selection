@@ -1,21 +1,22 @@
 package com.selection.controller;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.selection.domain.article.Article;
 import com.selection.dto.article.ArticleModifyRequest;
 import com.selection.dto.article.ArticleSaveRequest;
 import com.selection.dto.question.QuestionModifyRequest;
 import com.selection.dto.question.QuestionSaveRequest;
 import com.selection.dto.tag.TagModifyRequest;
 import com.selection.dto.tag.TagSaveRequest;
+import com.selection.repository.ArticleRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +47,9 @@ class ArticleControllerTest {
     private WebApplicationContext ctx;
 
     private MockMvc mockMvc;
+
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @BeforeEach
     @DisplayName("테스트 목업 준비")
@@ -85,13 +89,18 @@ class ArticleControllerTest {
             .tags(tags)
             .build();
 
+        // when
         mockMvc.perform(post("/articles")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(createArticle)))
-            .andExpect(status().isOk())
-            .andExpect(content().string("1"))
-            .andDo(print());
+            .andExpect(status().isOk());
+
+        // then
+        Article article = articleRepository.findAll().get(0);
+        assertThat(article.getTitle()).isEqualTo(title);
+        assertThat(article.getContent()).isEqualTo(content);
+        assertThat(article.getBackgroundColor()).isEqualTo(backgroundColor);
     }
 
     @Test
@@ -113,7 +122,7 @@ class ArticleControllerTest {
 
         List<TagModifyRequest> tags = new ArrayList<>();
         tags.add(new TagModifyRequest(1L, tag1));
-        tags.add(new TagModifyRequest(1L, tag1));
+        tags.add(new TagModifyRequest(1L, tag2));
 
         ArticleModifyRequest modifyArticle = ArticleModifyRequest.builder()
             .title(title)
@@ -123,39 +132,58 @@ class ArticleControllerTest {
             .tags(tags)
             .build();
 
+        Long id = articleRepository.findAll().get(0).getId();
+
+        // when
         mockMvc.perform(
-            put("/articles/1")
+            put("/articles/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(modifyArticle))
         )
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andExpect(content().string(containsString(
-                "{\"id\":1,\"title\":\"제목 2\",\"content\":\"내용 2\"")));
+            .andExpect(status().isOk());
+
+        // then
+        Article article = articleRepository.findAll().get(0);
+        assertThat(article.getTitle()).isEqualTo(title);
+        assertThat(article.getContent()).isEqualTo(content);
+        assertThat(article.getBackgroundColor()).isEqualTo(backgroundColor);
     }
 
     @Test
     @Order(3)
     @DisplayName("게시글 조회 API 테스트")
     public void lookUpArticle() throws Exception {
+        // given
+        Article article = articleRepository.findAll().get(0);
+        Long id = article.getId();
+
+        // when
         mockMvc.perform(
-            get("/articles/1")
+            get("/articles/" + id)
         )
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andExpect(content().string(containsString(
-                "{\"id\":1,\"title\":\"제목 2\",\"content\":\"내용 2\"")));
+            .andExpect(status().isOk());
+
+        // then
+        assertThat(article.getTitle()).isEqualTo(article.getTitle());
+        assertThat(article.getContent()).isEqualTo(article.getContent());
+        assertThat(article.getBackgroundColor()).isEqualTo(article.getBackgroundColor());
     }
 
     @Test
     @Order(4)
     @DisplayName("게시글 삭제 API 테스트")
     public void deleteArticle() throws Exception {
-        mockMvc.perform(delete("/articles/1")
+        // given
+        Long id = articleRepository.findAll().get(0).getId();
+
+        // when
+        mockMvc.perform(delete("/articles/" + id)
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("1"))
-            .andDo(print());
+            .andExpect(status().isOk());
+
+        // then
+        List<Article> articles = articleRepository.findAll();
+        assertThat(articles.size()).isEqualTo(0);
     }
 }
