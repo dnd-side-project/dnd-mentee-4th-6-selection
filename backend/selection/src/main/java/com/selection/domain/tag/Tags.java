@@ -1,9 +1,8 @@
 package com.selection.domain.tag;
 
 import com.selection.dto.tag.TagResponse;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
@@ -17,11 +16,11 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Tags {
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Tag> tags = new HashSet<>();
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private List<Tag> tags = new ArrayList<>();
 
     public Tags(List<Tag> tags) {
-        this.tags = new HashSet<>(tags);
+        this.tags = tags;
     }
 
     public void add(Tag tag) {
@@ -31,7 +30,6 @@ public class Tags {
     public void addAll(List<Tag> tags) {
         this.tags.addAll(tags);
     }
-
 
     public void modifyTagName(Long id, String name) {
         for (Tag tag : tags) {
