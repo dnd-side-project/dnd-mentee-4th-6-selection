@@ -1,5 +1,6 @@
 package com.selection.controller;
 
+import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleModifyRequest;
 import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleSaveRequest;
@@ -50,8 +51,10 @@ public class ArticleController {
     }
 
     @GetMapping("/latest")
-    public ResponseEntity<List<ArticleResponse>> getLatestArticles() {
-        return null;
+    public ResponseEntity<List<ArticleLatestResponse>> getLatestArticles() {
+        final Long NUM_OF_LATEST_ARTICLES = 10L;
+        List<ArticleLatestResponse> latestArticles = articleService.lookUpLatest(NUM_OF_LATEST_ARTICLES);
+        return ResponseEntity.ok(latestArticles);
     }
 
     @GetMapping("/favorite")

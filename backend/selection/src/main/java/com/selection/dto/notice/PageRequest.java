@@ -1,6 +1,8 @@
 package com.selection.dto.notice;
 
+import lombok.Builder;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 public class PageRequest {
 
@@ -9,6 +11,13 @@ public class PageRequest {
     private int page;
     private int size;
     private Sort.Direction direction;
+
+    @Builder
+    public PageRequest(int page, int size, Direction direction) {
+        this.page = page;
+        this.size = size;
+        this.direction = direction;
+    }
 
     public void setPage(int page) {
         this.page = page <= 0 ? 1 : page;

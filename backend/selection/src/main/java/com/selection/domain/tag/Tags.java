@@ -23,6 +23,10 @@ public class Tags {
         this.tags = tags;
     }
 
+    public int size() {
+        return tags.size();
+    }
+
     public void add(Tag tag) {
         this.tags.add(tag);
     }

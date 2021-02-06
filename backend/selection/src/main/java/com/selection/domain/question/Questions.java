@@ -21,6 +21,10 @@ public class Questions {
         this.questions = questions;
     }
 
+    public int size() {
+        return questions.size();
+    }
+
     public void add(Question question) {
         this.questions.add(question);
     }
