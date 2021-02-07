@@ -123,50 +123,52 @@ export const Goguma: React.FC = () => {
             </Link>
             <GogumaSubtext>글이 공감되시나요? 고구마로 소통할 수 있어요.</GogumaSubtext>
           </BasketContainer>
-          <GogumaEmojies>
-            <GogumaEmogi>
-              <Emoji title={"훈-훈 하구마~"} onBasketActive={onBasketActive}>
-                <img src={good} />
-              </Emoji>
-              <EmogiTitle>훈-훈 하구마~</EmogiTitle>
-            </GogumaEmogi>
-            <GogumaEmogi>
-              <Emoji title={"뭐구마!!!!"} onBasketActive={onBasketActive}>
-                <img src={angry} />
-              </Emoji>
-              <EmogiTitle>뭐구마!!!!</EmogiTitle>
-            </GogumaEmogi>
-            <GogumaEmogi>
-              <Emoji title={"슬프구마.."} onBasketActive={onBasketActive}>
-                <img src={sad} />
-              </Emoji>
-              <EmogiTitle>슬프구마..</EmogiTitle>
-            </GogumaEmogi>
-            <GogumaEmogi>
-              <Emoji title={"고..고구마"} onBasketActive={onBasketActive}>
-                <img src={goguma} />
-              </Emoji>
-              <EmogiTitle>고..고구마</EmogiTitle>
-            </GogumaEmogi>
-            <GogumaEmogi>
-              <Emoji title={"??뭐구마..?!"} onBasketActive={onBasketActive}>
-                <img src={surprised} />
-              </Emoji>
-              <EmogiTitle>??뭐구마..?!</EmogiTitle>
-            </GogumaEmogi>
-            <GogumaEmogi>
-              <Emoji title={"relax"} onBasketActive={onBasketActive}>
-                <img src={relax} />
-              </Emoji>
-              <EmogiTitle>relax</EmogiTitle>
-            </GogumaEmogi>
-            <GogumaEmogi>
-              <Emoji title={"veryhappy"} onBasketActive={onBasketActive}>
-                <img src={veryhappy} />
-              </Emoji>
-              <EmogiTitle>veryhappy</EmogiTitle>
-            </GogumaEmogi>
-          </GogumaEmojies>
+          <EmojiContainer>
+            <GogumaEmojies>
+              <GogumaEmogi>
+                <Emoji title={"훈-훈 하구마~"} onBasketActive={onBasketActive}>
+                  <img src={good} />
+                </Emoji>
+                <EmogiTitle>훈-훈 하구마~</EmogiTitle>
+              </GogumaEmogi>
+              <GogumaEmogi>
+                <Emoji title={"뭐구마!!!!"} onBasketActive={onBasketActive}>
+                  <img src={angry} />
+                </Emoji>
+                <EmogiTitle>뭐구마!!!!</EmogiTitle>
+              </GogumaEmogi>
+              <GogumaEmogi>
+                <Emoji title={"슬프구마.."} onBasketActive={onBasketActive}>
+                  <img src={sad} />
+                </Emoji>
+                <EmogiTitle>슬프구마..</EmogiTitle>
+              </GogumaEmogi>
+              <GogumaEmogi>
+                <Emoji title={"고..고구마"} onBasketActive={onBasketActive}>
+                  <img src={goguma} />
+                </Emoji>
+                <EmogiTitle>고..고구마</EmogiTitle>
+              </GogumaEmogi>
+              <GogumaEmogi>
+                <Emoji title={"??뭐구마..?!"} onBasketActive={onBasketActive}>
+                  <img src={surprised} />
+                </Emoji>
+                <EmogiTitle>??뭐구마..?!</EmogiTitle>
+              </GogumaEmogi>
+              <GogumaEmogi>
+                <Emoji title={"relax"} onBasketActive={onBasketActive}>
+                  <img src={relax} />
+                </Emoji>
+                <EmogiTitle>relax</EmogiTitle>
+              </GogumaEmogi>
+              <GogumaEmogi>
+                <Emoji title={"veryhappy"} onBasketActive={onBasketActive}>
+                  <img src={veryhappy} />
+                </Emoji>
+                <EmogiTitle>veryhappy</EmogiTitle>
+              </GogumaEmogi>
+            </GogumaEmojies>
+          </EmojiContainer>
         </>
       )}
       {!data && (
@@ -201,6 +203,7 @@ const ScrollTitle = styled.div`
   font-size: 20px;
   color: #8c5cdd;
   align-items: center;
+  box-sizing: border-box;
   transition: 0.3s ease-in-out;
   &.show {
     transform: translateY(50px);
@@ -326,6 +329,10 @@ const GogumaSubtext = styled.div`
   margin-bottom: 15px;
 `;
 
+const EmojiContainer = styled.div`
+  padding-bottom: 40px;
+`;
+
 const GogumaEmojies = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -336,7 +343,6 @@ const GogumaEmojies = styled.div`
   width: 100%;
   padding: 10px 0;
   overflow: auto;
-  margin-bottom: 60px;
 `;
 
 const GogumaEmogi = styled.div`
