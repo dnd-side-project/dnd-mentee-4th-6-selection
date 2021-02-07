@@ -1,6 +1,7 @@
 import React from "react";
 import { CommonRouter } from "./routers/common-router";
 import { Box, Container } from "@material-ui/core";
+import "./styles/FontStyles.css";
 
 const App: React.FC = () => {
   return (
