@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { faChevronRight, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
@@ -47,7 +47,8 @@ const SideContainer = styled.div`
 
 const SidebarMenu = styled.div`
   background-color: white;
-  width: 190px;
+  width: 200px;
+  min-width: 200px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -79,58 +80,74 @@ const SidebarMenu = styled.div`
   }
 `;
 
+const UserBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+  border-bottom: 1px solid #d5d5d5;
+`;
+
 const MenuBox = styled.div`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-height: 70px;
-  margin-bottom: 30px;
+  height: 200px;
+  padding: 50px 0;
+  box-sizing: border-box;
+  span:first-child {
+    color: #8c5cdd;
+  }
 `;
 
 const ImgBox = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: gray;
-  color: white;
+  width: 80px;
+  height: 80px;
+  color: grey;
   display: flex;
   font-size: 21px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
-`;
-
-const RankedTitle = styled.span`
-  font-size: 12px;
-`;
-
-const LogoutBtn = styled.button`
-  border: 1px solid black;
-  background-color: white;
-  width: 100px;
-  height: 36px;
-  border-radius: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &:focus {
-    outline: none;
-  }
 `;
 
 const UserName = styled.span`
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-family: MaruBuri-Regular;
+  font-size: 14px;
+  margin-bottom: 30px;
 `;
 
-const VersionTitle = styled.span`
+const BellIcon = styled.div`
+  margin-bottom: 50px;
+`;
+
+const NotUserTitle = styled.div`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 12px;
+  text-align: center;
+  width: 106px;
+  margin-bottom: 27px;
+`;
+
+const NotUserColor = styled.div`
+  color: #989898;
+`;
+
+const LoginBtn = styled.div`
+  width: 92px;
+  height: 35px;
+  border-radius: 24px;
+  border: 1px solid #8c5cdd;
   display: flex;
   justify-content: center;
-`;
-
-const CursorPointer = styled.span`
-  cursor: pointer;
+  align-items: center;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  color: #8c5cdd;
+  margin-bottom: 17px;
+  text-decoration: none;
 `;
 
 const OutBackground = styled.div`
@@ -138,48 +155,76 @@ const OutBackground = styled.div`
   height: 100%;
 `;
 
+const OutBtn = styled.div`
+  font-size: 20px;
+  margin: 65px 20px;
+`;
+
 export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
+  const [isUser, setIsUser] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const onClickOut = () => {
     setIsActive(false);
     setTimeout(onClick, 300);
+  };
+  const onClickLogin = () => {
+    setIsUser(true);
   };
   return (
     <>
       <SideContainer isActive={isActive}>
         <SidebarMenu isActive={isActive}>
           <div>
+            <UserBox>
+              {isUser ? (
+                <>
+                  <ImgBox>
+                    <FontAwesomeIcon icon={faUser} />
+                  </ImgBox>
+                  <UserName>김구마님</UserName>
+                  <BellIcon>
+                    <FontAwesomeIcon icon={faBell} />
+                  </BellIcon>
+                </>
+              ) : (
+                <>
+                  <NotUserTitle>
+                    <NotUserColor>
+                      로그인하여
+                      <br /> 고구마를 즐겨보세요!
+                    </NotUserColor>
+                  </NotUserTitle>
+                  <a href={"/login"}>
+                    <LoginBtn>로그인</LoginBtn>
+                  </a>
+                  <LoginBtn onClick={onClickLogin}>임시 로그인</LoginBtn>
+                  <BellIcon>
+                    <NotUserColor>
+                      <FontAwesomeIcon icon={faBell} />
+                    </NotUserColor>
+                  </BellIcon>
+                </>
+              )}
+            </UserBox>
             <MenuBox>
-              <ImgBox>
-                <FontAwesomeIcon icon={faUser} />
-              </ImgBox>
-              <RankedTitle>생 고구마</RankedTitle>
-              <UserName>
-                김구마 <FontAwesomeIcon icon={faChevronRight} />
-              </UserName>
-              <LogoutBtn>로그아웃</LogoutBtn>
-            </MenuBox>
-            <MenuBox>
-              <span>마이페이지</span>
-              <span>내가 쓴 글</span>
-              <span>댓글 단글</span>
-            </MenuBox>
-            <MenuBox>
-              <CursorPointer onClick={onClickOut}>메인페이지</CursorPointer>
+              <span>메인페이지</span>
               <span>인기글</span>
               <span>최신글</span>
             </MenuBox>
-          </div>
-          <div>
-            <MenuBox>
-              <span>공지사항</span>
-              <span>환경설정</span>
-              <span>의견 보내기</span>
-            </MenuBox>
-            <VersionTitle>V.01.1</VersionTitle>
+            {isUser && (
+              <MenuBox>
+                <span>마이페이지</span>
+                <span>내가 쓴 글</span>
+                <span>댓글 단글</span>
+              </MenuBox>
+            )}
           </div>
         </SidebarMenu>
-        <OutBackground onClick={onClickOut}></OutBackground>
+        <OutBackground>
+          <OutBtn onClick={onClickOut}>
+            <FontAwesomeIcon icon={faTimes} style={{ color: "white", fontWeight: 300 }} />
+          </OutBtn>
+        </OutBackground>
       </SideContainer>
     </>
   );
