@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
 import { Sidebar } from "./sidebar";
+import styled from "styled-components";
+import menu from "../styles/img/icon_menu.svg";
+import search from "../styles/img/icon_search.svg";
 
 const Container = styled.div`
   padding: 1rem 0;
@@ -17,8 +17,10 @@ const SidebarButtonContainer = styled.div`
 
 const TitleContainer = styled.div`
   width: 34%;
+  text-color: "#8C5CDD";
   text-align: center;
   font-weight: bold;
+  font-family: Poppins;
 `;
 
 const SigninContainer = styled.div`
@@ -35,17 +37,17 @@ export const Header: React.FC = () => {
   return (
     <Container>
       <SidebarButtonContainer onClick={sidebarOnClick}>
-        <FontAwesomeIcon icon={faBars} size="1x" />
+        <img src={menu} />
       </SidebarButtonContainer>
       <TitleContainer>
-        <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-          <div>GO!GUMA</div>
+        <Link to="/" style={{ textDecoration: "none", color: "#8C5CDD" }}>
+          <div>
+            go<span style={{ color: "#FFD600" }}>!</span>guma
+          </div>
         </Link>
       </TitleContainer>
       <SigninContainer>
-        <Link to="/login" style={{ textDecoration: "none", color: "black" }}>
-          <div>로그인</div>
-        </Link>
+        <img src={search} />
       </SigninContainer>
       {toggleSidebar && (
         <>
