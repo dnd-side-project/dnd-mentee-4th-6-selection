@@ -5,6 +5,7 @@ import { NotFound } from "../pages/404";
 import { Goguma } from "../pages/goguma";
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
+import { Ask } from "../pages/ask";
 import { OAuth2Redirect } from "../pages/oauth2-redirect";
 
 export const CommonRouter: React.FC = () => {
@@ -23,6 +24,9 @@ export const CommonRouter: React.FC = () => {
         </Route>
         <Route exact path="/goguma/:id">
           <Goguma />
+        </Route>
+        <Route exact path="/ask">
+          <Ask />
         </Route>
         <Route>
           <NotFound />
