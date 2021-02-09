@@ -7,6 +7,7 @@ import { Home } from "../pages/home";
 import { Login } from "../pages/login";
 import { Ask } from "../pages/ask";
 import { OAuth2Redirect } from "../pages/oauth2-redirect";
+import { GogumaBasket } from "../pages/goguma-basket";
 
 export const CommonRouter: React.FC = () => {
   return (
@@ -27,6 +28,9 @@ export const CommonRouter: React.FC = () => {
         </Route>
         <Route exact path="/ask">
           <Ask />
+        </Route>
+        <Route exact path="/goguma/basket/:id">
+          <GogumaBasket />
         </Route>
         <Route>
           <NotFound />

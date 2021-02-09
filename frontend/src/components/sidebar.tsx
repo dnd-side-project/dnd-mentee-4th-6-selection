@@ -23,6 +23,7 @@ const SideContainer = styled.div`
   overflow: hidden;
   display: flex;
   background-color: rgba(50, 50, 50, 0.5);
+  z-index: 99;
   animation: ${(props: IStyleProps) => (props.isActive ? "boxFadeOut" : "boxFadeIn")} 0.3s
     ease-in-out forwards;
 
