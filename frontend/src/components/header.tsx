@@ -17,7 +17,7 @@ const SidebarButtonContainer = styled.div`
 
 const TitleContainer = styled.div`
   width: 34%;
-  text-color: "#8C5CDD";
+  color: "#8C5CDD";
   text-align: center;
   font-weight: bold;
   font-family: Poppins;
@@ -47,7 +47,9 @@ export const Header: React.FC = () => {
         </Link>
       </TitleContainer>
       <SigninContainer>
-        <img src={search} />
+        <a href={`/search`}>
+          <img src={search} />
+        </a>
       </SigninContainer>
       {toggleSidebar && (
         <>
