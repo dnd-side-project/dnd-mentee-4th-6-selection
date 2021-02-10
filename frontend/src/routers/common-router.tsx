@@ -8,6 +8,7 @@ import { Login } from "../pages/login";
 import { Ask } from "../pages/ask";
 import { OAuth2Redirect } from "../pages/oauth2-redirect";
 import { GogumaBasket } from "../pages/goguma-basket";
+import { Search } from "../pages/search";
 
 export const CommonRouter: React.FC = () => {
   return (
@@ -31,6 +32,9 @@ export const CommonRouter: React.FC = () => {
         </Route>
         <Route exact path="/goguma/basket/:id">
           <GogumaBasket />
+        </Route>
+        <Route exact path="/search">
+          <Search />
         </Route>
         <Route>
           <NotFound />
