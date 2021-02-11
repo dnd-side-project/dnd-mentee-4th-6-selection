@@ -22,22 +22,28 @@ import lombok.NoArgsConstructor;
 @Table(name = "ARTICLES")
 public class Article extends BaseEntity {
 
+    @Column(nullable = false, length = 30)
+    private String title;
+
+    @Lob
+    private String content;
+
+    @Column(nullable = false)
+    private String author;
+
+    @Column(nullable = false)
+    private String backgroundColor = "#FFFFFF";
+
+    @Column(nullable = false)
+    private Long numOfShares = 0L;
+
     @Embedded
     @Column(nullable = false)
     private final Questions questions = new Questions();
+
     @Embedded
     @Column(nullable = false)
     private final Tags tags = new Tags();
-    @Column(nullable = false, length = 30)
-    private String title;
-    @Lob
-    private String content;
-    @Column(nullable = false)
-    private String author;
-    @Column(nullable = false)
-    private String backgroundColor = "#FFFFFF";
-    @Column(nullable = false)
-    private Long numOfShares = 0L;
 
     @Builder
     public Article(String title, String content, String backgroundColor, String author) {
