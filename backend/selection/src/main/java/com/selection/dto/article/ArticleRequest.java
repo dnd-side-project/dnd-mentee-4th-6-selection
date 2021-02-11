@@ -1,8 +1,8 @@
 package com.selection.dto.article;
 
 import com.selection.domain.article.Article;
-import com.selection.dto.question.QuestionSaveRequest;
-import com.selection.dto.tag.TagSaveRequest;
+import com.selection.dto.question.QuestionRequest;
+import com.selection.dto.tag.TagRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ArticleSaveRequest {
+public class ArticleRequest {
 
     private String title;
     private String content;
     private String backgroundColor;
-    private List<QuestionSaveRequest> questions;
-    private List<TagSaveRequest> tags;
+    private List<QuestionRequest> questions;
+    private List<TagRequest> tags;
 
     @Builder
-    public ArticleSaveRequest(String title, String content, String backgroundColor,
-        List<QuestionSaveRequest> questions,
-        List<TagSaveRequest> tags) {
+    public ArticleRequest(String title, String content, String backgroundColor,
+        List<QuestionRequest> questions,
+        List<TagRequest> tags) {
         this.title = title;
         this.content = content;
         this.backgroundColor = backgroundColor;

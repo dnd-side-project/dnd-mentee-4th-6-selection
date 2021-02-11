@@ -10,13 +10,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.selection.domain.article.Article;
+import com.selection.domain.question.Question;
+import com.selection.domain.question.Questions;
+import com.selection.domain.tag.Tag;
 import com.selection.dto.article.ArticleLatestResponse;
-import com.selection.dto.article.ArticleModifyRequest;
-import com.selection.dto.article.ArticleSaveRequest;
-import com.selection.dto.question.QuestionModifyRequest;
-import com.selection.dto.question.QuestionSaveRequest;
-import com.selection.dto.tag.TagModifyRequest;
-import com.selection.dto.tag.TagSaveRequest;
+import com.selection.dto.article.ArticleRequest;
+import com.selection.dto.question.QuestionRequest;
+import com.selection.dto.tag.TagRequest;
 import com.selection.repository.ArticleRepository;
 import com.selection.service.article.ArticleService;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -67,24 +66,24 @@ class ArticleControllerTest {
             .build();
     }
 
-    public ArticleSaveRequest createArticleSaveRequest() {
+    public ArticleRequest createArticleSaveRequest() {
         final String title = "제목 1";
         final String content = "내용 1";
         final String backgroundColor = "#FFFFFF";
-        final String description1 = "선택지 1";
-        final String description2 = "선택지 2";
-        final String tag1 = "태그 1";
-        final String tag2 = "태그 2";
+        final String questionContent1 = "선택지 1";
+        final String questionContent2 = "선택지 2";
+        final String tagContent1 = "태그 1";
+        final String tagContent2 = "태그 2";
 
-        List<QuestionSaveRequest> questions = new ArrayList<>();
-        questions.add(new QuestionSaveRequest(description1));
-        questions.add(new QuestionSaveRequest(description2));
+        List<QuestionRequest> questions = new ArrayList<>();
+        questions.add(new QuestionRequest(questionContent1));
+        questions.add(new QuestionRequest(questionContent2));
 
-        List<TagSaveRequest> tags = new ArrayList<>();
-        tags.add(new TagSaveRequest(tag1));
-        tags.add(new TagSaveRequest(tag2));
+        List<TagRequest> tags = new ArrayList<>();
+        tags.add(new TagRequest(tagContent1));
+        tags.add(new TagRequest(tagContent2));
 
-        return ArticleSaveRequest.builder()
+        return ArticleRequest.builder()
             .title(title)
             .content(content)
             .backgroundColor(backgroundColor)
@@ -98,7 +97,7 @@ class ArticleControllerTest {
     @DisplayName("게시글 작성 API 테스트")
     public void createArticle() throws Exception {
         // given
-        ArticleSaveRequest createArticle = createArticleSaveRequest();
+        ArticleRequest createArticle = createArticleSaveRequest();
 
         // when
         mockMvc.perform(post("/articles")
@@ -122,25 +121,17 @@ class ArticleControllerTest {
         final String title = "제목 2";
         final String content = "내용 2";
         final String backgroundColor = "#FFEFFF";
-        final String description1 = "선택지 1";
-        final String description2 = "선택지 2";
-        final String tag1 = "태그 1";
-        final String tag2 = "태그 2";
+        final String questionContent1 = "선택지 1";
+        final String questionContent2 = "선택지 2";
+        final String tagContent1 = "태그 1";
+        final String tagContent2 = "태그 2";
 
-        List<QuestionModifyRequest> questions = new ArrayList<>();
-        questions.add(new QuestionModifyRequest(1L, description1));
-        questions.add(new QuestionModifyRequest(1L, description2));
-
-        List<TagModifyRequest> tags = new ArrayList<>();
-        tags.add(new TagModifyRequest(1L, tag1));
-        tags.add(new TagModifyRequest(1L, tag2));
-
-        ArticleModifyRequest modifyArticle = ArticleModifyRequest.builder()
+        ArticleRequest modifyArticle = ArticleRequest.builder()
             .title(title)
             .content(content)
             .backgroundColor(backgroundColor)
-            .questions(questions)
-            .tags(tags)
+            .questions(new ArrayList<>())
+            .tags(new ArrayList<>())
             .build();
 
         Long id = articleRepository.findAll().get(0).getId();
@@ -155,10 +146,10 @@ class ArticleControllerTest {
             .andExpect(status().isOk());
 
         // then
-        Article article = articleRepository.findAll().get(0);
-        assertThat(article.getTitle()).isEqualTo(title);
-        assertThat(article.getContent()).isEqualTo(content);
-        assertThat(article.getBackgroundColor()).isEqualTo(backgroundColor);
+        Article loadArticle = articleRepository.findAll().get(0);
+        assertThat(loadArticle.getTitle()).isEqualTo(title);
+        assertThat(loadArticle.getContent()).isEqualTo(content);
+        assertThat(loadArticle.getBackgroundColor()).isEqualTo(backgroundColor);
     }
 
     @Test
@@ -203,8 +194,8 @@ class ArticleControllerTest {
     @DisplayName("최신글 API 테스트")
     public void lookUpLatestArticle() throws Exception {
         // given
-        ArticleSaveRequest article1 = createArticleSaveRequest();
-        ArticleSaveRequest article2 = createArticleSaveRequest();
+        ArticleRequest article1 = createArticleSaveRequest();
+        ArticleRequest article2 = createArticleSaveRequest();
         articleRepository.save(article1.toEntity());
         articleRepository.save(article2.toEntity());
 

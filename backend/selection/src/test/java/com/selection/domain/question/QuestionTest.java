@@ -28,7 +28,7 @@ class QuestionTest {
         final String title = "게시글 1";
         final String content = "게시글 내용";
         final String author = "애플";
-        final String questionDescription = "질문지 1";
+        final String questionContent = "질문지 1";
 
         Article article = Article.builder()
             .title(title)
@@ -37,7 +37,7 @@ class QuestionTest {
             .build();
 
         Question question1 = Question.builder()
-            .description(questionDescription)
+            .content(questionContent)
             .article(article)
             .build();
 
@@ -49,7 +49,7 @@ class QuestionTest {
         Question loadQuestion1 = questions.get(0);
 
         // then
-        assertThat(loadQuestion1.getDescription()).isEqualTo(questionDescription);
+        assertThat(loadQuestion1.getContent()).isEqualTo(questionContent);
         assertThat(loadQuestion1.getArticle().getTitle()).isEqualTo(title);
     }
 

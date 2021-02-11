@@ -3,7 +3,11 @@ package com.selection.domain.article;
 import com.selection.domain.BaseEntity;
 import com.selection.domain.question.Questions;
 import com.selection.domain.tag.Tags;
+import com.selection.dto.question.QuestionRequest;
+import com.selection.dto.tag.TagRequest;
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -18,26 +22,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "ARTICLES")
 public class Article extends BaseEntity {
 
+    @Embedded
+    @Column(nullable = false)
+    private final Questions questions = new Questions();
+    @Embedded
+    @Column(nullable = false)
+    private final Tags tags = new Tags();
     @Column(nullable = false, length = 30)
     private String title;
-
     @Lob
     private String content;
-
     @Column(nullable = false)
     private String author;
-
     @Column(nullable = false)
     private String backgroundColor = "#FFFFFF";
-
     @Column(nullable = false)
     private Long numOfShares = 0L;
-
-    @Column(nullable = false)
-    private Questions questions = new Questions();
-
-    @Column(nullable = false)
-    private Tags tags = new Tags();
 
     @Builder
     public Article(String title, String content, String backgroundColor, String author) {
@@ -51,10 +51,6 @@ public class Article extends BaseEntity {
         this.numOfShares++;
     }
 
-    public void modifyBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
     public void modifyTitle(String title) {
         this.title = title;
     }
@@ -63,4 +59,15 @@ public class Article extends BaseEntity {
         this.content = content;
     }
 
+    public void modifyBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void modifyQuestions(List<QuestionRequest> requestQuestions) {
+        questions.modify(this, requestQuestions);
+    }
+
+    public void modifyTags(List<TagRequest> requestTags) {
+        tags.modify(this, requestTags);
+    }
 }

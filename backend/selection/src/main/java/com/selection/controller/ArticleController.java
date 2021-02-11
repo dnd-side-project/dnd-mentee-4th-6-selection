@@ -1,9 +1,8 @@
 package com.selection.controller;
 
 import com.selection.dto.article.ArticleLatestResponse;
-import com.selection.dto.article.ArticleModifyRequest;
+import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.dto.article.ArticleSaveRequest;
 import com.selection.service.article.ArticleService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +24,14 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<Long> createArticle(
-        @RequestBody ArticleSaveRequest requestDto) {
+    public ResponseEntity<Long> createArticle(@RequestBody ArticleRequest requestDto) {
         Long articleId = articleService.create(requestDto);
         return ResponseEntity.ok(articleId);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Long id,
-        @RequestBody ArticleModifyRequest requestDto) {
+        @RequestBody ArticleRequest requestDto) {
         ArticleResponse article = articleService.modify(id, requestDto);
         return ResponseEntity.ok(article);
     }
@@ -53,7 +51,8 @@ public class ArticleController {
     @GetMapping("/latest")
     public ResponseEntity<List<ArticleLatestResponse>> getLatestArticles() {
         final Long NUM_OF_LATEST_ARTICLES = 10L;
-        List<ArticleLatestResponse> latestArticles = articleService.lookUpLatest(NUM_OF_LATEST_ARTICLES);
+        List<ArticleLatestResponse> latestArticles = articleService
+            .lookUpLatest(NUM_OF_LATEST_ARTICLES);
         return ResponseEntity.ok(latestArticles);
     }
 

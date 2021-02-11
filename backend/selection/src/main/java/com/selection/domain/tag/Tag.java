@@ -20,20 +20,19 @@ import lombok.NoArgsConstructor;
 public class Tag extends BaseEntity {
 
     @Column(nullable = false, length = 10)
-    private String name;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Article article;
 
     @Builder
-    public Tag(String name, Article article) {
-        this.name = name;
+    public Tag(String content, Article article) {
+        this.content = content;
         this.article = article;
     }
 
-    public void modifyName(String name) {
-        this.name = name;
+    public void modifyContent(String content) {
+        this.content = content;
     }
-
 }

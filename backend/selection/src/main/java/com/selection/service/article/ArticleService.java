@@ -5,12 +5,9 @@ import com.selection.domain.article.Article;
 import com.selection.domain.question.Questions;
 import com.selection.domain.tag.Tags;
 import com.selection.dto.article.ArticleLatestResponse;
-import com.selection.dto.article.ArticleModifyRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.dto.article.ArticleSaveRequest;
+import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.notice.PageRequest;
-import com.selection.dto.question.QuestionModifyRequest;
-import com.selection.dto.tag.TagModifyRequest;
 import com.selection.repository.ArticleRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,32 +24,23 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional
-    public Long create(ArticleSaveRequest requestDto) {
+    public Long create(ArticleRequest requestDto) {
         Article article = articleRepository.save(requestDto.toEntity());
         return article.getId();
     }
 
     @Transactional
-    public ArticleResponse modify(Long id, ArticleModifyRequest requestDto) {
+    public ArticleResponse modify(Long id, ArticleRequest requestDto) {
         Article article = articleRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException(id + "는 존재하지 않는 게시글 번호입니다."));
 
         article.modifyTitle(requestDto.getTitle());
         article.modifyContent(requestDto.getContent());
         article.modifyBackgroundColor(requestDto.getBackgroundColor());
+        article.modifyQuestions(requestDto.getQuestions());
+        article.modifyTags(requestDto.getTags());
 
-        Questions questions = article.getQuestions();
-        Tags tags = article.getTags();
-
-        for (QuestionModifyRequest modifyQuestion : requestDto.getQuestions()) {
-            questions
-                .modifyQuestionDescription(modifyQuestion.getId(), modifyQuestion.getDescription());
-        }
-        for (TagModifyRequest modifyTag : requestDto.getTags()) {
-            tags.modifyTagName(modifyTag.getId(), modifyTag.getName());
-        }
-
-        return new ArticleResponse(article);
+        return new ArticleResponse(articleRepository.save(article));
     }
 
     @Transactional

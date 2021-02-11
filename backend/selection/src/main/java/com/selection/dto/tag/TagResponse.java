@@ -7,16 +7,11 @@ import lombok.Getter;
 @Getter
 public class TagResponse {
 
-    private Long id;
-    private String name;
-
-    @JsonCreator
-    public TagResponse(String name) {
-        this.name = name;
-    }
+    private final Long id;
+    private final String content;
 
     public TagResponse(Tag tag) {
         this.id = tag.getId();
-        this.name = tag.getName();
+        this.content = tag.getContent();
     }
 }

@@ -18,8 +18,8 @@ public class ArticleResponse {
     private String backgroundColor;
     private Long numOfShares;
 
-    private List<TagResponse> tags = new ArrayList<>();
-    private List<QuestionResponse> questions = new ArrayList<>();
+    private final List<TagResponse> tags = new ArrayList<>();
+    private final List<QuestionResponse> questions = new ArrayList<>();
 
     private final LocalDateTime createdAt;
 
