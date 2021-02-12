@@ -16,30 +16,26 @@ export const Ask: React.FC = () => {
 
   return (
     <>
-      <div>
-        <Helmet>
-          <title>고구마 등록하기 - go!guma</title>
-        </Helmet>
-        <ContentHeader isPrev={false} isNext={true} title={"등록하기"} />
-        {showDescription ? (
-          <StickyDescription>
-            <span>바로 작성하지 않아도 좋아요. 언제든지 돌아올 수 있어요 :)</span>
-            <img
-              onClick={onClickRemove}
-              src={icon_delete}
-              style={{ width: "15px", verticalAlign: "middle", float: "right" }}
-            />
-          </StickyDescription>
-        ) : null}
-      </div>
+      <Helmet>
+        <title>고구마 등록하기 - go!guma</title>
+      </Helmet>
+      <ContentHeader isPrev={false} isNext={true} title={"등록하기"} />
+      {showDescription ? (
+        <StickyDescription>
+          <span>바로 작성하지 않아도 좋아요. 언제든지 돌아올 수 있어요 :)</span>
+          <img
+            onClick={onClickRemove}
+            src={icon_delete}
+            style={{ width: "15px", verticalAlign: "middle", justifyContent: "flex-end" }}
+          />
+        </StickyDescription>
+      ) : null}
     </>
   );
 };
 
 const StickyDescription = styled.div`
   position: fixed;
-  left: 15px;
-  right: 15px;
   bottom: 10px;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
