@@ -23,7 +23,7 @@ const TitleContainer = styled.div`
   font-family: Poppins;
 `;
 
-const SigninContainer = styled.div`
+const SearchContainer = styled.div`
   width: 33%;
   text-align: right;
 `;
@@ -46,11 +46,11 @@ export const Header: React.FC = () => {
           </div>
         </Link>
       </TitleContainer>
-      <SigninContainer>
+      <SearchContainer>
         <a href={`/search`}>
           <img src={search} />
         </a>
-      </SigninContainer>
+      </SearchContainer>
       {toggleSidebar && (
         <>
           <Sidebar onClick={sidebarOnClick} />
