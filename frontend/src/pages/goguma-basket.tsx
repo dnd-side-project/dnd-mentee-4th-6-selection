@@ -13,6 +13,7 @@ import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
 import dot from "../styles/img/icon_emotion_empty_dot.svg";
 import messageIcon from "../styles/img/message_icon.png";
 import icon_delete from "../styles/img/icon_delete.svg";
+import { ContentHeader } from "../components/content-header";
 
 const FAKE_GOGUMA_DATA = [
   {
@@ -119,6 +120,7 @@ export const GogumaBasket = () => {
       <Helmet>
         <title>고구마 바구니 - GO!GUMA</title>
       </Helmet>
+      <ContentHeader isPrev={false} isNext={false} title={"고구마 바구니"} />
       <ImageContainer>
         <img src={basket} />
       </ImageContainer>

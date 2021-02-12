@@ -11,6 +11,9 @@ import goguma from "../styles/img/icon_emotion_goguma.svg";
 import surprised from "../styles/img/icon_emotion_surprised.svg";
 import relax from "../styles/img/icon_emotion_relax.svg";
 import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
+import { ContentHeader } from "../components/content-header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisH, faShareAlt } from "@fortawesome/free-solid-svg-icons";
 
 const FAKE_GOGUMA_DATA = [
   {
@@ -79,7 +82,7 @@ export const Goguma: React.FC = () => {
   };
   const handleScroll = () => {
     const { scrollY } = window;
-    const show = scrollY < 80;
+    const show = scrollY < 100;
     setShowheader(show);
     setPageY(pageYOffset);
   };
@@ -96,6 +99,12 @@ export const Goguma: React.FC = () => {
       <Helmet>
         <title>{`${data?.title.slice(0, 5)}...` || "not found"} - GO!GUMA</title>
       </Helmet>
+      <ContentHeader isPrev={true} isNext={false} title={"갓 구운 고구마"}>
+        <>
+          <FontAwesomeIcon icon={faShareAlt} style={{ marginRight: 15 }} />
+          <FontAwesomeIcon icon={faEllipsisH} style={{ marginRight: 5 }} />
+        </>
+      </ContentHeader>
       {data && (
         <>
           <ScrollTitle className={`${showheader ? "" : "show"}`}>{data.title}</ScrollTitle>
@@ -213,6 +222,7 @@ const ScrollTitle = styled.div`
 const GogumaContainer = styled.div`
   box-sizing: border-box;
   padding: 0px 18px;
+  margin-top: 20px;
 `;
 
 const TagBoxes = styled.div`
@@ -248,7 +258,7 @@ const TitleBox = styled.div`
   color: #8c5cdd;
   padding-bottom: 11px;
   border-bottom: 2px solid #8c5cdd;
-  margin-bottom: 42px;
+  margin-bottom: 20px;
   word-break: keep-all;
 `;
 
