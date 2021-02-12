@@ -7,6 +7,7 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import EditIcon from "@material-ui/icons/Edit";
 import fireguma from "../styles/img/icon_fireguma_purple.svg";
+import { Header } from "../components/main-header";
 
 const FAKE_RECENT_GOGUMA_DATA = [
   { id: 1, title: "제 얘기좀 듣고 가세요;;" },
@@ -117,6 +118,7 @@ export const Home: React.FC = () => {
       <Helmet>
         <title>go!guma</title>
       </Helmet>
+      <Header />
       <HomeContainer>
         <CardContainer>
           <AskButtonContainer>

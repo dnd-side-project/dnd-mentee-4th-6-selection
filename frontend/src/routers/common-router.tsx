@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Header } from "../components/header";
 import { NotFound } from "../pages/404";
 import { Goguma } from "../pages/goguma";
 import { Home } from "../pages/home";
@@ -13,7 +12,6 @@ import { Search } from "../pages/search";
 export const CommonRouter: React.FC = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Switch>
         <Route exact path="/">
           <Home />
