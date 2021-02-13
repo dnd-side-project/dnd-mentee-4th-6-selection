@@ -6,7 +6,7 @@ interface IParams {
   error: string;
 }
 
-export const OAuth2Redirect = () => {
+export const OAuth2Redirect: React.FC = () => {
   const { token, error } = useParams<IParams>();
   if (token) {
     localStorage.setItem("accessToken", token);

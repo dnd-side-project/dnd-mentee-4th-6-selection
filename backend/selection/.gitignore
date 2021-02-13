@@ -36,6 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### real server application.yaml ###
+/src/main/resources/application-real.*
+
 ### security ###
 /src/main/resources/application-oauth.*
 /src/test/resources/application-oauth.*

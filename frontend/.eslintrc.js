@@ -6,8 +6,7 @@ module.exports = {
     // eslint의 typescript 포매팅 기능을 제거(eslint-config-prettier)
     "prettier/@typescript-eslint",
     // eslint의 포매팅 기능을 prettier로 사용함. 항상 마지막에 세팅 되어야 함.
-    "plugin:prettier/recommended",
-    eslint - plugin - prettier,
+    "plugin:prettier/recommended", // eslint - plugin - prettier,
   ],
   parserOptions: {
     ecmaVersion: 2018, // 최신 문법 지원
@@ -18,7 +17,14 @@ module.exports = {
   },
   rules: {
     // extends에서 적용한 룰셋을 덮어씌울 수 있습니다.
-    // "@typescript-eslint/explicit-function-return-type": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: 'auto',
+      }
+    ]
   },
   settings: {
     react: {

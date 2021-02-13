@@ -1,16 +1,17 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Header } from "../components/header";
 import { NotFound } from "../pages/404";
 import { Goguma } from "../pages/goguma";
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
+import { Ask } from "../pages/ask";
 import { OAuth2Redirect } from "../pages/oauth2-redirect";
+import { GogumaBasket } from "../pages/goguma-basket";
+import { Search } from "../pages/search";
 
-export const CommonRouter = () => {
+export const CommonRouter: React.FC = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Switch>
         <Route exact path="/">
           <Home />
@@ -23,6 +24,15 @@ export const CommonRouter = () => {
         </Route>
         <Route exact path="/goguma/:id">
           <Goguma />
+        </Route>
+        <Route exact path="/ask">
+          <Ask />
+        </Route>
+        <Route exact path="/goguma/basket/:id">
+          <GogumaBasket />
+        </Route>
+        <Route exact path="/search">
+          <Search />
         </Route>
         <Route>
           <NotFound />
