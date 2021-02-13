@@ -4,4 +4,6 @@ spring:
     include: oauth
 ---
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev

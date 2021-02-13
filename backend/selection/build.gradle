@@ -29,7 +29,7 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'com.fasterxml.jackson.core:jackson-core2.12.1'
+    testImplementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
 }
 
 test {
