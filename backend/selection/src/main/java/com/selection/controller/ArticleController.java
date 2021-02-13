@@ -1,7 +1,8 @@
 package com.selection.controller;
 
+import com.selection.dto.article.ArticleLatestResponse;
+import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.dto.article.ArticleSaveRequest;
 import com.selection.service.article.ArticleService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,31 +24,36 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<ArticleResponse> createArticle(
-        @RequestBody ArticleSaveRequest requestDto) {
-        ArticleResponse article = articleService.create(requestDto);
-        return ResponseEntity.ok(article);
+    public ResponseEntity<Long> createArticle(@RequestBody ArticleRequest requestDto) {
+        Long articleId = articleService.create(requestDto);
+        return ResponseEntity.ok(articleId);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Long id,
+        @RequestBody ArticleRequest requestDto) {
+        ArticleResponse article = articleService.modify(id, requestDto);
+        return ResponseEntity.ok(article);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> getArticle(@PathVariable Long id) {
-        ArticleResponse article = articleService.getArticle(id);
+    public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long id) {
+        ArticleResponse article = articleService.lookUp(id);
         return ResponseEntity.ok(article);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ArticleResponse> deleteArticle(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<Long> deleteArticle(@PathVariable Long id) {
+        Long articleId = articleService.delete(id);
+        return ResponseEntity.ok(articleId);
     }
 
     @GetMapping("/latest")
-    public ResponseEntity<List<ArticleResponse>> getLatestArticles() {
-        return null;
+    public ResponseEntity<List<ArticleLatestResponse>> getLatestArticles() {
+        final Long NUM_OF_LATEST_ARTICLES = 10L;
+        List<ArticleLatestResponse> latestArticles = articleService
+            .lookUpLatest(NUM_OF_LATEST_ARTICLES);
+        return ResponseEntity.ok(latestArticles);
     }
 
     @GetMapping("/favorite")

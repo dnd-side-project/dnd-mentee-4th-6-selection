@@ -3,7 +3,11 @@ package com.selection.domain.article;
 import com.selection.domain.BaseEntity;
 import com.selection.domain.question.Questions;
 import com.selection.domain.tag.Tags;
+import com.selection.dto.question.QuestionRequest;
+import com.selection.dto.tag.TagRequest;
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -33,16 +37,19 @@ public class Article extends BaseEntity {
     @Column(nullable = false)
     private Long numOfShares = 0L;
 
+    @Embedded
     @Column(nullable = false)
-    private Questions questions = new Questions();
+    private final Questions questions = new Questions();
 
+    @Embedded
     @Column(nullable = false)
-    private Tags tags = new Tags();
+    private final Tags tags = new Tags();
 
     @Builder
-    public Article(String title, String content, String author) {
+    public Article(String title, String content, String backgroundColor, String author) {
         this.title = title;
         this.content = content;
+        this.backgroundColor = backgroundColor;
         this.author = author;
     }
 
@@ -50,8 +57,23 @@ public class Article extends BaseEntity {
         this.numOfShares++;
     }
 
-    public void changeBackgroundColor(String backgroundColor) {
+    public void modifyTitle(String title) {
+        this.title = title;
+    }
+
+    public void modifyContent(String content) {
+        this.content = content;
+    }
+
+    public void modifyBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
+    public void modifyQuestions(List<QuestionRequest> requestQuestions) {
+        questions.modify(this, requestQuestions);
+    }
+
+    public void modifyTags(List<TagRequest> requestTags) {
+        tags.modify(this, requestTags);
+    }
 }

@@ -4,9 +4,7 @@ import com.selection.domain.BaseEntity;
 import com.selection.domain.article.Article;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -22,15 +20,19 @@ import lombok.NoArgsConstructor;
 public class Question extends BaseEntity {
 
     @Column(nullable = false, length = 100)
-    private String description;
+    private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Article article;
 
     @Builder
-    public Question(String description, Article article) {
-        this.description = description;
+    public Question(String content, Article article) {
+        this.content = content;
         this.article = article;
+    }
+
+    void modifyContent(String content) {
+        this.content = content;
     }
 }

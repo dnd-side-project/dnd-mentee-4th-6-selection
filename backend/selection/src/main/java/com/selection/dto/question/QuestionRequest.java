@@ -1,26 +1,28 @@
 package com.selection.dto.question;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.selection.domain.article.Article;
 import com.selection.domain.question.Question;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 
 
 @NoArgsConstructor
 @Getter
-public class QuestionSaveRequest {
+public class QuestionRequest {
 
-    private String description;
+    private Long id;
+    private String content = Strings.EMPTY;
 
-    @JsonCreator
-    public QuestionSaveRequest(String description) {
-        this.description = description;
+    @Builder
+    public QuestionRequest(String content) {
+        this.content = content;
     }
 
     public Question toEntity(Article article) {
         return Question.builder()
-            .description(description)
+            .content(content)
             .article(article)
             .build();
     }

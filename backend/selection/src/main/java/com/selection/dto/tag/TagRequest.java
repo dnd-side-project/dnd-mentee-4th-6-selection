@@ -1,26 +1,27 @@
 package com.selection.dto.tag;
 
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.selection.domain.article.Article;
 import com.selection.domain.tag.Tag;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 
-@NoArgsConstructor
 @Getter
-public class TagSaveRequest {
+@NoArgsConstructor
+public class TagRequest {
 
-    private String name;
+    private Long id;
+    private String content = Strings.EMPTY;
 
-    @JsonCreator
-    public TagSaveRequest(String name) {
-        this.name = name;
+    @Builder
+    public TagRequest(String content) {
+        this.content = content;
     }
 
     public Tag toEntity(Article article) {
         return Tag.builder()
-            .name(name)
+            .content(content)
             .article(article)
             .build();
     }

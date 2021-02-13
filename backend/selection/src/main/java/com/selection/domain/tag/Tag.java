@@ -4,6 +4,7 @@ import com.selection.domain.BaseEntity;
 import com.selection.domain.article.Article;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,16 +20,19 @@ import lombok.NoArgsConstructor;
 public class Tag extends BaseEntity {
 
     @Column(nullable = false, length = 10)
-    private String name;
+    private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "ARTICLE_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
     private Article article;
 
     @Builder
-    public Tag(String name, Article article) {
-        this.name = name;
+    public Tag(String content, Article article) {
+        this.content = content;
         this.article = article;
     }
 
+    public void modifyContent(String content) {
+        this.content = content;
+    }
 }

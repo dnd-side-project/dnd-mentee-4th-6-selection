@@ -26,7 +26,7 @@ class TagTest {
         final String title = "게시글 1";
         final String content = "게시글 내용";
         final String author = "애플";
-        final String tagName = "테스트 태그";
+        final String tagContent = "테스트 태그";
 
         Article article = Article.builder()
             .title(title)
@@ -35,7 +35,7 @@ class TagTest {
             .build();
 
         Tag tag1 = Tag.builder()
-            .name(tagName)
+            .content(tagContent)
             .article(article)
             .build();
 
@@ -46,7 +46,7 @@ class TagTest {
         Tag loadTag = tagRepository.findAll().get(0);
 
         // then
-        assertThat(loadTag.getName()).isEqualTo(tagName);
+        assertThat(loadTag.getContent()).isEqualTo(tagContent);
         assertThat(loadTag.getArticle().getTitle()).isEqualTo(title);
     }
 
