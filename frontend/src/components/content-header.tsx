@@ -61,5 +61,6 @@ const RightContainer = styled.div`
   justify-content: flex-end;
   display: flex;
   align-items: center;
-  font-size: 17px;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
 `;
