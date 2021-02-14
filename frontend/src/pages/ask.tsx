@@ -4,13 +4,18 @@ import { ContentHeader } from "../components/content-header";
 import styled from "styled-components";
 import icon_delete from "../styles/img/icon_delete.svg";
 
-interface IStyleProps {
+interface IProps {
   showDescription?: boolean;
+  activePageIndex: number;
 }
 
 export const Ask: React.FC = () => {
-  const [showDescription, onShowDescription] = useState(true);
-  const onClickRemove = () => onShowDescription(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const onCurrentPageChange = (pageIndex: number) => {
+    setCurrentPage(pageIndex);
+  };
+  const [showDescription, setShowDescription] = useState(true);
+  const onClickRemove = () => setShowDescription(false);
   const [titleText, setTitleText] = useState("");
   const onTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 30) {
@@ -27,44 +32,66 @@ export const Ask: React.FC = () => {
       <ContentHeader isPrev={false} isNext={true} title={"등록하기"} />
       <AskContainer>
         <StepContainer>
-          <Step>
+          <Step className={currentPage >= 1 ? "active" : ""} onClick={() => onCurrentPageChange(1)}>
             <StepNumber>1</StepNumber>
             <StepTitle>제목</StepTitle>
           </Step>
-          <Step>
+          <Step className={currentPage >= 2 ? "active" : ""} onClick={() => onCurrentPageChange(2)}>
             <StepNumber>2</StepNumber>
             <StepTitle>내용</StepTitle>
           </Step>
-          <Step>
+          <Step className={currentPage >= 3 ? "active" : ""} onClick={() => onCurrentPageChange(3)}>
             <StepNumber>3</StepNumber>
             <StepTitle>선택지</StepTitle>
           </Step>
-          <Step>
+          <Step className={currentPage >= 4 ? "active" : ""} onClick={() => onCurrentPageChange(4)}>
             <StepNumber>4</StepNumber>
             <StepTitle>태그</StepTitle>
           </Step>
         </StepContainer>
-        <TitleContainer>
+        <PageContainer className={currentPage == 1 ? "current" : ""}>
           <Question>고민의 제목은 어떻게 할까요?</Question>
-          <ShortInput onChange={onTitleInputChange} placeholder="제목을 입력해주세요" />
+          <ShortInput
+            onChange={onTitleInputChange}
+            placeholder="제목을 입력해주세요"
+            className={"title"}
+          />
           <TextCounter>({titleText.length}/30자)</TextCounter>
-        </TitleContainer>
+        </PageContainer>
+        <PageContainer className={currentPage == 2 ? "current" : ""}>
+          <Question>고구마에 당신의 고민을 들려주세요.</Question>
+          <ShortInput onChange={onTitleInputChange} />
+        </PageContainer>
+        <PageContainer className={currentPage == 3 ? "current" : ""}>
+          <Question>선택지의 질문을 입력해주세요.</Question>
+          <ShortInput onChange={onTitleInputChange} placeholder="선택지 질문 입력" />
+          <TextCounter>({titleText.length}/30자)</TextCounter>
+          <ChoiceBoxes>
+            {["선택지1", "선택지2"].map(choice => (
+              <ChoiceBox key={choice}>{choice}</ChoiceBox>
+            ))}
+          </ChoiceBoxes>
+        </PageContainer>
+        <PageContainer className={currentPage == 4 ? "current" : ""}>
+          <Question>작성한 글에 어울리는 태그를 붙혀주세요.</Question>
+          <ShortInput onChange={onTitleInputChange} className={"tag"} />
+        </PageContainer>
       </AskContainer>
       {showDescription ? (
-        <StickyDescription>
+        <ComebackDescription>
           <span>바로 작성하지 않아도 좋아요. 언제든지 돌아올 수 있어요 :)</span>
           <img
             onClick={onClickRemove}
             src={icon_delete}
             style={{ width: "15px", verticalAlign: "middle", justifyContent: "flex-end" }}
           />
-        </StickyDescription>
+        </ComebackDescription>
       ) : null}
     </>
   );
 };
 
-const StickyDescription = styled.div`
+const ComebackDescription = styled.div`
   position: fixed;
   bottom: 10px;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
@@ -82,7 +109,12 @@ const StepContainer = styled.div`
   text-align: center;
 `;
 
-const Step = styled.div`
+const Step = styled.div.attrs(props => ({ className: props.className }))`
+  &.active {
+    border-bottom: 2px solid #8c5cdd;
+    color: #8c5cdd;
+  }
+
   padding: 10px 0;
   border-bottom: 2px solid #d5d5d5;
   display: inline-block;
@@ -97,7 +129,13 @@ const StepTitle = styled.div`
   font-size: 12px;
 `;
 
-const TitleContainer = styled.div``;
+const PageContainer = styled.div`
+  &.current {
+    display: block;
+  }
+
+  display: none;
+`;
 
 const Question = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
@@ -106,7 +144,13 @@ const Question = styled.div`
 `;
 
 const ShortInput = styled.input`
-  font-family: MaruBuri-Regular;
+  &.title {
+    font-family: MaruBuri-Regular;
+  }
+  &:placeholder {
+    color: "#989898";
+  }
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
   border-bottom: 2px solid #e4e4e4;
   border-top-style: hidden;
@@ -121,4 +165,41 @@ const TextCounter = styled.div`
   font-size: 10px;
   color: #989898;
   float: right;
+`;
+
+const ChoiceBoxes = styled.div`
+  &.active {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border: 1px solid #8c5cdd;
+  }
+
+  height: 67px;
+  display: flex;
+  place-items: center;
+  border-radius: 12px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  border: 1px solid #989898;
+  overflow: hidden;
+  margin-top: 55px;
+  div:not(:last-child) {
+    border-right: 1px solid #989898;
+  }
+`;
+
+const ChoiceBox = styled.div`
+  &.active {
+    color: #8c5cdd;
+  }
+
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #989898;
+  width: 100%;
+  height: 100%;
+  padding: 0 15px;
+  word-break: keep-all;
+  text-align: center;
 `;
