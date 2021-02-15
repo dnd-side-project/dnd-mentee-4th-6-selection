@@ -8,6 +8,7 @@ import { Ask } from "../pages/ask";
 import { OAuth2Redirect } from "../pages/oauth2-redirect";
 import { GogumaBasket } from "../pages/goguma-basket";
 import { Search } from "../pages/search";
+import { Notification } from "../pages/notifications";
 
 export const CommonRouter: React.FC = () => {
   return (
@@ -33,6 +34,9 @@ export const CommonRouter: React.FC = () => {
         </Route>
         <Route exact path="/search">
           <Search />
+        </Route>
+        <Route exact path="/notification">
+          <Notification />
         </Route>
         <Route>
           <NotFound />
