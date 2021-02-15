@@ -161,6 +161,12 @@ const OutBtn = styled.div`
   margin: 65px 20px;
 `;
 
+const BellLink = styled.a`
+  color: black;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+`;
+
 export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
   const [isUser, setIsUser] = useState(false);
   const [isActive, setIsActive] = useState(true);
@@ -184,7 +190,9 @@ export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
                   </ImgBox>
                   <UserName>김구마님</UserName>
                   <BellIcon>
-                    <FontAwesomeIcon icon={faBell} />
+                    <BellLink href={`/notification`}>
+                      <FontAwesomeIcon icon={faBell} />
+                    </BellLink>
                   </BellIcon>
                 </>
               ) : (
