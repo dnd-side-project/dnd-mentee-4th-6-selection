@@ -60,7 +60,7 @@ export const Ask: React.FC = () => {
         </PageContainer>
         <PageContainer className={currentPage == 2 ? "current" : ""}>
           <Question>고구마에 당신의 고민을 들려주세요.</Question>
-          <ShortInput onChange={onTitleInputChange} />
+          <ContentTextArea />
         </PageContainer>
         <PageContainer className={currentPage == 3 ? "current" : ""}>
           <Question>선택지의 질문을 입력해주세요.</Question>
@@ -158,6 +158,22 @@ const ShortInput = styled.input`
   border-left-style: hidden;
   outline: none;
   width: 100%;
+`;
+
+const ContentTextArea = styled.textarea`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  line-height: 40px;
+  resize: none;
+  background-attachment: local;
+  background-image: linear-gradient(to right, #ffffff, #ffffff 0px, transparent 0px),
+    linear-gradient(to left, #ffffff, #ffffff 0px, transparent 0px),
+    repeating-linear-gradient(#ffffff, #ffffff 38px, #e4e4e4 38px, #e4e4e4 40px);
+  min-height: 50vh;
+  margin-top: -15px;
 `;
 
 const TextCounter = styled.div`
