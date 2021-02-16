@@ -97,7 +97,7 @@ export const Search = () => {
             <ResultCard key={goguma.id}>
               <ResultTitle>{goguma.title}</ResultTitle>
               <ResultContent>
-                {goguma.content.length >= 70 ? `${goguma.content}...` : goguma.content}
+                {goguma.content.length >= 60 ? `${goguma.content.slice(0, 60)}...` : goguma.content}
               </ResultContent>
               <ResultContent>by {goguma.user}</ResultContent>
             </ResultCard>
@@ -113,7 +113,7 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  padding-top: 50px;
   margin-bottom: 30px;
 `;
 
