@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
+import { Fab } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import icon_delete from "../styles/img/icon_delete.svg";
 
 interface IProps {
-  showDescription?: boolean;
+  showComeBackDescription?: boolean;
   activePageIndex: number;
 }
 
@@ -14,8 +17,8 @@ export const Ask: React.FC = () => {
   const onCurrentPageChange = (pageIndex: number) => {
     setCurrentPage(pageIndex);
   };
-  const [showDescription, setShowDescription] = useState(true);
-  const onClickRemove = () => setShowDescription(false);
+  const [showComeBackDescription, setShowComeBackDescription] = useState(true);
+  const onClickRemove = () => setShowComeBackDescription(false);
   const [titleText, setTitleText] = useState("");
   const onTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 30) {
@@ -71,13 +74,20 @@ export const Ask: React.FC = () => {
               <ChoiceBox key={choice}>{choice}</ChoiceBox>
             ))}
           </ChoiceBoxes>
+          <AddChoiceBoxContainer>
+            <FontAwesomeIcon
+              icon={faPlus}
+              style={{ color: "#989898", verticalAlign: "middle", width: "9px", padding: "11px" }}
+            />
+            <AddChoiceBoxText>선택지 추가하기</AddChoiceBoxText>
+          </AddChoiceBoxContainer>
         </PageContainer>
         <PageContainer className={currentPage == 4 ? "current" : ""}>
           <Question>작성한 글에 어울리는 태그를 붙혀주세요.</Question>
           <ShortInput onChange={onTitleInputChange} className={"tag"} />
         </PageContainer>
       </AskContainer>
-      {showDescription ? (
+      {showComeBackDescription ? (
         <ComebackDescription>
           <span>바로 작성하지 않아도 좋아요. 언제든지 돌아올 수 있어요 :)</span>
           <img
@@ -218,4 +228,18 @@ const ChoiceBox = styled.div`
   padding: 0 15px;
   word-break: keep-all;
   text-align: center;
+`;
+
+const AddChoiceBoxContainer = styled.div`
+  color: #989898;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 27px;
+`;
+
+const AddChoiceBoxText = styled.div`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  vertical-align: middle;
 `;
