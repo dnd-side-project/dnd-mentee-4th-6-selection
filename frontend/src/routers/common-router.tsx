@@ -5,11 +5,11 @@ import { Goguma } from "../pages/goguma";
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
 import { Ask } from "../pages/ask";
-import { OAuth2Redirect } from "../pages/oauth2-redirect";
 import { GogumaBasket } from "../pages/goguma-basket";
 import { Search } from "../pages/search";
 import { Notification } from "../pages/notifications";
 import { GogumaListResent } from "../pages/goguma-list-resent";
+import OAuth2Redirect from "../pages/oauth2-redirect";
 
 export const CommonRouter: React.FC = () => {
   return (

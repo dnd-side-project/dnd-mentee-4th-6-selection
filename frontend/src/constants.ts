@@ -1,3 +1,6 @@
+export const BACKEND_URL = "http://ec2-15-165-52-165.ap-northeast-2.compute.amazonaws.com:8081";
+export const FRONTEND_URL = "http://localhost:3000";
+
 export const FAKE_GOGUMA_DATA = {
   goguma: [
     {
