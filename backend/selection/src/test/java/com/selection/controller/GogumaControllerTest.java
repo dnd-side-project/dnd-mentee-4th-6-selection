@@ -10,14 +10,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.selection.domain.article.Article;
+import com.selection.domain.article.Goguma;
+import com.selection.domain.article.GogumaType;
 import com.selection.dto.article.ArticleRequest;
-import com.selection.dto.article.ArticleResponse;
+import com.selection.dto.goguma.GogumaRequest;
+import com.selection.dto.goguma.GogumaResponse;
 import com.selection.dto.question.ChoiceRequest;
 import com.selection.repository.ArticleRepository;
-import java.util.ArrayList;
+import com.selection.repository.GogumaRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,8 +42,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @TestMethodOrder(OrderAnnotation.class)
 @AutoConfigureMockMvc
 @SpringBootTest
-@DisplayName("게시글 API 테스트")
-class ArticleControllerTest {
+@DisplayName("고구마 API 테스트")
+class GogumaControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
@@ -47,10 +51,14 @@ class ArticleControllerTest {
     @Autowired
     private WebApplicationContext ctx;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private GogumaRepository gogumaRepository;
+
+
+    private MockMvc mockMvc;
 
     @BeforeEach
     @DisplayName("목업 준비")
@@ -86,93 +94,119 @@ class ArticleControllerTest {
         return articleRepository.save(request.toEntity(author));
     }
 
+    public GogumaRequest createGogumaRequest() {
+        final GogumaType type = GogumaType.HAPPY;
+        final String message = Strings.EMPTY;
+        return new GogumaRequest(type, message);
+    }
+
+    public Goguma setUpGoguma(Article article, GogumaRequest gogumaRequest) {
+        final String author = "애플";
+        return gogumaRepository.save(gogumaRequest.toEntity(author, article));
+    }
+
     @Test
     @Order(1)
-    @DisplayName("게시글 작성 API 테스트")
-    public void createArticle() throws Exception {
+    @DisplayName("고구마 등록 API 테스트")
+    public void createGoguma() throws Exception {
         // given
-        ArticleRequest requestArticle = createArticleRequest();
+        Article article = setUpArticle(createArticleRequest());
+        GogumaRequest gogumaRequest = createGogumaRequest();
+        final String postUri = String.format("/articles/%s/gogumas", article.getId());
 
         // when
-        MvcResult result = mockMvc.perform(post("/articles")
+        MvcResult result = mockMvc.perform(post(postUri)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(requestArticle)))
+            .content(objectMapper.writeValueAsString(gogumaRequest))
+        )
             .andExpect(status().isOk())
             .andReturn();
 
         // then
-        Long articleId = Long.valueOf(result.getResponse().getContentAsString());
-        Optional<Article> article = articleRepository.findById(articleId);
-        assertThat(article.isPresent()).isTrue();
-        assertThat(article.get().getTitle()).isEqualTo(requestArticle.getTitle());
-        assertThat(article.get().getContent()).isEqualTo(requestArticle.getContent());
+        Long gogumaId = Long.valueOf(result.getResponse().getContentAsString());
+        Optional<Goguma> goguma = gogumaRepository.findById(gogumaId);
+
+        assertThat(goguma.isPresent()).isTrue();
+        assertThat(goguma.get().getType()).isEqualTo(gogumaRequest.getType());
+        assertThat(goguma.get().getMessage()).isEqualTo(gogumaRequest.getMessage());
     }
 
     @Test
     @Order(2)
-    @DisplayName("게시글 수정 API 테스트")
-    public void modifyArticle() throws Exception {
+    @DisplayName("고구마 수정 API 테스트")
+    public void modifyGoguma() throws Exception {
         // given
-        final String title = "제목 2";
-        final String content = "내용 2";
-
-        ArticleRequest modifyArticle = new ArticleRequest(title, content,
-            new ArrayList<>());
+        final GogumaType type = GogumaType.ANGRY;
+        final String message = "메세지";
+        GogumaRequest modifyGoguma = new GogumaRequest(type, message);
 
         Article article = setUpArticle(createArticleRequest());
+        Goguma goguma = setUpGoguma(article, createGogumaRequest());
+        article.addGoguma(goguma);
+
+        final String putUri = String.format("/articles/%s/gogumas/%s", article.getId(), goguma.getId());
 
         // when
-        mockMvc.perform(
-            put("/articles/" + article.getId())
+        mockMvc.perform(put(putUri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(modifyArticle))
+                .content(objectMapper.writeValueAsString(modifyGoguma))
         )
             .andExpect(status().isOk());
 
         // then
-        Optional<Article> result = articleRepository.findById(article.getId());
+        Optional<Goguma> result = gogumaRepository.findById(goguma.getId());
         assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getTitle()).isEqualTo(title);
-        assertThat(result.get().getContent()).isEqualTo(content);
+        assertThat(result.get().getType()).isEqualTo(type);
+        assertThat(result.get().getMessage()).isEqualTo(message);
     }
 
     @Test
     @Order(3)
-    @DisplayName("게시글 조회 API 테스트")
-    public void lookUpArticle() throws Exception {
+    @DisplayName("고구마 조회 API 테스트")
+    public void lookUpGoguma() throws Exception {
         // given
         Article article = setUpArticle(createArticleRequest());
+        Goguma goguma = setUpGoguma(article, createGogumaRequest());
+        article.addGoguma(goguma);
+
+        final String getUri = String.format("/articles/%s/gogumas/%s", article.getId(), goguma.getId());
 
         // when
         MvcResult result = mockMvc.perform(
-            get("/articles/" + article.getId())
+            get(getUri)
         )
             .andExpect(status().isOk())
             .andReturn();
 
-        ArticleResponse articleResponse = objectMapper
-            .readerFor(ArticleResponse.class).readValue(result.getResponse().getContentAsString());
+        GogumaResponse gogumaResponse = objectMapper
+            .readerFor(GogumaResponse.class).readValue(result.getResponse().getContentAsString());
 
         // then
-        assertThat(articleResponse.getTitle()).isEqualTo(article.getTitle());
-        assertThat(articleResponse.getContent()).isEqualTo(article.getContent());
+        assertThat(gogumaResponse.getType()).isEqualTo(goguma.getType());
+        assertThat(gogumaResponse.getMessage()).isEqualTo(goguma.getMessage());
+        assertThat(gogumaResponse.getAuthor()).isEqualTo(goguma.getAuthor());
     }
 
     @Test
     @Order(4)
-    @DisplayName("게시글 삭제 API 테스트")
-    public void deleteArticle() throws Exception {
+    @DisplayName("고구마 삭제 API 테스트")
+    public void deleteGoguma() throws Exception {
         // given
         Article article = setUpArticle(createArticleRequest());
+        Goguma goguma = setUpGoguma(article, createGogumaRequest());
+        article.addGoguma(goguma);
+
+        final String deleteUri = String.format("/articles/%s/gogumas/%s", article.getId(), goguma.getId());
 
         // when
-        mockMvc.perform(delete("/articles/" + article.getId()))
+        mockMvc.perform(delete(deleteUri)
+        )
             .andExpect(status().isOk());
 
         // then
-        Optional<Article> result = articleRepository.findById(article.getId());
+        Optional<Goguma> result = gogumaRepository.findById(goguma.getId());
         assertThat(result.isPresent()).isFalse();
     }
 
