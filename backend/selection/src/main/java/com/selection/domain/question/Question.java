@@ -2,6 +2,7 @@ package com.selection.domain.question;
 
 import com.selection.domain.BaseEntity;
 import com.selection.domain.article.Article;
+import io.jsonwebtoken.lang.Assert;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +29,9 @@ public class Question extends BaseEntity {
 
     @Builder
     public Question(String content, Article article) {
+        Assert.hasText(content, "content must not be empty");
+        Assert.notNull(article, "article must not be null");
+
         this.content = content;
         this.article = article;
     }
