@@ -5,7 +5,9 @@ import com.selection.domain.question.Questions;
 import com.selection.domain.tag.Tags;
 import com.selection.dto.question.QuestionRequest;
 import com.selection.dto.tag.TagRequest;
+import io.jsonwebtoken.lang.Assert;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -32,7 +34,7 @@ public class Article extends BaseEntity {
     private String author;
 
     @Column(nullable = false)
-    private String backgroundColor = "#FFFFFF";
+    private String backgroundColor;
 
     @Column(nullable = false)
     private Long numOfShares = 0L;
@@ -47,6 +49,13 @@ public class Article extends BaseEntity {
 
     @Builder
     public Article(String title, String content, String backgroundColor, String author) {
+        Assert.hasText(title, "title must not be empty");
+        Assert.hasText(content, "content must not be empty");
+        Assert.hasText(author, "author must not be empty");
+
+        if (Objects.isNull(backgroundColor)) {
+            backgroundColor = "#FFFFFF";
+        }
         this.title = title;
         this.content = content;
         this.backgroundColor = backgroundColor;

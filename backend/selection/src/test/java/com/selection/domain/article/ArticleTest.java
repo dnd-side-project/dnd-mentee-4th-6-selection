@@ -1,29 +1,52 @@
 package com.selection.domain.article;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.selection.repository.ArticleRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-
-@SpringBootTest
 class ArticleTest {
 
-    @Autowired
-    private ArticleRepository articleRepository;
-
     @Test
-    @DisplayName("게시글 생성 테스트")
+    @DisplayName("게시글 생성")
     public void createArticle() {
-        // given
         final String title = "게시글 1";
         final String content = "게시글 내용";
         final String author = "애플";
-        final String defaultBackgroundColor = "#FFFFFF";
+        final String backgroundColor = "#ff3399";
+
+        Article article = Article.builder()
+            .title(title)
+            .content(content)
+            .author(author)
+            .backgroundColor(backgroundColor)
+            .build();
+
+        assertThat(article.getTitle()).isEqualTo(title);
+        assertThat(article.getContent()).isEqualTo(content);
+        assertThat(article.getAuthor()).isEqualTo(author);
+        assertThat(article.getBackgroundColor()).isEqualTo(backgroundColor);
+    }
+
+    @Test
+    @DisplayName("게시글 생성 - 필수파라미터")
+    public void createArticle_IfRequiredParamIsOmitted_ThrowException() {
+        final String title = "게시글 1";
+        final String content = "게시글 내용";
+
+        assertThatThrownBy(() -> Article.builder()
+            .title(title)
+            .content(content)
+            .build()).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("게시글 생성")
+    public void createArticle_IfColorIsOmitted_UsingDefultValue() {
+        final String title = "게시글 1";
+        final String content = "게시글 내용";
+        final String author = "애플";
 
         Article article = Article.builder()
             .title(title)
@@ -31,20 +54,9 @@ class ArticleTest {
             .author(author)
             .build();
 
-        articleRepository.save(article);
-
-        // when
-        Article latestArticle = articleRepository.findAll().get(0);
-
-        // then
-        assertThat(latestArticle.getTitle()).isEqualTo(title);
-        assertThat(latestArticle.getContent()).isEqualTo(content);
-        assertThat(latestArticle.getBackgroundColor()).isEqualTo(defaultBackgroundColor);
-        assertThat(latestArticle.getAuthor()).isEqualTo(author);
-    }
-
-    @AfterEach
-    public void cleanUp() {
-        articleRepository.deleteAll();
+        assertThat(article.getTitle()).isEqualTo(title);
+        assertThat(article.getContent()).isEqualTo(content);
+        assertThat(article.getAuthor()).isEqualTo(author);
+        assertThat(article.getBackgroundColor()).isEqualTo("#FFFFFF");
     }
 }
