@@ -1,16 +1,15 @@
 package com.selection.dto.question;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.selection.domain.question.Question;
+import com.selection.domain.article.Choice;
 import lombok.Getter;
 
 @Getter
-public class QuestionResponse {
+public class ChoiceResponse {
 
     private final Long id;
     private final String content;
 
-    public QuestionResponse(Question question) {
+    public ChoiceResponse(Choice question) {
         this.id = question.getId();
         this.content = question.getContent();
     }

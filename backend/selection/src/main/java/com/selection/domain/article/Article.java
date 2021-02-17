@@ -1,20 +1,16 @@
 package com.selection.domain.article;
 
 import com.selection.domain.BaseEntity;
-import com.selection.domain.question.Questions;
-import com.selection.domain.tag.Tags;
-import com.selection.dto.question.QuestionRequest;
-import com.selection.dto.tag.TagRequest;
-import io.jsonwebtoken.lang.Assert;
+import com.selection.dto.goguma.GogumaRequest;
+import com.selection.dto.question.ChoiceRequest;
+import com.selection.dto.question.ChoiceResponse;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,36 +30,20 @@ public class Article extends BaseEntity {
     private String author;
 
     @Column(nullable = false)
-    private String backgroundColor;
-
-    @Column(nullable = false)
-    private Long numOfShares = 0L;
+    private Long numOfShared = 0L;
 
     @Embedded
     @Column(nullable = false)
-    private final Questions questions = new Questions();
+    private final Choices choices = new Choices();
 
     @Embedded
     @Column(nullable = false)
-    private final Tags tags = new Tags();
+    private final Gogumas gogumas = new Gogumas();
 
-    @Builder
-    public Article(String title, String content, String backgroundColor, String author) {
-        Assert.hasText(title, "title must not be empty");
-        Assert.hasText(content, "content must not be empty");
-        Assert.hasText(author, "author must not be empty");
-
-        if (Objects.isNull(backgroundColor)) {
-            backgroundColor = "#FFFFFF";
-        }
+    public Article(String title, String content, String author) {
         this.title = title;
         this.content = content;
-        this.backgroundColor = backgroundColor;
         this.author = author;
-    }
-
-    public void share() {
-        this.numOfShares++;
     }
 
     public void modifyTitle(String title) {
@@ -74,15 +54,32 @@ public class Article extends BaseEntity {
         this.content = content;
     }
 
-    public void modifyBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
+    public void share() {
+        this.numOfShared++;
     }
 
-    public void modifyQuestions(List<QuestionRequest> requestQuestions) {
-        questions.modify(this, requestQuestions);
+    public void addChoice(Choice question) {
+        choices.add(question);
     }
 
-    public void modifyTags(List<TagRequest> requestTags) {
-        tags.modify(this, requestTags);
+    public void addChoices(List<Choice> questions) {
+        this.choices.addAll(questions);
     }
+
+    public void addGoguma(Goguma goguma) {
+        gogumas.add(goguma);
+    }
+
+    public void modifyChoices(List<ChoiceRequest> choiceRequests) {
+        choices.modify(this, choiceRequests);
+    }
+
+    public void modifyGoguma(GogumaRequest goguma) {
+        gogumas.modify(this, goguma);
+    }
+
+    public List<ChoiceResponse> toChoicesResponse() {
+        return choices.toResponse();
+    }
+
 }
