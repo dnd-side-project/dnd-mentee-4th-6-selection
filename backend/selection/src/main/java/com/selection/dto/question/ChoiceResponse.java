@@ -2,12 +2,14 @@ package com.selection.dto.question;
 
 import com.selection.domain.article.Choice;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class ChoiceResponse {
 
-    private final Long id;
-    private final String content;
+    private Long id;
+    private String content;
 
     public ChoiceResponse(Choice question) {
         this.id = question.getId();

@@ -6,18 +6,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class ArticleResponse {
 
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final String author;
-    private final Long numOfShared;
+    private Long id;
+    private String title;
+    private String content;
+    private String author;
+    private Long numOfShared;
 
-    private final List<ChoiceResponse> choices = new ArrayList<>();
-    private final LocalDateTime createdAt;
+    private List<ChoiceResponse> choices = new ArrayList<>();
+    private LocalDateTime createdAt;
 
     public ArticleResponse(Article article) {
         this.id = article.getId();
