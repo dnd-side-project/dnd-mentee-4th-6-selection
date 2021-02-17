@@ -30,11 +30,11 @@ public class GogumaController {
     }
 
     @PutMapping("/{articleId}/gogumas/{gogumaId}")
-    public ResponseEntity<Long> modifyGoguma(@PathVariable Long articleId,
+    public ResponseEntity<?> modifyGoguma(@PathVariable Long articleId,
         @PathVariable Long gogumaId,
         @RequestBody @Valid GogumaRequest gogumaRequest) {
         gogumaService.modify(articleId, gogumaId, gogumaRequest);
-        return ResponseEntity.ok(gogumaId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{articleId}/gogumas/{gogumaId}")

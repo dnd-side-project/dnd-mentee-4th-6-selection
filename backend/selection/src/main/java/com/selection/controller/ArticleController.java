@@ -30,9 +30,9 @@ public class ArticleController {
     }
 
     @PutMapping("/{articleId}")
-    public ResponseEntity<Long> modifyArticle(@PathVariable Long articleId,
+    public ResponseEntity<?> modifyArticle(@PathVariable Long articleId,
         @RequestBody @Valid ArticleRequest requestDto) {
-        return ResponseEntity.ok(articleService.modify(articleId, requestDto));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{articleId}")
