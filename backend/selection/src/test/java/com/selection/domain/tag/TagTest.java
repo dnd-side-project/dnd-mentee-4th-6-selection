@@ -3,21 +3,10 @@ package com.selection.domain.tag;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.selection.domain.article.Article;
-import com.selection.repository.ArticleRepository;
-import com.selection.repository.TagRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class TagTest {
-
-    @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private TagRepository tagRepository;
 
     @Test
     @DisplayName("태그 등록 테스트")
@@ -39,20 +28,6 @@ class TagTest {
             .article(article)
             .build();
 
-        article.getTags().add(tag1);
-        articleRepository.save(article);
-
-        //when
-        Tag loadTag = tagRepository.findAll().get(0);
-
-        // then
-        assertThat(loadTag.getContent()).isEqualTo(tagContent);
-        assertThat(loadTag.getArticle().getTitle()).isEqualTo(title);
+        assertThat(tag1.getContent()).isEqualTo(tagContent);
     }
-
-    @AfterEach
-    public void cleanUp() {
-        articleRepository.deleteAll();
-    }
-
 }
