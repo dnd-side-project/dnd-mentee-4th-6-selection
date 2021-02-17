@@ -36,6 +36,7 @@ public class Goguma extends BaseEntity {
     public Goguma(String message, GogumaType type, Article article) {
         this.type = type;
         this.message = message;
+        this.article = article;
     }
 
     public void modifyMessage(String message) {

@@ -20,29 +20,28 @@ public class Gogumas {
         return gogumas.size();
     }
 
-    protected Optional<Goguma> get(Long gogumaId) {
+    protected Goguma findById(Long gogumaId) {
         return gogumas.stream()
             .filter(goguma -> goguma.getId().equals(gogumaId))
-            .findFirst();
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException(
+                String.format("해당 고구마(%s)는 존재하지 않습니다.", gogumaId)));
     }
 
     protected void add(Goguma goguma) {
         this.gogumas.add(goguma);
     }
 
-    protected void delete(Goguma goguma) {
-        gogumas.removeIf(originGoguma -> originGoguma.getId().equals(goguma.getId()));
+    protected void delete(Long gogumaId) {
+        boolean deleted = gogumas.removeIf(originGoguma -> originGoguma.getId().equals(gogumaId));
+        if (!deleted) {
+            throw new IllegalArgumentException(String.format("해당 고구마(%s)는 존재하지 않습니다.", gogumaId));
+        }
     }
 
-    protected void modify(Article article, GogumaRequest goguma) {
-        Optional<Goguma> findGoguma = get(goguma.getId());
-
-        if (findGoguma.isPresent()) {
-            Goguma originGoguma = findGoguma.get();
-            originGoguma.modifyType(goguma.getType());
-            originGoguma.modifyMessage(goguma.getMessage());
-        } else {
-            gogumas.add(goguma.toEntity(article));
-        }
+    protected void modify(Long gogumaId, GogumaRequest gogumaRequest) {
+        Goguma goguma = findById(gogumaId);
+        goguma.modifyType(gogumaRequest.getType());
+        goguma.modifyMessage(gogumaRequest.getMessage());
     }
 }

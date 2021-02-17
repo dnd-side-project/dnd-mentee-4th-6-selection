@@ -70,12 +70,20 @@ public class Article extends BaseEntity {
         gogumas.add(goguma);
     }
 
+    public Goguma lookUpGoguma(Long gogumaId) {
+        return gogumas.findById(gogumaId);
+    }
+
+    public void deleteGoguma(Long gogumaId) {
+        gogumas.delete(gogumaId);
+    }
+
     public void modifyChoices(List<ChoiceRequest> choiceRequests) {
         choices.modify(this, choiceRequests);
     }
 
-    public void modifyGoguma(GogumaRequest goguma) {
-        gogumas.modify(this, goguma);
+    public void modifyGoguma(Long gogumaId, GogumaRequest gogumaRequest) {
+        gogumas.modify(gogumaId, gogumaRequest);
     }
 
     public List<ChoiceResponse> toChoicesResponse() {

@@ -21,7 +21,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    private Article findById(Long articleId) {
+    public Article findById(Long articleId) {
         return articleRepository.findById(articleId)
             .orElseThrow(
                 () -> new IllegalArgumentException(

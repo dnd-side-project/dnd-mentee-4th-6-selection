@@ -33,7 +33,7 @@ public class ArticleRequest {
     public ArticleRequest(
         @NotNull @Size(min = 1, max = 30, message = "제목은 최소 1자이상, 최대 30자이하만 가능합니다.") String title,
         @NotNull @Size(min = 1, message = "내용은 최소 1자이상이여야합니다.") String content,
-        @NotNull List<@Valid ChoiceRequest> choices) {
+        @NotNull @ChoicesConstraint List<@Valid ChoiceRequest> choices) {
         this.title = title;
         this.content = content;
         this.choices = choices;
