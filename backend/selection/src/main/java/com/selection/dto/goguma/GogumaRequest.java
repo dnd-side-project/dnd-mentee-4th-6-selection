@@ -3,6 +3,7 @@ package com.selection.dto.goguma;
 import com.selection.domain.article.Article;
 import com.selection.domain.article.Goguma;
 import com.selection.domain.article.GogumaType;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class GogumaRequest {
         this.message = message;
     }
 
-    public Goguma toEntity(@NotNull(message = "속한 게시글은 필수입니다.") Article article) {
-        return new Goguma(message, type, article);
+    public Goguma toEntity(@NotEmpty(message = "작성자는 필수입니다.") String author, @NotNull(message = "속한 게시글은 필수입니다.") Article article) {
+        return new Goguma(message, type, author,article);
     }
 }

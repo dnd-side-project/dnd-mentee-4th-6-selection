@@ -28,13 +28,9 @@ public class ArticleService {
                     String.format("해당 게시글(%s)는 존재하지 않습니다.", articleId)));
     }
 
-    private String getAuthor() {
-        return "애플"; // 차후 Token으로 구하여 연동
-    }
-
     @Transactional
-    public Long create(ArticleRequest requestDto) {
-        Article article = articleRepository.save(requestDto.toEntity(getAuthor()));
+    public Long create(String author, ArticleRequest requestDto) {
+        Article article = articleRepository.save(requestDto.toEntity(author));
         return article.getId();
     }
 

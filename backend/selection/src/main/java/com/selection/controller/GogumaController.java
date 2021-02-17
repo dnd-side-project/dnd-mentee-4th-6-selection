@@ -22,11 +22,14 @@ public class GogumaController {
 
     private final GogumaService gogumaService;
 
+    private String getAuthor() {
+        return "애플"; // 차후 Token으로 구하여 연동
+    }
 
     @PostMapping("/{articleId}/gogumas")
     public ResponseEntity<Long> createGoguma(@PathVariable Long articleId,
         @RequestBody @Valid GogumaRequest gogumaRequest) {
-        return ResponseEntity.ok(gogumaService.create(articleId, gogumaRequest));
+        return ResponseEntity.ok(gogumaService.create(articleId, getAuthor(), gogumaRequest));
     }
 
     @PutMapping("/{articleId}/gogumas/{gogumaId}")

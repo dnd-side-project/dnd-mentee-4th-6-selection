@@ -24,14 +24,19 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    private String getAuthor() {
+        return "애플"; // 차후 Token으로 구하여 연동
+    }
+
     @PostMapping
     public ResponseEntity<Long> createArticle(@RequestBody @Valid ArticleRequest requestDto) {
-        return ResponseEntity.ok(articleService.create(requestDto));
+        return ResponseEntity.ok(articleService.create(getAuthor(), requestDto));
     }
 
     @PutMapping("/{articleId}")
     public ResponseEntity<?> modifyArticle(@PathVariable Long articleId,
         @RequestBody @Valid ArticleRequest requestDto) {
+        articleService.modify(articleId, requestDto);
         return ResponseEntity.ok().build();
     }
 

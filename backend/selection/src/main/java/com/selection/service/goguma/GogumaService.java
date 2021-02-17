@@ -17,16 +17,10 @@ public class GogumaService {
     private final ArticleService articleService;
     private final GogumaRepository gogumaRepository;
 
-    private Goguma findByArticleIdAndGogumaId(Long articleId, Long gogumaId) {
-        return gogumaRepository.findByIdAndArticleId(gogumaId, articleId)
-            .orElseThrow(() -> new IllegalArgumentException(
-                String.format("해당 고구마(%s)는 존재하지 않습니다.", gogumaId)));
-    }
-
     @Transactional
-    public Long create(Long articleId, GogumaRequest gogumaRequest) {
+    public Long create(Long articleId, String author, GogumaRequest gogumaRequest) {
         Article article = articleService.findById(articleId);
-        Goguma goguma = gogumaRepository.save(gogumaRequest.toEntity(article));
+        Goguma goguma = gogumaRepository.save(gogumaRequest.toEntity(author, article));
         article.addGoguma(goguma);
         return goguma.getId();
     }
