@@ -11,15 +11,101 @@ interface IStyleProps {
   isActive: boolean;
 }
 
-const SideContainer = styled.div`
+export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
+  const [isUser, setIsUser] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const onClickOut = () => {
+    setIsActive(false);
+    setTimeout(onClick, 300);
+  };
+  const onClickLogin = () => {
+    setIsUser(true);
+  };
+  return (
+    <OuterBackground>
+      <SideContainer isActive={isActive}>
+        <SidebarMenu isActive={isActive}>
+          <div>
+            <UserBox>
+              {isUser ? (
+                <>
+                  <ImgBox>
+                    <FontAwesomeIcon icon={faUser} />
+                  </ImgBox>
+                  <UserName>김구마님</UserName>
+                  <BellIcon>
+                    <BellLink href={`/notification`}>
+                      <FontAwesomeIcon icon={faBell} />
+                    </BellLink>
+                  </BellIcon>
+                </>
+              ) : (
+                <>
+                  <NotUserTitle>
+                    <NotUserColor>
+                      로그인하여
+                      <br /> 고구마를 즐겨보세요!
+                    </NotUserColor>
+                  </NotUserTitle>
+                  <a href={"/login"}>
+                    <LoginBtn>로그인</LoginBtn>
+                  </a>
+                  <LoginBtn onClick={onClickLogin}>임시 로그인</LoginBtn>
+                  <BellIcon>
+                    <NotUserColor>
+                      <FontAwesomeIcon icon={faBell} />
+                    </NotUserColor>
+                  </BellIcon>
+                </>
+              )}
+            </UserBox>
+            <MenuBox>
+              <span>메인페이지</span>
+              <span>인기글</span>
+              <span>최신글</span>
+            </MenuBox>
+            {isUser && (
+              <MenuBox>
+                <span>마이페이지</span>
+                <span>내가 쓴 글</span>
+                <span>댓글 단글</span>
+              </MenuBox>
+            )}
+          </div>
+        </SidebarMenu>
+        <OutBackground>
+          <OutBtn onClick={onClickOut}>
+            <FontAwesomeIcon icon={faTimes} style={{ color: "white", fontWeight: 300 }} />
+          </OutBtn>
+        </OutBackground>
+      </SideContainer>
+    </OuterBackground>
+  );
+};
+
+const OuterBackground = styled.div`
   position: fixed;
-  margin: 0 auto;
   top: 0;
   left: 0;
-  right: 0;
   width: 100vw;
-  max-width: 600px;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  z-index: 99;
+`;
+
+const SideContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  @media (min-width: 1024px) {
+    width: 356px;
+    height: 732px;
+    border: 1px solid #545454;
+  }
+  margin: 0 auto;
+
+  left: 0;
+  right: 0;
   overflow: hidden;
   display: flex;
   background-color: rgba(50, 50, 50, 0.5);
@@ -48,9 +134,9 @@ const SideContainer = styled.div`
 
 const SidebarMenu = styled.div`
   background-color: white;
-  width: 200px;
-  min-width: 200px;
-  height: 100vh;
+  width: 180px;
+  min-width: 180px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -166,75 +252,3 @@ const BellLink = styled.a`
   text-decoration: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 `;
-
-export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
-  const [isUser, setIsUser] = useState(false);
-  const [isActive, setIsActive] = useState(true);
-  const onClickOut = () => {
-    setIsActive(false);
-    setTimeout(onClick, 300);
-  };
-  const onClickLogin = () => {
-    setIsUser(true);
-  };
-  return (
-    <>
-      <SideContainer isActive={isActive}>
-        <SidebarMenu isActive={isActive}>
-          <div>
-            <UserBox>
-              {isUser ? (
-                <>
-                  <ImgBox>
-                    <FontAwesomeIcon icon={faUser} />
-                  </ImgBox>
-                  <UserName>김구마님</UserName>
-                  <BellIcon>
-                    <BellLink href={`/notification`}>
-                      <FontAwesomeIcon icon={faBell} />
-                    </BellLink>
-                  </BellIcon>
-                </>
-              ) : (
-                <>
-                  <NotUserTitle>
-                    <NotUserColor>
-                      로그인하여
-                      <br /> 고구마를 즐겨보세요!
-                    </NotUserColor>
-                  </NotUserTitle>
-                  <a href={"/login"}>
-                    <LoginBtn>로그인</LoginBtn>
-                  </a>
-                  <LoginBtn onClick={onClickLogin}>임시 로그인</LoginBtn>
-                  <BellIcon>
-                    <NotUserColor>
-                      <FontAwesomeIcon icon={faBell} />
-                    </NotUserColor>
-                  </BellIcon>
-                </>
-              )}
-            </UserBox>
-            <MenuBox>
-              <span>메인페이지</span>
-              <span>인기글</span>
-              <span>최신글</span>
-            </MenuBox>
-            {isUser && (
-              <MenuBox>
-                <span>마이페이지</span>
-                <span>내가 쓴 글</span>
-                <span>댓글 단글</span>
-              </MenuBox>
-            )}
-          </div>
-        </SidebarMenu>
-        <OutBackground>
-          <OutBtn onClick={onClickOut}>
-            <FontAwesomeIcon icon={faTimes} style={{ color: "white", fontWeight: 300 }} />
-          </OutBtn>
-        </OutBackground>
-      </SideContainer>
-    </>
-  );
-};

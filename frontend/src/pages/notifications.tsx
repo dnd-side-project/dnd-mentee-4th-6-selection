@@ -43,6 +43,34 @@ const FAKE_NOTICE_DATA = {
       createdAt: "2020-02-19 12:33:00",
       isChecked: true,
     },
+    {
+      id: 6,
+      username: "김승호",
+      gogumaname: "여러분들 이게 진짜 맞나요..?",
+      createdAt: "2020-02-19 12:33:00",
+      isChecked: true,
+    },
+    {
+      id: 6,
+      username: "김승호",
+      gogumaname: "여러분들 이게 진짜 맞나요..?",
+      createdAt: "2020-02-19 12:33:00",
+      isChecked: true,
+    },
+    {
+      id: 7,
+      username: "김승호",
+      gogumaname: "여러분들 이게 진짜 맞나요..?",
+      createdAt: "2020-02-19 12:33:00",
+      isChecked: true,
+    },
+    {
+      id: 8,
+      username: "김승호",
+      gogumaname: "여러분들 이게 진짜 맞나요..?",
+      createdAt: "2020-02-19 12:33:00",
+      isChecked: true,
+    },
   ],
 };
 
@@ -85,11 +113,11 @@ const NoticeLink = styled.a`
 `;
 
 const NoticeContainer = styled.div`
-  width: 100vw;
-  max-width: 600px;
+  width: 100%;
+  min-height: 100%;
+  padding: 0 12px;
   margin: 0 -16px;
   @media (min-width: 600px) {
-    margin: 0 -24px;
   }
 `;
 
