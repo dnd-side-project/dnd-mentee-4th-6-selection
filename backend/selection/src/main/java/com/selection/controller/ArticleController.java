@@ -29,20 +29,20 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.create(requestDto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> modifyArticle(@PathVariable Long id,
+    @PutMapping("/{articleId}")
+    public ResponseEntity<Long> modifyArticle(@PathVariable Long articleId,
         @RequestBody @Valid ArticleRequest requestDto) {
-        return ResponseEntity.ok(articleService.modify(id, requestDto));
+        return ResponseEntity.ok(articleService.modify(articleId, requestDto));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long id) {
-        return ResponseEntity.ok(articleService.lookUp(id));
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long articleId) {
+        return ResponseEntity.ok(articleService.lookUp(articleId));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteArticle(@PathVariable Long id) {
-        articleService.delete(id);
+    @DeleteMapping("/{articleId}")
+    public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
+        articleService.delete(articleId);
         return ResponseEntity.ok().build();
     }
 

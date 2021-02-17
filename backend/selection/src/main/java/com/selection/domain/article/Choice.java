@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "CHOICES")
 public class Choice extends BaseEntity {
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 30)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

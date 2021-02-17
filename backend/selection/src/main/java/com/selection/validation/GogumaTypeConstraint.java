@@ -7,13 +7,12 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = {EnumValidator.class})
+@Constraint(validatedBy = {GogumaTypeConstraintValidator.class})
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Enum {
-    String message() default "Invalid value. This is not permitted.";
+public @interface GogumaTypeConstraint {
+    String message() default "올바르지 않은 고구마 형식입니다.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-    Class<? extends java.lang.Enum<?>> enumClass();
     boolean ignoreCase() default false;
 }

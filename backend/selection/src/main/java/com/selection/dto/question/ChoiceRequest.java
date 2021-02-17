@@ -16,10 +16,9 @@ public class ChoiceRequest {
     private Long id = -1L;
 
     @NotNull
-    @Size(min = 1, max = 12,message = "질문지는 최소 1자 이상, 최대 12자이하만 가능합니다.")
+    @Size(min = 1, max = 30,message = "선택지는 최소 1자 이상, 최대 30자이하만 가능합니다.")
     private String content;
 
-    @Builder
     public ChoiceRequest(String content) {
         this.content = content;
     }

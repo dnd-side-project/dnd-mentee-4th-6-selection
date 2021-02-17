@@ -44,7 +44,7 @@ public class ArticleService {
 
         article.modifyTitle(requestDto.getTitle());
         article.modifyContent(requestDto.getContent());
-        article.modifyChoices(requestDto.getQuestions());
+        article.modifyChoices(requestDto.getChoices());
 
         return article.getId();
     }
