@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { CommonRouter } from "./routers/common-router";
+import CommonRouter from "./routers/common-router";
 import "./styles/FontStyles.css";
 
 const App: React.FC = () => {
