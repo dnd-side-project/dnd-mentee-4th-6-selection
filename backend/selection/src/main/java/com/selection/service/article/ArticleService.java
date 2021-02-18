@@ -2,10 +2,10 @@ package com.selection.service.article;
 
 
 import com.selection.domain.article.Article;
+import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.dto.notice.PageRequest;
 import com.selection.repository.ArticleRepository;
 import java.util.List;
 import java.util.stream.Collectors;

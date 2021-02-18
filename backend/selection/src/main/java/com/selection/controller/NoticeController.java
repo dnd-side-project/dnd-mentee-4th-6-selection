@@ -1,7 +1,7 @@
 package com.selection.controller;
 
+import com.selection.dto.PageRequest;
 import com.selection.dto.notice.NoticeResponse;
-import com.selection.dto.notice.PageRequest;
 import com.selection.service.notice.NoticeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
