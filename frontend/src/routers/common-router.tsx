@@ -69,24 +69,31 @@ interface IProps {
 }
 
 const CommonRouter = ({ userToken, addTokenLocal }: IProps) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isUser, setIsUser] = useState(false);
-  const localToken = localStorage.getItem("token");
-
-  useEffect(() => {
+  const process = async () => {
     if (userToken.token) {
       setIsUser(true);
     }
     if (!userToken.token) {
-      setIsUser(false);
+      const localToken = localStorage.getItem("token");
+      await setIsUser(false);
       if (localToken) {
         addTokenLocal({ token: `${localToken}` });
       }
     }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    process();
   }, [isUser, userToken]);
 
   return (
     <>
-      {isUser ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : isUser ? (
         <BrowserRouter>
           <Switch>
             {loggedInRoutes.map(route => (
@@ -99,7 +106,6 @@ const CommonRouter = ({ userToken, addTokenLocal }: IProps) => {
                 {route.component}
               </Route>
             ))}
-
             <Route>
               <NotFound />
             </Route>
