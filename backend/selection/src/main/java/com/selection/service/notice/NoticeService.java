@@ -1,8 +1,8 @@
 package com.selection.service.notice;
 
 import com.selection.domain.notice.Notice;
+import com.selection.dto.PageRequest;
 import com.selection.dto.notice.NoticeResponse;
-import com.selection.dto.notice.PageRequest;
 import com.selection.repository.NoticeReposiotry;
 import java.util.List;
 import java.util.stream.Collectors;
