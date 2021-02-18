@@ -1,51 +1,139 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
 import { NotFound } from "../pages/404";
 import { Goguma } from "../pages/goguma";
 import { Home } from "../pages/home";
-import { Login } from "../pages/login";
-import { Ask } from "../pages/ask";
 import { GogumaBasket } from "../pages/goguma-basket";
 import { Search } from "../pages/search";
-import { Notification } from "../pages/notifications";
 import { GogumaListResent } from "../pages/goguma-list-resent";
+import { Ask } from "../pages/ask";
+import { Notification } from "../pages/notifications";
+import { Login } from "../pages/login";
 import OAuth2Redirect from "../pages/oauth2-redirect";
 
-export const CommonRouter: React.FC = () => {
+const commenRoutes = [
+  {
+    path: "/",
+    component: <Home />,
+  },
+  {
+    path: "/goguma/:id",
+    component: <Goguma />,
+  },
+  {
+    path: "/goguma/basket/:id",
+    component: <GogumaBasket />,
+  },
+  {
+    path: "/goguma-list/resent",
+    component: <GogumaListResent />,
+  },
+  {
+    path: "/search",
+    component: <Search />,
+  },
+];
+
+const loggedInRoutes = [
+  {
+    path: "/ask",
+    component: <Ask />,
+  },
+  {
+    path: "/notification",
+    component: <Notification />,
+  },
+];
+
+const loggedOutRoutes = [
+  {
+    path: "/login",
+    component: <Login authenticated={false} />,
+  },
+  {
+    path: "/oauth2/redirect",
+    component: <OAuth2Redirect />,
+  },
+];
+
+interface IParams {
+  token: string;
+}
+
+interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
+}
+
+const CommonRouter = ({ userToken, addTokenLocal }: IProps) => {
+  const [isUser, setIsUser] = useState(false);
+  const localToken = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (userToken.token) {
+      setIsUser(true);
+    }
+    if (!userToken.token) {
+      setIsUser(false);
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+    }
+  }, [isUser, userToken]);
+
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route exact path="/login">
-          <Login authenticated={false} />
-        </Route>
-        <Route exact path="/oauth2/redirect">
-          <OAuth2Redirect />
-        </Route>
-        <Route exact path="/goguma/:id">
-          <Goguma />
-        </Route>
-        <Route exact path="/ask">
-          <Ask />
-        </Route>
-        <Route exact path="/goguma/basket/:id">
-          <GogumaBasket />
-        </Route>
-        <Route exact path="/search">
-          <Search />
-        </Route>
-        <Route exact path="/notification">
-          <Notification />
-        </Route>
-        <Route exact path="/goguma-list/resent">
-          <GogumaListResent />
-        </Route>
-        <Route>
-          <NotFound />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <>
+      {isUser ? (
+        <BrowserRouter>
+          <Switch>
+            {loggedInRoutes.map(route => (
+              <Route exact key={route.path} path={route.path}>
+                {route.component}
+              </Route>
+            ))}
+            {commenRoutes.map(route => (
+              <Route exact key={route.path} path={route.path}>
+                {route.component}
+              </Route>
+            ))}
+
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      ) : (
+        <BrowserRouter>
+          <Switch>
+            {loggedOutRoutes.map(route => (
+              <Route exact key={route.path} path={route.path}>
+                {route.component}
+              </Route>
+            ))}
+            {commenRoutes.map(route => (
+              <Route exact key={route.path} path={route.path}>
+                {route.component}
+              </Route>
+            ))}
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      )}
+    </>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommonRouter);
