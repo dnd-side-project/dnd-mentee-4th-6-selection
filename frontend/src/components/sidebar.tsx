@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { faBell, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
+
+interface IParams {
+  token: string;
+}
 
 interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
   onClick: () => void;
 }
 
@@ -11,16 +20,28 @@ interface IStyleProps {
   isActive: boolean;
 }
 
-export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
+const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick }: IProps) => {
   const [isUser, setIsUser] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  const localToken = localStorage.getItem("token");
+
   const onClickOut = () => {
     setIsActive(false);
     setTimeout(onClick, 300);
   };
-  const onClickLogin = () => {
-    setIsUser(true);
-  };
+
+  useEffect(() => {
+    if (userToken.token) {
+      setIsUser(true);
+    }
+    if (!userToken.token) {
+      setIsUser(false);
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+    }
+  }, [isUser, userToken]);
+
   return (
     <OuterBackground>
       <SideContainer isActive={isActive}>
@@ -47,10 +68,9 @@ export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
                       <br /> 고구마를 즐겨보세요!
                     </NotUserColor>
                   </NotUserTitle>
-                  <a href={"/login"}>
+                  <UserLoginBtn href={"/login"}>
                     <LoginBtn>로그인</LoginBtn>
-                  </a>
-                  <LoginBtn onClick={onClickLogin}>임시 로그인</LoginBtn>
+                  </UserLoginBtn>
                   <BellIcon>
                     <NotUserColor>
                       <FontAwesomeIcon icon={faBell} />
@@ -82,6 +102,16 @@ export const Sidebar: React.FC<IProps> = ({ onClick }: IProps) => {
     </OuterBackground>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
 
 const OuterBackground = styled.div`
   position: fixed;
@@ -222,6 +252,11 @@ const NotUserColor = styled.div`
   color: #989898;
 `;
 
+const UserLoginBtn = styled.a`
+  text-decoration: none;
+  margin-bottom: 17px;
+`;
+
 const LoginBtn = styled.div`
   width: 92px;
   height: 35px;
@@ -233,7 +268,7 @@ const LoginBtn = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 14px;
   color: #8c5cdd;
-  margin-bottom: 17px;
+
   text-decoration: none;
 `;
 

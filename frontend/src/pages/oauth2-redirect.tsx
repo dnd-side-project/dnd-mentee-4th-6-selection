@@ -1,17 +1,31 @@
 import React from "react";
-import { Redirect, useParams } from "react-router-dom";
+import queryString from "query-string";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { addToken } from "../stores/userStore";
+import { Dispatch } from "redux";
 
 interface IParams {
   token: string;
-  error: string;
 }
 
-export const OAuth2Redirect: React.FC = () => {
-  const { token, error } = useParams<IParams>();
+interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
+}
+
+const OAuth2Redirect = ({ addTokenLocal }: IProps) => {
+  const { token } = queryString.parse(location.search);
+
   if (token) {
-    localStorage.setItem("accessToken", token);
+    const tokenObj = {
+      token: `${token}`,
+    };
+    localStorage.setItem("token", `${token}`);
+    addTokenLocal(tokenObj);
   } else {
-    console.log(error);
+    //console.log(error);
+    alert("로그인 실패!");
   }
   return (
     <>
@@ -20,3 +34,13 @@ export const OAuth2Redirect: React.FC = () => {
     </>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OAuth2Redirect);

@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
+import { BACKEND_URL, FRONTEND_URL } from "../constants";
 
 const LoginContainer = styled.div`
   margin-top: 200px;
@@ -51,7 +52,7 @@ export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
           <div>
             <LoginContainer>
               <SocialLink
-                href={`http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect`}
+                href={`${BACKEND_URL}/oauth2/authorize/google?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
               >
                 <span>구글 계정으로 로그인</span>
               </SocialLink>

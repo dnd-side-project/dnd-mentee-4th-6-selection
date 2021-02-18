@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Sidebar } from "./sidebar";
+import Sidebar from "./sidebar";
 import styled from "styled-components";
 import menu from "../styles/img/icon_menu.svg";
 import search from "../styles/img/icon_search.svg";
