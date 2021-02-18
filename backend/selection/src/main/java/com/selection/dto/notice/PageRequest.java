@@ -12,7 +12,6 @@ public class PageRequest {
     private int size;
     private Sort.Direction direction;
 
-    @Builder
     public PageRequest(int page, int size, Direction direction) {
         this.page = page;
         this.size = size;

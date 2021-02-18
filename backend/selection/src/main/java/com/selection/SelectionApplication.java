@@ -13,7 +13,7 @@ public class SelectionApplication {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
         + "classpath:application.yaml,"
-        + "classpath:application-real.yaml";
+        + "classpath:application-oauth.yaml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(SelectionApplication.class)

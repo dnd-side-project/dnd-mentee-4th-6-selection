@@ -2,11 +2,9 @@ package com.selection.service.article;
 
 
 import com.selection.domain.article.Article;
-import com.selection.domain.question.Questions;
-import com.selection.domain.tag.Tags;
 import com.selection.dto.article.ArticleLatestResponse;
-import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleRequest;
+import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.notice.PageRequest;
 import com.selection.repository.ArticleRepository;
 import java.util.List;
@@ -23,50 +21,47 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    public Article findById(Long articleId) {
+        return articleRepository.findById(articleId)
+            .orElseThrow(
+                () -> new IllegalArgumentException(
+                    String.format("해당 게시글(%s)는 존재하지 않습니다.", articleId)));
+    }
+
     @Transactional
-    public Long create(ArticleRequest requestDto) {
-        Article article = articleRepository.save(requestDto.toEntity());
+    public Long create(String author, ArticleRequest requestDto) {
+        Article article = articleRepository.save(requestDto.toEntity(author));
         return article.getId();
     }
 
     @Transactional
-    public ArticleResponse modify(Long id, ArticleRequest requestDto) {
-        Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(id + "는 존재하지 않는 게시글 번호입니다."));
+    public Long modify(Long articleId, ArticleRequest requestDto) {
+        Article article = findById(articleId);
 
         article.modifyTitle(requestDto.getTitle());
         article.modifyContent(requestDto.getContent());
-        article.modifyBackgroundColor(requestDto.getBackgroundColor());
-        article.modifyQuestions(requestDto.getQuestions());
-        article.modifyTags(requestDto.getTags());
+        article.modifyChoices(requestDto.getChoices());
 
-        return new ArticleResponse(articleRepository.save(article));
+        return article.getId();
     }
 
     @Transactional
     public ArticleResponse lookUp(Long id) {
-        Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(id + "는 존재하지 않는 게시글 번호입니다."));
-        return new ArticleResponse(article);
+        return new ArticleResponse(findById(id));
     }
 
     @Transactional
-    public Long delete(Long id) {
-        Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(id + "는 존재하지 않는 게시글 번호입니다."));
-        articleRepository.delete(article);
-        return article.getId();
+    public void delete(Long id) {
+        articleRepository.delete(findById(id));
     }
 
     @Transactional
     public List<ArticleLatestResponse> lookUpLatest(Long numOfLatestArticles) {
-        PageRequest latest = PageRequest.builder()
-            .page(1)
-            .size(numOfLatestArticles.intValue())
-            .direction(Direction.DESC)
-            .build();
-
+        PageRequest latest = new PageRequest(1, numOfLatestArticles.intValue(), Direction.DESC);
         Page<Article> latestArticles = articleRepository.findAll(latest.of());
-        return latestArticles.stream().map(ArticleLatestResponse::new).collect(Collectors.toList());
+
+        return latestArticles.stream()
+            .map(ArticleLatestResponse::new)
+            .collect(Collectors.toList());
     }
 }

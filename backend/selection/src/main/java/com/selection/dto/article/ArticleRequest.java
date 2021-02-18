@@ -1,47 +1,52 @@
 package com.selection.dto.article;
 
 import com.selection.domain.article.Article;
-import com.selection.dto.question.QuestionRequest;
-import com.selection.dto.tag.TagRequest;
+import com.selection.domain.article.Choice;
+import com.selection.dto.question.ChoiceRequest;
+import com.selection.validation.ChoicesConstraint;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Builder;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @NoArgsConstructor
 public class ArticleRequest {
 
+    @NotNull
+    @Size(min = 1, max = 30, message = "제목은 최소 1자이상, 최대 30자이하만 가능합니다.")
     private String title;
-    private String content;
-    private String backgroundColor;
-    private List<QuestionRequest> questions;
-    private List<TagRequest> tags;
 
-    @Builder
-    public ArticleRequest(String title, String content, String backgroundColor,
-        List<QuestionRequest> questions,
-        List<TagRequest> tags) {
+    @NotNull
+    @Size(min = 1, message = "내용은 최소 1자이상이여야합니다.")
+    private String content;
+
+    @NotNull
+    @ChoicesConstraint
+    private List<@Valid ChoiceRequest> choices;
+
+    public ArticleRequest(
+        @NotNull @Size(min = 1, max = 30, message = "제목은 최소 1자이상, 최대 30자이하만 가능합니다.") String title,
+        @NotNull @Size(min = 1, message = "내용은 최소 1자이상이여야합니다.") String content,
+        @NotNull @ChoicesConstraint List<@Valid ChoiceRequest> choices) {
         this.title = title;
         this.content = content;
-        this.backgroundColor = backgroundColor;
-        this.questions = questions;
-        this.tags = tags;
+        this.choices = choices;
     }
 
-    public Article toEntity() {
-        Article article = Article.builder()
-            .title(title)
-            .content(content)
-            .backgroundColor(backgroundColor)
-            .author("애플")
-            .build();
+    public Article toEntity(@NotEmpty(message = "작성자는 필수입니다.") String author) {
+        Article article = new Article(title, content, author);
 
-        article.getQuestions().addAll(questions.stream().map(question -> question.toEntity(article))
-            .collect(Collectors.toList()));
-        article.getTags()
-            .addAll(tags.stream().map(tag -> tag.toEntity(article)).collect(Collectors.toList()));
+        List<Choice> choiceEntities = choices.stream()
+            .map(choiceRequest -> choiceRequest.toEntity(article))
+            .collect(Collectors.toList());
+
+        article.addChoices(choiceEntities);
         return article;
     }
 }

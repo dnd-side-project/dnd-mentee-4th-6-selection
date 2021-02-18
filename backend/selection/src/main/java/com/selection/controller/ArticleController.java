@@ -5,6 +5,7 @@ import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
 import com.selection.service.article.ArticleService;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,37 +24,38 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    private String getAuthor() {
+        return "애플"; // 차후 Token으로 구하여 연동
+    }
+
     @PostMapping
-    public ResponseEntity<Long> createArticle(@RequestBody ArticleRequest requestDto) {
-        Long articleId = articleService.create(requestDto);
-        return ResponseEntity.ok(articleId);
+    public ResponseEntity<Long> createArticle(@RequestBody @Valid ArticleRequest requestDto) {
+        return ResponseEntity.ok(articleService.create(getAuthor(), requestDto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ArticleResponse> modifyArticle(@PathVariable Long id,
-        @RequestBody ArticleRequest requestDto) {
-        ArticleResponse article = articleService.modify(id, requestDto);
-        return ResponseEntity.ok(article);
+    @PutMapping("/{articleId}")
+    public ResponseEntity<?> modifyArticle(@PathVariable Long articleId,
+        @RequestBody @Valid ArticleRequest requestDto) {
+        articleService.modify(articleId, requestDto);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long id) {
-        ArticleResponse article = articleService.lookUp(id);
-        return ResponseEntity.ok(article);
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long articleId) {
+        return ResponseEntity.ok(articleService.lookUp(articleId));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteArticle(@PathVariable Long id) {
-        Long articleId = articleService.delete(id);
-        return ResponseEntity.ok(articleId);
+    @DeleteMapping("/{articleId}")
+    public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
+        articleService.delete(articleId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/latest")
     public ResponseEntity<List<ArticleLatestResponse>> getLatestArticles() {
         final Long NUM_OF_LATEST_ARTICLES = 10L;
-        List<ArticleLatestResponse> latestArticles = articleService
-            .lookUpLatest(NUM_OF_LATEST_ARTICLES);
-        return ResponseEntity.ok(latestArticles);
+        return ResponseEntity
+            .ok(articleService.lookUpLatest(NUM_OF_LATEST_ARTICLES));
     }
 
     @GetMapping("/favorite")
