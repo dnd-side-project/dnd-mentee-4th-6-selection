@@ -1,7 +1,7 @@
 package com.selection.dto.article;
 
 import com.selection.domain.article.Article;
-import com.selection.dto.question.ChoiceResponse;
+import com.selection.dto.choice.ChoiceResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

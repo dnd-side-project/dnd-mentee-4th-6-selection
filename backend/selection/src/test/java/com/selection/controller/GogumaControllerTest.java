@@ -15,7 +15,7 @@ import com.selection.domain.article.GogumaType;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
-import com.selection.dto.question.ChoiceRequest;
+import com.selection.dto.choice.ChoiceRequest;
 import com.selection.repository.ArticleRepository;
 import com.selection.repository.GogumaRepository;
 import java.util.Arrays;

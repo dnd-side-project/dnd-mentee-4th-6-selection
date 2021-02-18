@@ -18,10 +18,11 @@ public class Votes {
         votes.add(vote);
     }
 
-    protected void delete(Long voteId) {
-        boolean deleted = votes.removeIf(vote -> vote.getId().equals(voteId));
-        if (!deleted) {
-            throw new IllegalArgumentException(String.format("해당 투표는(%s)는 존재하지 않습니다.", voteId));
-        }
+    protected void delete(String author) {
+        votes.removeIf(vote -> vote.getAuthor().equals(author));
+    }
+
+    public boolean existByAuthor(String author) {
+        return votes.stream().anyMatch(vote -> vote.getAuthor().equals(author));
     }
 }

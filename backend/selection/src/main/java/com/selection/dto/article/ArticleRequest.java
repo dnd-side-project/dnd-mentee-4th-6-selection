@@ -2,7 +2,7 @@ package com.selection.dto.article;
 
 import com.selection.domain.article.Article;
 import com.selection.domain.article.Choice;
-import com.selection.dto.question.ChoiceRequest;
+import com.selection.dto.choice.ChoiceRequest;
 import com.selection.validation.ChoicesConstraint;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 @Getter
 @NoArgsConstructor

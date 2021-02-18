@@ -1,10 +1,9 @@
-package com.selection.dto.question;
+package com.selection.dto.choice;
 
 import com.selection.domain.article.Article;
 import com.selection.domain.article.Choice;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

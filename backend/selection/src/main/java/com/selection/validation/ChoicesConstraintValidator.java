@@ -1,6 +1,6 @@
 package com.selection.validation;
 
-import com.selection.dto.question.ChoiceRequest;
+import com.selection.dto.choice.ChoiceRequest;
 import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
