@@ -1,6 +1,5 @@
-package com.selection.dto.notice;
+package com.selection.dto;
 
-import lombok.Builder;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
