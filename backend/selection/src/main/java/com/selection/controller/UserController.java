@@ -35,13 +35,13 @@ public class UserController {
     }
 */
 
-/*    // Todo: 프론트 연결된 이후엔 삭제할 것
+    // Todo: 프론트 연결된 이후엔 삭제할 것
     @GetMapping("/oauth2/redirect")
-    public ResponseEntity<String> redirectTest(@RequestParam(value = "token", required = true)
+    public ResponseEntity<String> redirectTest(@RequestParam(value = "token")
         String token) {
         return ResponseEntity.ok()
             .body("token : " + token);
-    }*/
+    }
 
     // Todo: 프론트 연결된 이후엔 삭제할 것
     @GetMapping("/")
