@@ -4,6 +4,7 @@ import com.selection.domain.article.Article;
 import com.selection.domain.article.Choice;
 import com.selection.dto.choice.ChoiceRequest;
 import com.selection.validation.ChoicesConstraint;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -17,14 +18,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArticleRequest {
 
+    @ApiModelProperty(notes = "제목(최소 1자이상, 최대 30자이하)", required = true, example = "제목")
     @NotNull
     @Size(min = 1, max = 30, message = "제목은 최소 1자이상, 최대 30자이하만 가능합니다.")
     private String title;
 
+    @ApiModelProperty(notes = "본문(최소 1자이상)", required = true, example = "본문")
     @NotNull
-    @Size(min = 1, message = "내용은 최소 1자이상이여야합니다.")
+    @Size(min = 1, message = "본문은 최소 1자이상이여야합니다.")
     private String content;
 
+    @ApiModelProperty(notes = "선택지(0개 또는 2개)", required = true)
     @NotNull
     @ChoicesConstraint
     private List<@Valid ChoiceRequest> choices;
