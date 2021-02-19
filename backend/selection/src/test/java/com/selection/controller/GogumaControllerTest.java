@@ -15,7 +15,7 @@ import com.selection.domain.article.GogumaType;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
-import com.selection.dto.question.ChoiceRequest;
+import com.selection.dto.choice.ChoiceRequest;
 import com.selection.repository.ArticleRepository;
 import com.selection.repository.GogumaRepository;
 import java.util.Arrays;
@@ -122,14 +122,6 @@ class GogumaControllerTest {
         )
             .andExpect(status().isOk())
             .andReturn();
-
-        // then
-        Long gogumaId = Long.valueOf(result.getResponse().getContentAsString());
-        Optional<Goguma> goguma = gogumaRepository.findById(gogumaId);
-
-        assertThat(goguma.isPresent()).isTrue();
-        assertThat(goguma.get().getType()).isEqualTo(gogumaRequest.getType());
-        assertThat(goguma.get().getMessage()).isEqualTo(gogumaRequest.getMessage());
     }
 
     @Test

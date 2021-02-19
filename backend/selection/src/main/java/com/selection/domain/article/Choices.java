@@ -2,8 +2,8 @@ package com.selection.domain.article;
 
 import com.google.common.collect.Sets;
 import com.selection.domain.BaseEntity;
-import com.selection.dto.question.ChoiceRequest;
-import com.selection.dto.question.ChoiceResponse;
+import com.selection.dto.choice.ChoiceRequest;
+import com.selection.dto.choice.ChoiceResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
@@ -18,17 +19,19 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Choices {
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Choice> choices = new ArrayList<>();
 
     protected int size() {
         return choices.size();
     }
 
-    protected Optional<Choice> get(Long choiceId) {
+    protected Choice get(Long choiceId) {
         return choices.stream()
             .filter(choice -> choice.getId().equals(choiceId))
-            .findFirst();
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException(
+                String.format("해당 선택지(%s)는 존재하지 않습니다.", choiceId)));
     }
 
     protected void add(Choice choice) {
@@ -43,11 +46,8 @@ public class Choices {
         choices.removeIf(choice -> choice.getId().equals(choiceId));
     }
 
-    private void modifyContent(Long choiceId, String content) {
-        Choice findChoice = get(choiceId)
-            .orElseThrow(() -> new IllegalArgumentException(
-                String.format("해당 선택지(%s)는 존재하지 않습니다.", choiceId)));
-
+    protected void modifyContent(Long choiceId, String content) {
+        Choice findChoice = get(choiceId);
         findChoice.modifyContent(content);
     }
 
@@ -76,9 +76,26 @@ public class Choices {
             .forEach(this::add);
     }
 
+    protected Optional<Choice> findVotedByAuthor(String author) {
+        return choices.stream()
+            .filter(choice -> choice.existVoteByAuthor(author))
+            .findFirst();
+    }
+
+    protected void vote(Long choiceId, String author) {
+        Choice choice = get(choiceId);
+        choice.vote(new Vote(author, choice));
+    }
+
+    protected void cancelVote(Long choiceId, String author) {
+        Choice choice = get(choiceId);
+        choice.cancelVote(author);
+    }
+
     protected List<ChoiceResponse> toResponse() {
         return choices.stream()
             .map(ChoiceResponse::new)
             .collect(Collectors.toList());
     }
+
 }

@@ -1,10 +1,11 @@
 package com.selection.domain.article;
 
 import com.selection.domain.BaseEntity;
+import com.selection.dto.choice.ChoiceRequest;
+import com.selection.dto.choice.ChoiceResponse;
 import com.selection.dto.goguma.GogumaRequest;
-import com.selection.dto.question.ChoiceRequest;
-import com.selection.dto.question.ChoiceResponse;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -58,12 +59,12 @@ public class Article extends BaseEntity {
         this.numOfShared++;
     }
 
-    public void addChoice(Choice question) {
-        choices.add(question);
+    public void addChoice(Choice choice) {
+        choices.add(choice);
     }
 
-    public void addChoices(List<Choice> questions) {
-        this.choices.addAll(questions);
+    public void addChoices(List<Choice> choices) {
+        this.choices.addAll(choices);
     }
 
     public void addGoguma(Goguma goguma) {
@@ -84,6 +85,20 @@ public class Article extends BaseEntity {
 
     public void modifyGoguma(Long gogumaId, GogumaRequest gogumaRequest) {
         gogumas.modify(gogumaId, gogumaRequest);
+    }
+
+    public void voteOnChoice(Long choiceId, String author) {
+        Optional<Choice> choice = choices.findVotedByAuthor(author);
+        choice.ifPresent(ch -> {
+            if (!ch.getId().equals(choiceId)) {
+                ch.cancelVote(author);
+            }
+        });
+        choices.vote(choiceId, author);
+    }
+
+    public void cancelVoteOnChoice(Long choiceId, String author) {
+        choices.cancelVote(choiceId, author);
     }
 
     public List<ChoiceResponse> toChoicesResponse() {

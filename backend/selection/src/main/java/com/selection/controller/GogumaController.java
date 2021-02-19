@@ -2,7 +2,7 @@ package com.selection.controller;
 
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
-import com.selection.service.goguma.GogumaService;
+import com.selection.service.article.GogumaService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +27,10 @@ public class GogumaController {
     }
 
     @PostMapping("/{articleId}/gogumas")
-    public ResponseEntity<Long> createGoguma(@PathVariable Long articleId,
+    public ResponseEntity<?> createGoguma(@PathVariable Long articleId,
         @RequestBody @Valid GogumaRequest gogumaRequest) {
-        return ResponseEntity.ok(gogumaService.create(articleId, getAuthor(), gogumaRequest));
+        gogumaService.create(articleId, getAuthor(), gogumaRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{articleId}/gogumas/{gogumaId}")

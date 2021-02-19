@@ -9,9 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -27,7 +25,7 @@ public class Goguma extends BaseEntity {
 
     private String message = Strings.EMPTY;
 
-    @Column(nullable =false)
+    @Column(nullable = false)
     private String author;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +33,7 @@ public class Goguma extends BaseEntity {
     private Article article;
 
     public Goguma(GogumaType type, String author, Article article) {
-        this(Strings.EMPTY, type, author,article);
+        this(Strings.EMPTY, type, author, article);
     }
 
     public Goguma(String message, GogumaType type, String author, Article article) {
@@ -45,11 +43,11 @@ public class Goguma extends BaseEntity {
         this.article = article;
     }
 
-    public void modifyMessage(String message) {
+    protected void modifyMessage(String message) {
         this.message = message;
     }
 
-    public void modifyType(GogumaType type) {
+    protected void modifyType(GogumaType type) {
         this.type = type;
     }
 

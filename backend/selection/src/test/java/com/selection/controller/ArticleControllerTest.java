@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.selection.domain.article.Article;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.dto.question.ChoiceRequest;
+import com.selection.dto.choice.ChoiceRequest;
 import com.selection.repository.ArticleRepository;
 import java.util.ArrayList;
 import java.util.Arrays;

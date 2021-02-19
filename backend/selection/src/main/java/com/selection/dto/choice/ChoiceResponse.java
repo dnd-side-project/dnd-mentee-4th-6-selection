@@ -1,4 +1,4 @@
-package com.selection.dto.question;
+package com.selection.dto.choice;
 
 import com.selection.domain.article.Choice;
 import lombok.Getter;
