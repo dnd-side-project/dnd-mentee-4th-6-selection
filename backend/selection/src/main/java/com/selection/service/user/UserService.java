@@ -1,8 +1,7 @@
-package com.selection.security.user;
+package com.selection.service.user;
 
 import com.selection.domain.user.User;
 import com.selection.dto.MyInfoResponse;
-import com.selection.repository.ArticleRepository;
 import com.selection.repository.UserRepository;
 import com.selection.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
