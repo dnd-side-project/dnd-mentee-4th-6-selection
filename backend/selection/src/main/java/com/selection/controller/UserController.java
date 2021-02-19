@@ -1,10 +1,7 @@
 package com.selection.controller;
 
 import com.selection.dto.MyInfoResponse;
-import com.selection.dto.PageRequest;
-import com.selection.dto.article.ArticleResponse;
-import com.selection.security.user.UserService;
-import java.util.List;
+import com.selection.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +24,8 @@ public class UserController {
             .body(myInfoResponse);
     }
 
+    /* 프론트와 상의 후 결정 */
+/*
     @GetMapping("/me/articles")
     public ResponseEntity<List<ArticleResponse>> findMyArticles(PageRequest pageRequest) {
         List<ArticleResponse> articles = userService.findMyArticles(pageRequest);
@@ -34,14 +33,15 @@ public class UserController {
         return ResponseEntity.ok()
             .body(articles);
     }
+*/
 
-    // Todo: 프론트 연결된 이후엔 삭제할 것
+/*    // Todo: 프론트 연결된 이후엔 삭제할 것
     @GetMapping("/oauth2/redirect")
     public ResponseEntity<String> redirectTest(@RequestParam(value = "token", required = true)
         String token) {
         return ResponseEntity.ok()
             .body("token : " + token);
-    }
+    }*/
 
     // Todo: 프론트 연결된 이후엔 삭제할 것
     @GetMapping("/")
