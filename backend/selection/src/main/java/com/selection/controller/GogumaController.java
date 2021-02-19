@@ -2,7 +2,7 @@ package com.selection.controller;
 
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
-import com.selection.service.goguma.GogumaService;
+import com.selection.service.article.GogumaService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

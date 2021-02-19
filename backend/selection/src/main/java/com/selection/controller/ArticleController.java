@@ -42,12 +42,18 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public ResponseEntity<ArticleResponse> lookUpArticle(@PathVariable Long articleId) {
-        return ResponseEntity.ok(articleService.lookUp(articleId));
+        return ResponseEntity.ok(articleService.lookUp(articleId, getAuthor()));
     }
 
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
         articleService.delete(articleId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{articleId}/choices/{choiceId}")
+    public ResponseEntity<?> voteOnChoice(@PathVariable Long articleId, @PathVariable Long choiceId) {
+        articleService.vote(articleId, choiceId, getAuthor());
         return ResponseEntity.ok().build();
     }
 

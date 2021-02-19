@@ -122,14 +122,6 @@ class GogumaControllerTest {
         )
             .andExpect(status().isOk())
             .andReturn();
-
-        // then
-        Long gogumaId = Long.valueOf(result.getResponse().getContentAsString());
-        Optional<Goguma> goguma = gogumaRepository.findById(gogumaId);
-
-        assertThat(goguma.isPresent()).isTrue();
-        assertThat(goguma.get().getType()).isEqualTo(gogumaRequest.getType());
-        assertThat(goguma.get().getMessage()).isEqualTo(gogumaRequest.getMessage());
     }
 
     @Test

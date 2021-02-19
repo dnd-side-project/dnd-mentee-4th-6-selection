@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Choices {
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Choice> choices = new ArrayList<>();
 
     protected int size() {

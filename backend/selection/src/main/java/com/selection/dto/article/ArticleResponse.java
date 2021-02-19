@@ -19,15 +19,18 @@ public class ArticleResponse {
     private Long numOfShared;
 
     private List<ChoiceResponse> choices = new ArrayList<>();
+
+    private Long votedChoiceId = -1L;
     private LocalDateTime createdAt;
 
-    public ArticleResponse(Article article) {
+    public ArticleResponse(Article article, Long votedChoiceId) {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
         this.numOfShared = article.getNumOfShared();
         this.author = article.getAuthor();
         this.choices.addAll(article.toChoicesResponse());
+        this.votedChoiceId = votedChoiceId;
         this.createdAt = article.getCreatedAt();
     }
 }
