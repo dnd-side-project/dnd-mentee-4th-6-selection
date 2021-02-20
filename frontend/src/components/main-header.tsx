@@ -11,21 +11,31 @@ const Container = styled.div`
 `;
 
 const SidebarButtonContainer = styled.div`
-  width: 33%;
-  text-align: left;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
 `;
 
 const TitleContainer = styled.div`
-  width: 34%;
+  float: left;
+  font-size: 28px;
+  margin-left: 13px;
   color: "#8C5CDD";
-  text-align: center;
   font-weight: bold;
-  font-family: Poppins;
+  font-family: "Gaegu", cursive;
+  vertical-align: middle;
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const SearchContainer = styled.div`
-  width: 33%;
-  text-align: right;
+  vertical-align: middle;
+  width: 50%;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
 `;
 
 export const Header: React.FC = () => {
@@ -41,15 +51,13 @@ export const Header: React.FC = () => {
       </SidebarButtonContainer>
       <TitleContainer>
         <Link to="/" style={{ textDecoration: "none", color: "#8C5CDD" }}>
-          <div>
-            go<span style={{ color: "#FFD600" }}>!</span>guma
-          </div>
+          고구마
         </Link>
       </TitleContainer>
       <SearchContainer>
-        <a href={`/search`}>
+        <Link to="/search">
           <img src={search} />
-        </a>
+        </Link>
       </SearchContainer>
       {toggleSidebar && (
         <>
