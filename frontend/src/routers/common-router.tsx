@@ -13,6 +13,7 @@ import { Ask } from "../pages/ask";
 import { Login } from "../pages/login";
 import MyPage from "../pages/my-page";
 import OAuth2Redirect from "../pages/oauth2-redirect";
+import { GogumaInfo } from "../pages/goguma-info";
 
 const commenRoutes = [
   {
@@ -34,6 +35,10 @@ const commenRoutes = [
   {
     path: "/search",
     component: <Search />,
+  },
+  {
+    path: "/goguma-info",
+    component: <GogumaInfo />,
   },
 ];
 
