@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { faBell, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import axios from "axios";
 import { addToken } from "../stores/userStore";
+import { BACKEND_URL } from "../constants";
+import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
 
 interface IParams {
   token: string;
@@ -14,20 +15,35 @@ interface IProps {
   userToken: IParams;
   addTokenLocal: (token: IParams) => void;
   onClick: () => void;
+  isMain: boolean;
 }
 
 interface IStyleProps {
   isActive: boolean;
 }
 
-const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick }: IProps) => {
+const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }: IProps) => {
   const [isUser, setIsUser] = useState(false);
+  const [userName, setUserName] = useState("");
   const [isActive, setIsActive] = useState(true);
   const localToken = localStorage.getItem("token");
 
   const onClickOut = () => {
     setIsActive(false);
     setTimeout(onClick, 300);
+  };
+
+  const getUser = async () => {
+    if (userToken.token) {
+      const {
+        data: { name },
+      } = await axios.get(`${BACKEND_URL}/users/me/`, {
+        headers: {
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+      setUserName(name);
+    }
   };
 
   useEffect(() => {
@@ -42,6 +58,19 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick }: IProps
     }
   }, [isUser, userToken]);
 
+  useEffect(() => {
+    getUser();
+  }, [userToken.token]);
+
+  useEffect(() => {
+    if (userName) {
+      setIsUser(true);
+    }
+    if (!userName) {
+      setIsUser(false);
+    }
+  }, [userName]);
+
   return (
     <OuterBackground>
       <SideContainer isActive={isActive}>
@@ -51,14 +80,9 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick }: IProps
               {isUser ? (
                 <>
                   <ImgBox>
-                    <FontAwesomeIcon icon={faUser} />
+                    <img src={veryhappy} width={53} height={53} />
                   </ImgBox>
-                  <UserName>김구마님</UserName>
-                  <BellIcon>
-                    <BellLink href={`/notification`}>
-                      <FontAwesomeIcon icon={faBell} />
-                    </BellLink>
-                  </BellIcon>
+                  <UserName>{userName} 님</UserName>
                 </>
               ) : (
                 <>
@@ -68,36 +92,45 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick }: IProps
                       <br /> 고구마를 즐겨보세요!
                     </NotUserColor>
                   </NotUserTitle>
-                  <UserLoginBtn href={"/login"}>
-                    <LoginBtn>로그인</LoginBtn>
-                  </UserLoginBtn>
-                  <BellIcon>
-                    <NotUserColor>
-                      <FontAwesomeIcon icon={faBell} />
-                    </NotUserColor>
-                  </BellIcon>
+                  <UserLoginBtn href={"/login"}>로그인</UserLoginBtn>
                 </>
               )}
             </UserBox>
             <MenuBox>
-              <span>메인페이지</span>
-              <span>인기글</span>
-              <span>최신글</span>
+              {isMain ? (
+                <span style={{ color: "#8c5cdd" }}>메인페이지</span>
+              ) : (
+                <span>
+                  <MenuLink href={`/`}>메인페이지</MenuLink>
+                </span>
+              )}
+              <span>
+                <MenuLink href={`/goguma-list/popular`}>인기글</MenuLink>
+              </span>
+              <span>
+                <MenuLink href={`/goguma-list/resent`}>최신글</MenuLink>
+              </span>
             </MenuBox>
             {isUser && (
-              <MenuBox>
-                <span>마이페이지</span>
-                <span>내가 쓴 글</span>
-                <span>댓글 단글</span>
-              </MenuBox>
+              <>
+                <MenuBorder />
+                <MenuBox>
+                  {isMain ? (
+                    <span>
+                      <MenuLink href={`/my-page`}>마이페이지</MenuLink>
+                    </span>
+                  ) : (
+                    <span style={{ color: "#8c5cdd" }}>마이페이지</span>
+                  )}
+                  <span>
+                    <MenuLink href={`/goguma-list/me`}>내가 쓴 글</MenuLink>
+                  </span>
+                </MenuBox>
+              </>
             )}
           </div>
         </SidebarMenu>
-        <OutBackground>
-          <OutBtn onClick={onClickOut}>
-            <FontAwesomeIcon icon={faTimes} style={{ color: "white", fontWeight: 300 }} />
-          </OutBtn>
-        </OutBackground>
+        <OutBackground onClick={onClickOut}></OutBackground>
       </SideContainer>
     </OuterBackground>
   );
@@ -169,9 +202,8 @@ const SidebarMenu = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  padding: 70px 0;
+
   box-sizing: border-box;
   animation: ${(props: IStyleProps) => (props.isActive ? "boxMoveOut" : "boxMoveIn")} 0.3s
     ease-in-out forwards;
@@ -201,8 +233,8 @@ const UserBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 140px;
-  border-bottom: 1px solid #d5d5d5;
+  margin-top: 120px;
+  margin-bottom: 100px;
 `;
 
 const MenuBox = styled.div`
@@ -210,34 +242,31 @@ const MenuBox = styled.div`
   font-size: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  height: 200px;
-  padding: 50px 0;
-  box-sizing: border-box;
-  span:first-child {
-    color: #8c5cdd;
+  span {
+    margin-bottom: 29px;
   }
+`;
+
+const MenuBorder = styled.div`
+  width: 74px;
+  height: 32px;
+  margin: 0 auto;
+  border-top: 0.75px solid #cecece;
 `;
 
 const ImgBox = styled.div`
   width: 80px;
   height: 80px;
-  color: grey;
   display: flex;
-  font-size: 21px;
   justify-content: center;
   align-items: center;
 `;
 
 const UserName = styled.span`
-  font-family: MaruBuri-Regular;
-  font-size: 14px;
+  font-family: "Gaegu", cursive;
+  font-size: 18px;
   margin-bottom: 30px;
-`;
-
-const BellIcon = styled.div`
-  margin-bottom: 50px;
 `;
 
 const NotUserTitle = styled.div`
@@ -249,27 +278,24 @@ const NotUserTitle = styled.div`
 `;
 
 const NotUserColor = styled.div`
-  color: #989898;
+  color: #8c5cdd;
+  line-height: 21px;
 `;
 
 const UserLoginBtn = styled.a`
   text-decoration: none;
   margin-bottom: 17px;
-`;
-
-const LoginBtn = styled.div`
   width: 92px;
   height: 35px;
   border-radius: 24px;
-  border: 1px solid #8c5cdd;
+  background-color: #8c5cdd;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 14px;
-  color: #8c5cdd;
-
-  text-decoration: none;
+  font-weight: 300;
+  color: white;
 `;
 
 const OutBackground = styled.div`
@@ -277,13 +303,7 @@ const OutBackground = styled.div`
   height: 100%;
 `;
 
-const OutBtn = styled.div`
-  font-size: 20px;
-  margin: 65px 20px;
-`;
-
-const BellLink = styled.a`
-  color: black;
+const MenuLink = styled.a`
   text-decoration: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  color: black;
 `;
