@@ -108,7 +108,7 @@ const MyPage = ({ userToken, addTokenLocal }: IProps) => {
         <MyPageLink href={`/goguma-list/me`}>
           <MyPageContent>내가 쓴 글</MyPageContent>
         </MyPageLink>
-        <MyPageLink href={`goguma-info`}>
+        <MyPageLink href={`/goguma-info`}>
           <MyPageContent>고구마는..</MyPageContent>
         </MyPageLink>
         <MyPageContent>
