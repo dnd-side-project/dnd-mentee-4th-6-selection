@@ -42,5 +42,5 @@ out/
 ### security ###
 /src/main/resources/application-oauth.*
 /src/test/resources/application-oauth.*
-/src/main/resources/application-real.*
-/src/test/resources/application-real.*
+/src/main/resources/application-real*.*
+/src/test/resources/application-real*.*
