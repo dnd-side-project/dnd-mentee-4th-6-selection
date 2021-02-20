@@ -9,19 +9,19 @@ import EditIcon from "@material-ui/icons/Edit";
 import fireguma from "../styles/img/icon_fireguma_purple.svg";
 import { Header } from "../components/main-header";
 
-const FAKE_RECENT_GOGUMA_DATA = [
-  { id: 1, title: "제 얘기좀 듣고 가세요;;" },
-  { id: 2, title: "니 알바 아니라는 남자친구, 헤어질까요?" },
-  { id: 3, title: "인생 역대급 인연을 만나고 있습니다..." },
-  { id: 4, title: "최준ㅋㅋㅋ영상아세요?" },
-  { id: 5, title: "눈치 없는 남자친구 ㅠ……어쩌죠" },
-];
+// const FAKE_RECENT_GOGUMA_DATA = [
+//   { id: 1, title: "제 얘기좀 듣고 가세요;;" },
+//   { id: 2, title: "니 알바 아니라는 남자친구, 헤어질까요?" },
+//   { id: 3, title: "인생 역대급 인연을 만나고 있습니다..." },
+//   { id: 4, title: "최준ㅋㅋㅋ영상아세요?" },
+//   { id: 5, title: "눈치 없는 남자친구 ㅠ……어쩌죠" },
+// ];
 
-const FAKE_BURNING_GOGUMA_DATA = [
-  { id: 1, title: "저 앞으로 연애 안합니다. 진 지 해 요." },
-  { id: 2, title: "공백 포함 30자만 입력 가능해서 이거 이상은 안보임." },
-  { id: 3, title: "인생 역대급 인연을 만나고 있습니다..." },
-];
+// const FAKE_BURNING_GOGUMA_DATA = [
+//   { id: 1, title: "저 앞으로 연애 안합니다. 진 지 해 요." },
+//   { id: 2, title: "공백 포함 30자만 입력 가능해서 이거 이상은 안보임." },
+//   { id: 3, title: "인생 역대급 인연을 만나고 있습니다..." },
+// ];
 
 const HomeContainer = styled.div`
   padding: 0 7% 7% 7%;
@@ -108,9 +108,9 @@ const SectionSeeMore = styled.span`
   float: right;
 `;
 
-const BurningGogumaList = styled.div``;
+// const BurningGogumaList = styled.div``;
 
-const RecentGogumaList = styled.div``;
+// const RecentGogumaList = styled.div``;
 
 export const Home: React.FC = () => {
   return (

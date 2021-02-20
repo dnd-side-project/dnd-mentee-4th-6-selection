@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
-import { Fab } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import icon_delete from "../styles/img/icon_delete.svg";
-
-interface IProps {
-  showComeBackDescription?: boolean;
-  activePageIndex: number;
-}
 
 export const Ask: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
