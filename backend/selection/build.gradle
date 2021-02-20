@@ -21,6 +21,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
+    implementation 'io.sentry:sentry-spring-boot-starter:1.7.30'
+    implementation 'io.sentry:sentry-logback:1.7.30'
 
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
