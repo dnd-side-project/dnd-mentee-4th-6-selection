@@ -10,9 +10,9 @@ import { GogumaBasket } from "../pages/goguma-basket";
 import { Search } from "../pages/search";
 import { GogumaListResent } from "../pages/goguma-list-resent";
 import { Ask } from "../pages/ask";
-import { Notification } from "../pages/notifications";
 import { Login } from "../pages/login";
 import OAuth2Redirect from "../pages/oauth2-redirect";
+import MyPage from "../pages/my-page";
 
 const commenRoutes = [
   {
@@ -43,8 +43,8 @@ const loggedInRoutes = [
     component: <Ask />,
   },
   {
-    path: "/notification",
-    component: <Notification />,
+    path: "/my-page",
+    component: <MyPage />,
   },
 ];
 
