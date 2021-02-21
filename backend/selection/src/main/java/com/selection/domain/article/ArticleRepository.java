@@ -21,7 +21,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             + "a.created_at as createdAt, a.author as author, "
             + "(SELECT COUNT(*) FROM gogumas as g WHERE g.article_id = a.id) as numOfGogumas "
             + "FROM articles as a "
-            + "WHERE a.author = :author "
+            + "WHERE a.author = :author"
     )
-    List<ArticleSummaryProjection> findAllByAuthor(String author, Pageable pageable);
+    List<ArticleSummaryProjection> findAllByAuthor(@Param("author") String author, Pageable pageable);
 }
