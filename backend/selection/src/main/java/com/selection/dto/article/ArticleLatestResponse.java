@@ -3,16 +3,14 @@ package com.selection.dto.article;
 import com.selection.domain.article.Article;
 import java.time.LocalDateTime;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class ArticleLatestResponse {
 
-    private Long id;
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final LocalDateTime createdAt;
 
     public ArticleLatestResponse(Article article) {
         this.id = article.getId();

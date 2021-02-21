@@ -14,8 +14,8 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor
+@Getter
 public class ArticleRequest {
 
     @ApiModelProperty(notes = "제목(최소 1자이상, 최대 30자이하)", required = true, example = "제목")

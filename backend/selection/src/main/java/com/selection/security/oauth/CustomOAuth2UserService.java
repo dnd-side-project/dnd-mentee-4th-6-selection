@@ -1,8 +1,8 @@
 package com.selection.security.oauth;
 
 import com.selection.domain.user.User;
-import com.selection.dto.OAuthAttributes;
 import com.selection.domain.user.UserRepository;
+import com.selection.dto.OAuthAttributes;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String userNameAttributeName = oAuth2UserRequest.getClientRegistration()
             .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
-
         Map<String, Object> userAttributes = new HashMap<>(oAuth2User.getAttributes());
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
@@ -40,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = saveOrUpdate(attributes);
 
         return new DefaultOAuth2User(
-            Collections.singletonList(new SimpleGrantedAuthority(user.getRoleKey())),
+            Collections.singletonList(new SimpleGrantedAuthority(user.getRoleAuthority())),
             attributes.getAttributes(),
             attributes.getNameAttributeKey()
         );

@@ -12,6 +12,7 @@ public class GogumaService {
 
     private final ArticleService articleService;
 
+    private final GogumaRepository gogumaRepository;
     @Transactional
     public void create(Long articleId, String author, GogumaRequest gogumaRequest) {
         Article article = articleService.findArticleById(articleId);
@@ -21,7 +22,7 @@ public class GogumaService {
     @Transactional
     public void modify(Long articleId, Long gogumaId, GogumaRequest gogumaRequest) {
         Article article = articleService.findArticleById(articleId);
-        article.modifyGoguma(gogumaId,gogumaRequest);
+        article.modifyGoguma(gogumaId, gogumaRequest);
     }
 
     @Transactional
@@ -33,6 +34,6 @@ public class GogumaService {
     @Transactional
     public void delete(Long articleId, Long gogumaId) {
         Article article = articleService.findArticleById(articleId);
-        article.deleteGoguma(gogumaId);
+        gogumaRepository.deleteById(gogumaId);
     }
 }

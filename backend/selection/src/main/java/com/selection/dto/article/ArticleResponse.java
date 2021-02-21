@@ -25,10 +25,10 @@ public class ArticleResponse {
     private Long numOfShared;
 
     @ApiModelProperty(notes = "선택지", required = true)
-    private List<ChoiceResponse> choices = new ArrayList<>();
+    private final List<ChoiceResponse> choices = new ArrayList<>();
 
     @ApiModelProperty(notes = "조회자가 선택한 선택지 번호", required = true, example = "-1")
-    private Long votedChoiceId = -1L;
+    private Long votedChoiceId;
     @ApiModelProperty(notes = "작성일자", required = true)
     private LocalDateTime createdAt;
 

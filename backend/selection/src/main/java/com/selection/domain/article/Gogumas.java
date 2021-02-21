@@ -3,7 +3,6 @@ package com.selection.domain.article;
 import com.selection.dto.goguma.GogumaRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;

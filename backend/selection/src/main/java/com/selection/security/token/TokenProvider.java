@@ -32,40 +32,44 @@ public class TokenProvider {
 
     @SuppressWarnings("unchecked")
     public String createToken(Authentication authentication) {
-        DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
+        DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
+        Date expiryDate = new Date(
+            now.getTime() + appProperties.getAuth().getTokenExpirationMsec()
+        );
 
         String email;
-        AuthProvider authProvider = (AuthProvider)defaultOAuth2User.getAttributes().get("social_type");
+        AuthProvider authProvider = (AuthProvider) defaultOAuth2User.getAttributes()
+            .get("social_type");
 
         if (authProvider == AuthProvider.KAKAO) {
-            email = (String)((Map<String, Object>)defaultOAuth2User.getAttributes().get("kakao_account")).get("email");
+            email = (String) ((Map<String, Object>) defaultOAuth2User.getAttributes()
+                .get("kakao_account")).get("email");
         } else {
-            email = (String)defaultOAuth2User.getAttributes().get("email");
+            email = (String) defaultOAuth2User.getAttributes().get("email");
         }
 
         return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, getTokenSecret())
-                .compact();
+            .setSubject(email)
+            .setIssuedAt(now)
+            .setExpiration(expiryDate)
+            .signWith(SignatureAlgorithm.HS512, getTokenSecret())
+            .compact();
     }
 
-    public String getEmailFromToken(String token) {
+    public String getEmailFromToken(String jwtToken) {
         Claims claims = Jwts.parser()
-                .setSigningKey(getTokenSecret())
-                .parseClaimsJws(token)
-                .getBody();
+            .setSigningKey(getTokenSecret())
+            .parseClaimsJws(jwtToken)
+            .getBody();
 
         return claims.getSubject();
     }
 
-    public boolean validateToken(String authToken) {
+    public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(getTokenSecret()).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(getTokenSecret()).parseClaimsJws(jwtToken);
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");
