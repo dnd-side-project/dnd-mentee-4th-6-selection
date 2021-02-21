@@ -28,14 +28,14 @@ export const GogumaCard = ({
       <GogumaContentBox>
         <GogumaTitle>{title.length >= 25 ? `${title.slice(0, 25)}...` : title}</GogumaTitle>
         <GogumaContent>
-          {content.length >= 60 ? `${content.slice(0, 60)}...` : content}
+          {content.length >= 60 ? `${content.slice(0, 55)}...` : content}
         </GogumaContent>
-        <GogumaContent>
-          <GogumaUser>by. {user}</GogumaUser>
-          <span>
+        <div>
+          <GogumaUser>{user}</GogumaUser>
+          <GogumaDate>
             <DisplayTime createdAt={new Date(createdAt)} />
-          </span>
-        </GogumaContent>
+          </GogumaDate>
+        </div>
       </GogumaContentBox>
     </GogumaCardBox>
   );
@@ -43,9 +43,9 @@ export const GogumaCard = ({
 
 const GogumaCardBox = styled.div`
   width: 100%;
-  max-width: 540px;
   display: flex;
   padding: 15px 0;
+  border-bottom: 2px solid #f2f2f2;
 `;
 
 const GogumaEmoji = styled.div`
@@ -77,10 +77,21 @@ const GogumaContent = styled.div`
   font-weight: 300;
   font-size: 12px;
   color: #595959;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   padding-right: 5px;
 `;
 
 const GogumaUser = styled.span`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 300;
+  font-size: 12px;
+  color: #989898;
   margin-right: 10px;
+`;
+
+const GogumaDate = styled.span`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 300;
+  font-size: 12px;
+  color: #989898;
 `;

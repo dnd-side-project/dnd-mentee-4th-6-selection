@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
 import { FAKE_GOGUMA_DATA } from "../constants";
-import draft_guma from "../styles/img/icon_draft_guma.svg";
+import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
 
 interface IData {
   id: number;
@@ -15,7 +15,7 @@ interface IData {
   responseLength: number;
 }
 
-export const GogumaListResent = () => {
+export const GogumaListPopular = () => {
   const [page, setPage] = useState(1);
   const [dataSlice, setDateSlice] = useState<IData[]>(
     FAKE_GOGUMA_DATA.goguma
@@ -47,10 +47,10 @@ export const GogumaListResent = () => {
   return (
     <ListContainer onScroll={scroll}>
       <Helmet>
-        <title>갓 구운 고구마 - 고구마</title>
+        <title>불타는 고구마 - 고구마</title>
       </Helmet>
-      <ContentHeader isPrev={true} isNext={false} title={"갓 구운 고구마"} />
-      <MainSubTitle>&quot;금방 등록된 따끈따끈한 게시글&quot;</MainSubTitle>
+      <ContentHeader isPrev={true} isNext={false} title={"불타는 고구마"} />
+      <MainSubTitle>&quot;실시간으로 불타오르는 인기 게시글&quot;</MainSubTitle>
       <ListBox>
         {dataSlice.map(goguma => (
           <div key={goguma.id}>
@@ -61,7 +61,7 @@ export const GogumaListResent = () => {
               createdAt={goguma.createdAt}
               responseLength={goguma.responseLength}
             >
-              <img src={draft_guma} width={50} height={50} />
+              <img src={icon_fireguma} width={50} height={50} />
             </GogumaCard>
           </div>
         ))}

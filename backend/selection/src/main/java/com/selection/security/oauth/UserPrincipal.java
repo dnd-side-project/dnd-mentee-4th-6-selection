@@ -1,5 +1,6 @@
-package com.selection.security;
+package com.selection.security.oauth;
 
+import com.selection.domain.user.Role;
 import com.selection.domain.user.User;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,25 +14,27 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class UserPrincipal implements OAuth2User, UserDetails {
     private Long id;
     private String email;
-    private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String email, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
-        this.password = password;
         this.authorities = authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
     }
 
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                singletonList(new SimpleGrantedAuthority(Role.USER.getKey()));
 
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),
-                user.getPassword(),
                 authorities
         );
     }
@@ -48,11 +51,6 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     public String getEmail() {
         return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.selection.repository;
+package com.selection.domain.user;
 
 import com.selection.domain.user.User;
 import java.util.Optional;

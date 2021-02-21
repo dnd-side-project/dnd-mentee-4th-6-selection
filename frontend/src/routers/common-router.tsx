@@ -11,9 +11,13 @@ import { Search } from "../pages/search";
 import { GogumaListResent } from "../pages/goguma-list-resent";
 import { Ask } from "../pages/ask";
 import { AskSuccess } from "../pages/ask-success";
-import { Notification } from "../pages/notifications";
 import { Login } from "../pages/login";
+import MyPage from "../pages/my-page";
 import OAuth2Redirect from "../pages/oauth2-redirect";
+import { GogumaInfo } from "../pages/goguma-info";
+import { GogumaListPopular } from "../pages/goguma-list-popular";
+import { GogumaListHonor } from "../pages/goguma-list-honor";
+import { GogumaListMe } from "../pages/goguma-list-me";
 
 const commenRoutes = [
   {
@@ -33,8 +37,20 @@ const commenRoutes = [
     component: <GogumaListResent />,
   },
   {
+    path: "/goguma-list/popular",
+    component: <GogumaListPopular />,
+  },
+  {
+    path: "/goguma-list/honor",
+    component: <GogumaListHonor />,
+  },
+  {
     path: "/search",
     component: <Search />,
+  },
+  {
+    path: "/goguma-info",
+    component: <GogumaInfo />,
   },
 ];
 
@@ -48,8 +64,12 @@ const loggedInRoutes = [
     component: <AskSuccess />,
   },
   {
-    path: "/notification",
-    component: <Notification />,
+    path: "/my-page",
+    component: <MyPage />,
+  },
+  {
+    path: "/goguma-list/me",
+    component: <GogumaListMe />,
   },
 ];
 

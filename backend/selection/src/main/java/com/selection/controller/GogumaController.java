@@ -2,7 +2,7 @@ package com.selection.controller;
 
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
-import com.selection.service.article.GogumaService;
+import com.selection.domain.article.GogumaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;

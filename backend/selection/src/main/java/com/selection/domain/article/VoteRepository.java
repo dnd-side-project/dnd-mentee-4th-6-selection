@@ -1,4 +1,4 @@
-package com.selection.repository;
+package com.selection.domain.article;
 
 import com.selection.domain.article.Vote;
 import java.util.Optional;

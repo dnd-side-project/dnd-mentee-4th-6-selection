@@ -61,7 +61,7 @@ export const Header: React.FC = () => {
       </SearchContainer>
       {toggleSidebar && (
         <>
-          <Sidebar onClick={sidebarOnClick} />
+          <Sidebar onClick={sidebarOnClick} isMain={true} />
         </>
       )}
     </Container>
