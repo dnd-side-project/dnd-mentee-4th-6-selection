@@ -1,21 +1,23 @@
 package com.selection.dto;
 
-import com.selection.security.oauth.AuthProvider;
 import com.selection.domain.user.Role;
 import com.selection.domain.user.User;
+import com.selection.security.oauth.AuthProvider;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class OAuthAttributes {
-    public static final String SOCIAL_TYPE = "social_type";
 
-    private Map<String, Object> attributes;
-    private String nameAttributeKey;
-    private String email;
+    public static final String SOCIAL_TYPE = "social_type";
+    private final Map<String, Object> attributes;
+    private final String nameAttributeKey;
+    private final String email;
+
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String email, AuthProvider authProvider) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String email,
+        AuthProvider authProvider) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.email = email;
@@ -60,7 +62,7 @@ public class OAuthAttributes {
         Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
         return OAuthAttributes.builder()
-            .email((String)response.get("email"))
+            .email((String) response.get("email"))
             .attributes(attributes)
             .nameAttributeKey(userNameAttributeName)
             .authProvider(AuthProvider.KAKAO)
@@ -68,7 +70,7 @@ public class OAuthAttributes {
     }
 
     public User toEntity() {
-        AuthProvider authProvider = (AuthProvider)attributes.get(SOCIAL_TYPE);
+        AuthProvider authProvider = (AuthProvider) attributes.get(SOCIAL_TYPE);
         return User.builder()
             .email(email)
             .provider(authProvider)

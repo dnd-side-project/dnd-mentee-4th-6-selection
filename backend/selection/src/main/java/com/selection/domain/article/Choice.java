@@ -48,8 +48,9 @@ public class Choice extends BaseEntity {
     }
 
     protected void vote(Vote vote) {
-        if (!existVoteByAuthor(vote.getAuthor()))
+        if (!existVoteByAuthor(vote.getAuthor())) {
             votes.add(vote);
+        }
     }
 
     protected void cancelVote(String author) {

@@ -5,6 +5,9 @@ import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
+import com.selection.dto.article.ArticleSummaryProjection;
+import com.selection.dto.article.ArticleSummaryResponse;
+import com.selection.dto.goguma.GogumaResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +23,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final VoteRepository voteRepository;
-
+    private final ChoiceRepository choiceRepository;
+    private final GogumaRepository gogumaRepository;
     public Article findArticleById(Long articleId) {
         return articleRepository.findById(articleId)
             .orElseThrow(
@@ -40,24 +44,26 @@ public class ArticleService {
     }
 
     @Transactional
-    public Long modify(Long articleId, ArticleRequest requestDto) {
+    public void modify(Long articleId, ArticleRequest requestDto) {
         Article article = findArticleById(articleId);
 
         article.modifyTitle(requestDto.getTitle());
         article.modifyContent(requestDto.getContent());
         article.modifyChoices(requestDto.getChoices());
-
-        return article.getId();
     }
 
     @Transactional
-    public ArticleResponse lookUp(Long id, String author) {
-        return new ArticleResponse(findArticleById(id), findChoiceIdByVotedAuthor(author));
+    public ArticleResponse lookUp(Long articleId, String author) {
+        return new ArticleResponse(findArticleById(articleId), findChoiceIdByVotedAuthor(author));
     }
 
     @Transactional
-    public void delete(Long id) {
-        articleRepository.delete(findArticleById(id));
+    public void delete(Long articleId) {
+        gogumaRepository.deleteAllByInArticleId(articleId);
+        List<Long> choiceIds = choiceRepository.findChoiceIdsByArticle(articleId);
+        voteRepository.deleteAllByInQuery(choiceIds);
+        choiceRepository.deleteAllInByInQuery(choiceIds);
+        articleRepository.deleteById(articleId);
     }
 
     @Transactional
@@ -73,6 +79,13 @@ public class ArticleService {
 
         return latestArticles.stream()
             .map(ArticleLatestResponse::new)
+            .collect(Collectors.toList());
+    }
+
+    public List<ArticleSummaryResponse> lookUpMyArticles(String author, PageRequest pageRequest) {
+        List<ArticleSummaryProjection> pagesWithMyArticles =
+            articleRepository.findAllByAuthor(author, pageRequest.of());
+        return pagesWithMyArticles.stream().map(ArticleSummaryResponse::new)
             .collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
 package com.selection.domain.user;
 
-import com.selection.security.oauth.AuthProvider;
 import com.selection.domain.BaseEntity;
+import com.selection.security.oauth.AuthProvider;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,11 +23,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class User extends BaseEntity {
 
-    public static final String DEFAULT_NAME = "익명의 사용자";
-
-    @Column
-    private String name;
-
     @Email
     @Column(nullable = false)
     private String email;
@@ -41,15 +36,14 @@ public class User extends BaseEntity {
     private Role role;
 
     @Builder
-    public User(String name, @Email String email,
+    public User(@Email String email,
         @NotNull AuthProvider provider, Role role) {
-        this.name = name;
         this.email = email;
         this.provider = provider;
         this.role = role;
     }
 
-    public String getRoleKey() {
-        return this.role.getKey();
+    public String getRoleAuthority() {
+        return this.role.getAuthority();
     }
 }

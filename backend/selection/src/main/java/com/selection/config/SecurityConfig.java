@@ -1,11 +1,11 @@
 package com.selection.config;
 
 import com.selection.security.RestAuthenticationEntryPoint;
-import com.selection.security.token.TokenAuthenticationFilter;
 import com.selection.security.oauth.CustomOAuth2UserService;
 import com.selection.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.selection.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.selection.security.oauth.OAuth2AuthenticationSuccessHandler;
+import com.selection.security.token.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,51 +67,51 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .cors()
             .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-                .csrf()
-                .disable()
-                .formLogin()
-                .disable()
-                .httpBasic()
-                .disable()
-                .headers()
-                .frameOptions()
-                .disable()
+            .csrf()
+            .disable()
+            .formLogin()
+            .disable()
+            .httpBasic()
+            .disable()
+            .headers()
+            .frameOptions()
+            .disable()
             .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+            .exceptionHandling()
+            .authenticationEntryPoint(new RestAuthenticationEntryPoint())
             .and()
-                .authorizeRequests()
-                .antMatchers("/",
-                    "/articles/**",
-                    "/error",
-                    "/favicon.ico",
-                    "/**/*.png",
-                    "/**/*.gif",
-                    "/**/*.svg",
-                    "/**/*.jpg",
-                    "/**/*.html",
-                    "/**/*.css",
-                    "/**/*.js").permitAll()
-                .antMatchers("/auth/**", "/oauth2/**").permitAll()
-                .antMatchers("/profile").permitAll()
-                .anyRequest().authenticated()
+            .authorizeRequests()
+            .antMatchers("/",
+                "/articles/**",
+                "/error",
+                "/favicon.ico",
+                "/**/*.png",
+                "/**/*.gif",
+                "/**/*.svg",
+                "/**/*.jpg",
+                "/**/*.html",
+                "/**/*.css",
+                "/**/*.js").permitAll()
+            .antMatchers("/auth/**", "/oauth2/**").permitAll()
+            .antMatchers("/profile").permitAll()
+            .anyRequest().permitAll()
             .and()
-                .oauth2Login()
-                .authorizationEndpoint()
-                .baseUri("/oauth2/authorize")
-                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+            .oauth2Login()
+            .authorizationEndpoint()
+            .baseUri("/oauth2/authorize")
+            .authorizationRequestRepository(cookieAuthorizationRequestRepository())
             .and()
-                .redirectionEndpoint()
-                .baseUri("/oauth2/callback/*")
+            .redirectionEndpoint()
+            .baseUri("/oauth2/callback/*")
             .and()
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService)
+            .userInfoEndpoint()
+            .userService(customOAuth2UserService)
             .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler)
-                .failureHandler(oAuth2AuthenticationFailureHandler);
+            .successHandler(oAuth2AuthenticationSuccessHandler)
+            .failureHandler(oAuth2AuthenticationFailureHandler);
 
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

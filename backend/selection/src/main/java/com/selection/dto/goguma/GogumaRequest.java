@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GogumaRequest {
 
-    @ApiModelProperty(notes="고구마 타입", required = true, example = "HAPPY")
+    @ApiModelProperty(notes = "고구마 타입", required = true, example = "HAPPY")
     private GogumaType type;
 
-    @ApiModelProperty(notes="쪽지 내용(최대 30자이하)", required = true, example = "힘내세요!")
+    @ApiModelProperty(notes = "쪽지 내용(최대 30자이하)", required = true, example = "힘내세요!")
     @NotNull
-    @Size(max=30, message = "고구마 쪽지 내용은 최대 30자이하입니다.")
+    @Size(max = 30, message = "고구마 쪽지 내용은 최대 30자이하입니다.")
     private String message;
 
     public GogumaRequest(
@@ -29,7 +29,8 @@ public class GogumaRequest {
         this.message = message;
     }
 
-    public Goguma toEntity(@NotEmpty(message = "작성자는 필수입니다.") String author, @NotNull(message = "속한 게시글은 필수입니다.") Article article) {
-        return new Goguma(message, type, author,article);
+    public Goguma toEntity(@NotEmpty(message = "작성자는 필수입니다.") String author,
+        @NotNull(message = "속한 게시글은 필수입니다.") Article article) {
+        return new Goguma(message, type, author, article);
     }
 }

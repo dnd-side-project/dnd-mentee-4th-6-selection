@@ -6,36 +6,34 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
-    private Long id;
-    private String email;
-    private Collection<? extends GrantedAuthority> authorities;
+
+    private final Long id;
+    private final String email;
+    private final Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String email,
+        Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.authorities = authorities;
     }
 
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority(Role.USER.getKey()));
+            singletonList(new SimpleGrantedAuthority(Role.USER.getAuthority()));
 
         return new UserPrincipal(
-                user.getId(),
-                user.getEmail(),
-                authorities
+            user.getId(),
+            user.getEmail(),
+            authorities
         );
     }
 
@@ -43,6 +41,11 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         userPrincipal.setAttributes(attributes);
         return userPrincipal;
+    }
+
+    @Override
+    public String getPassword() {
+        return Strings.EMPTY;
     }
 
     public Long getId() {

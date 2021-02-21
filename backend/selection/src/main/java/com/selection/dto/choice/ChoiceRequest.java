@@ -8,7 +8,6 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor
 @Getter
 public class ChoiceRequest {

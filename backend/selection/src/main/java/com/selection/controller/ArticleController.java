@@ -1,9 +1,9 @@
 package com.selection.controller;
 
+import com.selection.domain.article.ArticleService;
 import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.domain.article.ArticleService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
