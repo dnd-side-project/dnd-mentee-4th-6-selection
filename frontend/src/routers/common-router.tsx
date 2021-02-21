@@ -10,6 +10,7 @@ import { GogumaBasket } from "../pages/goguma-basket";
 import { Search } from "../pages/search";
 import { GogumaListResent } from "../pages/goguma-list-resent";
 import { Ask } from "../pages/ask";
+import { AskSuccess } from "../pages/ask-success";
 import { Notification } from "../pages/notifications";
 import { Login } from "../pages/login";
 import OAuth2Redirect from "../pages/oauth2-redirect";
@@ -41,6 +42,10 @@ const loggedInRoutes = [
   {
     path: "/ask",
     component: <Ask />,
+  },
+  {
+    path: "/ask-success",
+    component: <AskSuccess />,
   },
   {
     path: "/notification",
