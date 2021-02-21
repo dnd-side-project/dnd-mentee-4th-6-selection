@@ -2,7 +2,7 @@ package com.selection.controller;
 
 import com.selection.dto.PageRequest;
 import com.selection.dto.notice.NoticeResponse;
-import com.selection.service.notice.NoticeService;
+import com.selection.domain.notice.NoticeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

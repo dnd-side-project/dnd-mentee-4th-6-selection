@@ -1,4 +1,4 @@
-package com.selection.repository;
+package com.selection.domain.notice;
 
 import com.selection.domain.notice.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;

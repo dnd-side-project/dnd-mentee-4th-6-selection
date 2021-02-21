@@ -13,7 +13,7 @@ import com.selection.domain.article.Article;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.choice.ChoiceRequest;
-import com.selection.repository.ArticleRepository;
+import com.selection.domain.article.ArticleRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

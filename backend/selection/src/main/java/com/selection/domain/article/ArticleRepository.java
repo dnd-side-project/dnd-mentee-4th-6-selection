@@ -1,4 +1,4 @@
-package com.selection.repository;
+package com.selection.domain.article;
 
 import com.selection.domain.article.Article;
 import org.springframework.data.domain.Page;

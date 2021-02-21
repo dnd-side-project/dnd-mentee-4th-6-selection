@@ -1,8 +1,6 @@
-package com.selection.security;
+package com.selection.domain.user;
 
-import com.selection.domain.user.User;
-import com.selection.exception.ResourceNotFoundException;
-import com.selection.repository.UserRepository;
+import com.selection.security.oauth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,14 +21,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email : " + email)
-        );
-        return UserPrincipal.create(user);
-    }
-
-    @Transactional
-    public UserDetails loadUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("User", "id", id)
         );
         return UserPrincipal.create(user);
     }

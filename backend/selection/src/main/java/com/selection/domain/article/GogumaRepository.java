@@ -1,4 +1,4 @@
-package com.selection.repository;
+package com.selection.domain.article;
 
 import com.selection.domain.article.Goguma;
 import java.util.Optional;

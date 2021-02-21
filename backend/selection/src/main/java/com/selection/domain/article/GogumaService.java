@@ -1,6 +1,5 @@
-package com.selection.service.article;
+package com.selection.domain.article;
 
-import com.selection.domain.article.Article;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
 import javax.transaction.Transactional;

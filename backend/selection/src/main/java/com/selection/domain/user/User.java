@@ -1,14 +1,11 @@
 package com.selection.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.selection.domain.AuthProvider;
+import com.selection.security.oauth.AuthProvider;
+import com.selection.domain.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -24,49 +21,35 @@ import lombok.NoArgsConstructor;
     @UniqueConstraint(columnNames = "email")
 })
 @Getter
-public class User {
+public class User extends BaseEntity {
 
     public static final String DEFAULT_NAME = "익명의 사용자";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Email
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = true)
-    private String imageUrl;
-
-    @Column(nullable = false)
-    private Boolean emailVerified = false;
-
-    @JsonIgnore
-    private String password;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
-    private String providerId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     @Builder
-    public User(String name, String email, AuthProvider provider, String providerId) {
+    public User(String name, @Email String email,
+        @NotNull AuthProvider provider, Role role) {
         this.name = name;
         this.email = email;
         this.provider = provider;
-        this.providerId = providerId;
+        this.role = role;
     }
 
-    public void changeName(String name) {
-        this.name = name;
-    }
-
-    public void setImageUrl(String url) {
-        this.imageUrl = url;
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 }
