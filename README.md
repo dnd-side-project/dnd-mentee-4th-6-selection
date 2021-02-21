@@ -7,7 +7,6 @@
 
 | 역할    	    | 닉네임                                |기술 스택|
 |--------------|---------------------------------------|:--------:|
-| 백엔드  	    | [히히](https://github.com/yelimkim98)  |<img src="https://i.imgur.com/dT20gUl.png" alt="Java" width="100px"> <img src="https://i.imgur.com/WSy08O8.png" alt="Spring Boot" width="100px">|
 | 백엔드  	    | [애플](https://github.com/WonJongWoon) |<img src="https://i.imgur.com/dT20gUl.png" alt="Java" width="100px"> <img src="https://i.imgur.com/WSy08O8.png" alt="Spring Boot" width="100px"> |
 | 프론트엔드 	| [노말](https://github.com/ryujeongsang)|<img src="https://i.imgur.com/C7xsSB3.png" alt="TS" width="100px"> <img src="https://i.imgur.com/HnkFUL2.png" alt="React" width="100px">|
 | 프론트엔드 	| [나무](https://github.com/wooooooood)  |<img src="https://i.imgur.com/C7xsSB3.png" alt="TS" width="100px"> <img src="https://i.imgur.com/HnkFUL2.png" alt="React" width="100px">|
