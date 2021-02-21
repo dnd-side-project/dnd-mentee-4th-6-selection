@@ -1,9 +1,7 @@
-package com.selection.service.notice;
+package com.selection.domain.notice;
 
-import com.selection.domain.notice.Notice;
 import com.selection.dto.PageRequest;
 import com.selection.dto.notice.NoticeResponse;
-import com.selection.repository.NoticeReposiotry;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;

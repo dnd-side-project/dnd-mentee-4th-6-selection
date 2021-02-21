@@ -1,14 +1,10 @@
-package com.selection.service.article;
+package com.selection.domain.article;
 
 
-import com.selection.domain.article.Article;
-import com.selection.domain.article.Vote;
 import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
-import com.selection.repository.ArticleRepository;
-import com.selection.repository.VoteRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

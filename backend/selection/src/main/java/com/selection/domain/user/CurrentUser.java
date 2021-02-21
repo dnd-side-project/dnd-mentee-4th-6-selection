@@ -1,4 +1,4 @@
-package com.selection.security;
+package com.selection.domain.user;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

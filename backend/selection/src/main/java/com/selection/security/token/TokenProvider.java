@@ -1,6 +1,7 @@
-package com.selection.security;
+package com.selection.security.token;
 
 import com.selection.config.AppProperties;
+import com.selection.security.oauth.AuthProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -9,48 +10,62 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import java.util.Date;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.stereotype.Component;
 
-@Service
+@RequiredArgsConstructor
+@Component
 public class TokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-    private AppProperties appProperties;
+    private final AppProperties appProperties;
 
-    public TokenProvider(AppProperties appProperties) {
-        this.appProperties = appProperties;
+    private String getTokenSecret() {
+        return appProperties.getAuth().getTokenSecret();
     }
 
+    @SuppressWarnings("unchecked")
     public String createToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
+        String email;
+        AuthProvider authProvider = (AuthProvider)defaultOAuth2User.getAttributes().get("social_type");
+
+        if (authProvider == AuthProvider.KAKAO) {
+            email = (String)((Map<String, Object>)defaultOAuth2User.getAttributes().get("kakao_account")).get("email");
+        } else {
+            email = (String)defaultOAuth2User.getAttributes().get("email");
+        }
+
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
-                .setIssuedAt(new Date())
+                .setSubject(email)
+                .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+                .signWith(SignatureAlgorithm.HS512, getTokenSecret())
                 .compact();
     }
 
-    public Long getUserIdFromToken(String token) {
+    public String getEmailFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(appProperties.getAuth().getTokenSecret())
+                .setSigningKey(getTokenSecret())
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return claims.getSubject();
     }
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(getTokenSecret()).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");

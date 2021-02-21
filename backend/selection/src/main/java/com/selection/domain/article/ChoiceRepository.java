@@ -1,4 +1,4 @@
-package com.selection.repository;
+package com.selection.domain.article;
 
 import com.selection.domain.article.Choice;
 import org.springframework.data.jpa.repository.JpaRepository;
