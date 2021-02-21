@@ -296,7 +296,7 @@ export const FAKE_GOGUMA_DATA = {
       user: "최철호",
       title: "여러분들 이게 진짜 맞나요..?",
       content: `앞으로 제 사전에 연애는 없어요, 왜냐구요? 말도 마세요 앞으로 제 사전에 연애는 없어요, 왜냐구요? 텍스트 텍스트 텍스트..!`,
-      createdAt: "2021-02-15 18:33:00",
+      createdAt: "2019-12-07 18:33:00",
       responseLength: 2,
     },
     {

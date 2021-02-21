@@ -10,13 +10,9 @@ export const DisplayTime = ({ createdAt }: IProps) => {
   const minuteDiff = Math.ceil((dateNow.getTime() - createdAt.getTime()) / (1000 * 60));
   const hourDiff = Math.ceil((dateNow.getTime() - createdAt.getTime()) / (1000 * 60 * 60));
   const dayDiff = Math.ceil((dateNow.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
-  const monthDiff =
-    (dateNow.getFullYear() - createdAt.getFullYear()) * 12 +
-    dateNow.getMonth() -
-    createdAt.getMonth();
   return (
     <>
-      {secondDiff < 120
+      {secondDiff < 60
         ? `방금전`
         : minuteDiff < 60
         ? `${minuteDiff}분전`
@@ -24,9 +20,11 @@ export const DisplayTime = ({ createdAt }: IProps) => {
         ? `${hourDiff}시간전`
         : dayDiff < 30
         ? `${dayDiff}일전`
-        : monthDiff < 12
-        ? `${monthDiff}달전`
-        : `${Math.floor(monthDiff / 12)}년전`}
+        : `${createdAt.getFullYear().toString().slice(2, 4)}. ${
+            createdAt.getMonth() + 1 < 10
+              ? `0${createdAt.getMonth() + 1}`
+              : createdAt.getMonth() + 1
+          }. ${createdAt.getDate() + 1 < 10 ? `0${createdAt.getDate()}` : createdAt.getDate()}`}
     </>
   );
 };

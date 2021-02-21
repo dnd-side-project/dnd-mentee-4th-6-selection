@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
 import { FAKE_GOGUMA_DATA } from "../constants";
-import draft_guma from "../styles/img/icon_draft_guma.svg";
+import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
 
 interface IData {
   id: number;
@@ -15,7 +15,7 @@ interface IData {
   responseLength: number;
 }
 
-export const GogumaListResent = () => {
+export const GogumaListMe = () => {
   const [page, setPage] = useState(1);
   const [dataSlice, setDateSlice] = useState<IData[]>(
     FAKE_GOGUMA_DATA.goguma
@@ -47,23 +47,21 @@ export const GogumaListResent = () => {
   return (
     <ListContainer onScroll={scroll}>
       <Helmet>
-        <title>갓 구운 고구마 - 고구마</title>
+        <title>내가 쓴 글 - 고구마</title>
       </Helmet>
-      <ContentHeader isPrev={true} isNext={false} title={"갓 구운 고구마"} />
-      <MainSubTitle>&quot;금방 등록된 따끈따끈한 게시글&quot;</MainSubTitle>
+      <ContentHeader isPrev={true} isNext={false} title={"내가 쓴 글"} />
       <ListBox>
         {dataSlice.map(goguma => (
-          <div key={goguma.id}>
-            <GogumaCard
-              title={goguma.title}
-              content={goguma.content}
-              user={goguma.user}
-              createdAt={goguma.createdAt}
-              responseLength={goguma.responseLength}
-            >
-              <img src={draft_guma} width={50} height={50} />
-            </GogumaCard>
-          </div>
+          <GogumaCard
+            key={goguma.id}
+            title={goguma.title}
+            content={goguma.content}
+            user={goguma.user}
+            createdAt={goguma.createdAt}
+            responseLength={goguma.responseLength}
+          >
+            <img src={icon_fireguma} width={50} height={50} />
+          </GogumaCard>
         ))}
       </ListBox>
     </ListContainer>
@@ -83,22 +81,6 @@ const ListContainer = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-`;
-
-const MainSubTitle = styled.div`
-  width: 354px;
-  @media (max-width: 1024px) {
-    width: 100vw;
-    margin: 0;
-  }
-  background-color: #f7f7f7;
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 12px;
-  color: #5f5f5f;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ListBox = styled.div`
