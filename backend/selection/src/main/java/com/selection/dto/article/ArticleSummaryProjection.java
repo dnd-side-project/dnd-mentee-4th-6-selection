@@ -1,12 +1,13 @@
 package com.selection.dto.article;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public interface ArticleSummaryProjection {
-    Long getId();
+    BigInteger getId();
     String getTitle();
     String getContent();
-    String getAuthor();
-    Long getNumOfGogumas();
     Timestamp getCreatedAt();
+    String getUserId();
+    BigInteger getNumOfGogumas();
 }

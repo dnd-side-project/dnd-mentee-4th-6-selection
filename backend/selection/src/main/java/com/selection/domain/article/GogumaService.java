@@ -2,6 +2,8 @@ package com.selection.domain.article;
 
 import com.selection.domain.notification.Notification;
 import com.selection.domain.notification.NotificationService;
+import com.selection.domain.user.User;
+import com.selection.domain.user.UserService;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
 import javax.transaction.Transactional;
@@ -15,29 +17,36 @@ public class GogumaService {
     private final ArticleService articleService;
     private final GogumaRepository gogumaRepository;
     private final NotificationService notificationService;
+    private final UserService userService;
 
     @Transactional
-    public void create(Long articleId, String author, GogumaRequest gogumaRequest) {
+    public void create(Long articleId, String userId, GogumaRequest gogumaRequest) {
         Article article = articleService.findArticleById(articleId);
-        article.addGoguma(gogumaRequest.toEntity(author, article));
-        notificationService.send(author, article.getAuthor(), article);
+        article.addGoguma(gogumaRequest.toEntity(userId, article));
+        notificationService.send(userId, article.getUserId(), article);
     }
 
     @Transactional
-    public void modify(Long articleId, Long gogumaId, GogumaRequest gogumaRequest) {
+    public void modify(Long articleId, Long gogumaId, String userId, GogumaRequest gogumaRequest) {
         Article article = articleService.findArticleById(articleId);
-        article.modifyGoguma(gogumaId, gogumaRequest);
+        article.modifyGoguma(gogumaId, userId,gogumaRequest);
     }
 
     @Transactional
-    public GogumaResponse lookUp(Long articleId, Long gogumaId) {
+    public GogumaResponse lookUp(Long articleId, Long gogumaId, String userId) {
         Article article = articleService.findArticleById(articleId);
-        return new GogumaResponse(article.lookUpGoguma(gogumaId));
+        Goguma goguma = article.lookUpGoguma(gogumaId);
+        User user = userService.findByUserId(goguma.getUserId());
+        return new GogumaResponse(
+            goguma,
+            user.getNickname(),
+            goguma.getUserId().equals(userId)
+        );
     }
 
     @Transactional
-    public void delete(Long articleId, Long gogumaId) {
+    public void delete(Long articleId, Long gogumaId, String userId) {
         Article article = articleService.findArticleById(articleId);
-        gogumaRepository.deleteById(gogumaId);
+        article.deleteGoguma(gogumaId, userId);
     }
 }

@@ -1,6 +1,8 @@
 package com.selection.controller;
 
 import com.selection.domain.article.ArticleService;
+import com.selection.domain.user.LoginUser;
+import com.selection.domain.user.Role.ROLES;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +12,7 @@ import io.swagger.annotations.ApiResponses;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +29,6 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    private String getAuthor() {
-        return "delphi3228@pukyong.ac.kr"; // 차후 Token으로 구하여 연동
-    }
-
     @ApiOperation(value = "게시글 작성", tags = "게시글 API")
     @ApiResponses(
         value = {
@@ -37,10 +36,12 @@ public class ArticleController {
             @ApiResponse(code = 500, message = "존재하지 않는 게시글")
         }
     )
+    @Secured(ROLES.USER)
     @PostMapping
     public ResponseEntity<Long> createArticle(
-        @ApiParam(value = "게시글 정보", required = true) @RequestBody @Valid ArticleRequest articleRequest) {
-        return ResponseEntity.ok(articleService.create(getAuthor(), articleRequest));
+        @ApiParam(value = "게시글 정보", required = true) @RequestBody @Valid ArticleRequest articleRequest,
+        @ApiParam(hidden  = true) @LoginUser String userId) {
+        return ResponseEntity.ok(articleService.create(userId, articleRequest));
     }
 
     @ApiOperation(value = "게시글 수정", tags = "게시글 API")
@@ -50,11 +51,13 @@ public class ArticleController {
             @ApiResponse(code = 500, message = "수정 실패")
         }
     )
+    @Secured(ROLES.USER)
     @PutMapping("/{articleId}")
     public ResponseEntity<?> modifyArticle(
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
-        @ApiParam(value = "게시글 정보", required = true) @RequestBody @Valid ArticleRequest articleRequest) {
-        articleService.modify(articleId, articleRequest);
+        @ApiParam(value = "게시글 정보", required = true) @RequestBody @Valid ArticleRequest articleRequest,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        articleService.modify(articleId, userId,articleRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -67,8 +70,9 @@ public class ArticleController {
     )
     @GetMapping("/{articleId}")
     public ResponseEntity<ArticleResponse> lookUpArticle(
-        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId) {
-        return ResponseEntity.ok(articleService.lookUp(articleId, getAuthor()));
+        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        return ResponseEntity.ok(articleService.lookUp(articleId, userId));
     }
 
     @ApiOperation(value = "게시글 삭제", tags = "게시글 API")
@@ -78,10 +82,12 @@ public class ArticleController {
             @ApiResponse(code = 500, message = "삭제 실패(존재하지 않는 게시글일 경우)")
         }
     )
+    @Secured(ROLES.USER)
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> deleteArticle(
-        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId) {
-        articleService.delete(articleId);
+        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        articleService.delete(articleId, userId);
         return ResponseEntity.ok().build();
     }
 
@@ -92,11 +98,13 @@ public class ArticleController {
             @ApiResponse(code = 500, message = "투표 실패(존재하지 않는 선택지이거나 게시글일 경우)")
         }
     )
+    @Secured(ROLES.USER)
     @PostMapping("/{articleId}/choices/{choiceId}")
     public ResponseEntity<?> voteOnChoice(
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
-        @ApiParam(value = "선택지 번호", required = true) @PathVariable Long choiceId) {
-        articleService.vote(articleId, choiceId, getAuthor());
+        @ApiParam(value = "선택지 번호", required = true) @PathVariable Long choiceId,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        articleService.vote(articleId, choiceId, userId);
         return ResponseEntity.ok().build();
     }
 }

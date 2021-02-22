@@ -21,25 +21,25 @@ import org.apache.logging.log4j.util.Strings;
 public class Goguma extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
-    private GogumaType type;
+    private GogumaType gogumaType;
 
     private String message = Strings.EMPTY;
 
     @Column(nullable = false)
-    private String author;
+    private String userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Article article;
 
-    public Goguma(GogumaType type, String author, Article article) {
-        this(Strings.EMPTY, type, author, article);
+    public Goguma(GogumaType type, String userId, Article article) {
+        this(Strings.EMPTY, type, userId, article);
     }
 
-    public Goguma(String message, GogumaType type, String author, Article article) {
+    public Goguma(String message, GogumaType gogumaType, String userId, Article article) {
         this.message = message;
-        this.type = type;
-        this.author = author;
+        this.gogumaType = gogumaType;
+        this.userId = userId;
         this.article = article;
     }
 
@@ -47,8 +47,8 @@ public class Goguma extends BaseEntity {
         this.message = message;
     }
 
-    protected void modifyType(GogumaType type) {
-        this.type = type;
+    protected void modifyGogumaType(GogumaType gogumaType) {
+        this.gogumaType = gogumaType;
     }
 
 }

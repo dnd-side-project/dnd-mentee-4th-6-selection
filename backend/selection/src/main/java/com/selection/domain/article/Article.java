@@ -24,11 +24,11 @@ public class Article extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String title;
 
-    @Lob
+    @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
-    private String author;
+    private String userId;
 
     @Column(nullable = false)
     private Long numOfShared = 0L;
@@ -41,10 +41,10 @@ public class Article extends BaseEntity {
     @Column(nullable = false)
     private final Gogumas gogumas = new Gogumas();
 
-    public Article(String title, String content, String author) {
+    public Article(String title, String content, String userId) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.userId = userId;
     }
 
     public void modifyTitle(String title) {
@@ -53,14 +53,6 @@ public class Article extends BaseEntity {
 
     public void modifyContent(String content) {
         this.content = content;
-    }
-
-    public void share() {
-        this.numOfShared++;
-    }
-
-    public void addChoice(Choice choice) {
-        choices.add(choice);
     }
 
     public void addChoices(List<Choice> choices) {
@@ -75,30 +67,26 @@ public class Article extends BaseEntity {
         return gogumas.findById(gogumaId);
     }
 
-    public void deleteGoguma(Long gogumaId) {
-        gogumas.delete(gogumaId);
+    public void deleteGoguma(Long gogumaId, String userId) {
+        gogumas.delete(gogumaId, userId);
     }
 
     public void modifyChoices(List<ChoiceRequest> choiceRequests) {
         choices.modify(this, choiceRequests);
     }
 
-    public void modifyGoguma(Long gogumaId, GogumaRequest gogumaRequest) {
-        gogumas.modify(gogumaId, gogumaRequest);
+    public void modifyGoguma(Long gogumaId, String userId, GogumaRequest gogumaRequest) {
+        gogumas.modify(gogumaId, userId,gogumaRequest);
     }
 
-    public void voteOnChoice(Long choiceId, String author) {
-        Optional<Choice> choice = choices.findVotedByAuthor(author);
+    public void voteOnChoice(Long choiceId, String userId) {
+        Optional<Choice> choice = choices.findVotedByUserId(userId);
         choice.ifPresent(ch -> {
             if (!ch.getId().equals(choiceId)) {
-                ch.cancelVote(author);
+                ch.cancelVote(userId);
             }
         });
-        choices.vote(choiceId, author);
-    }
-
-    public void cancelVoteOnChoice(Long choiceId, String author) {
-        choices.cancelVote(choiceId, author);
+        choices.vote(choiceId, userId);
     }
 
     public List<ChoiceResponse> toChoicesResponse() {

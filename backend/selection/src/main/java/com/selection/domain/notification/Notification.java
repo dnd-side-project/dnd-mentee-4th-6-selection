@@ -21,18 +21,18 @@ public class Notification extends BaseEntity {
     private Boolean isRead = false;
 
     @Column(nullable = false)
-    private String sender;
+    private String senderUserId;
 
     @Column(nullable = false)
-    private String receiver;
+    private String receiverUserId;
 
     @ManyToOne
     @JoinColumn
     private Article article;
 
-    public Notification(String receiver, String sender, Article article) {
-        this.receiver = receiver;
-        this.sender = sender;
+    public Notification(String userIdOfReceiver, String userIdOfSender, Article article) {
+        this.senderUserId = userIdOfReceiver;
+        this.receiverUserId = userIdOfSender;
         this.article = article;
     }
 

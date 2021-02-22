@@ -19,10 +19,13 @@ public class ArticleResponse {
     private String title;
     @ApiModelProperty(notes = "본문", required = true, example = "본문")
     private String content;
-    @ApiModelProperty(notes = "작성자", required = true, example = "애플")
-    private String author;
+    @ApiModelProperty(notes = "작성자(닉네임)", required = true, example = "애플")
+    private String nickname;
     @ApiModelProperty(notes = "공유수", required = true, example = "0")
     private Long numOfShared;
+    
+    @ApiModelProperty(notes = "작성자 여부", required = true, example = "false")
+    private boolean isOwner;
 
     @ApiModelProperty(notes = "선택지", required = true)
     private final List<ChoiceResponse> choices = new ArrayList<>();
@@ -32,14 +35,15 @@ public class ArticleResponse {
     @ApiModelProperty(notes = "작성일자", required = true)
     private LocalDateTime createdAt;
 
-    public ArticleResponse(Article article, Long votedChoiceId) {
+    public ArticleResponse(Article article, String nickname, boolean isOwner, Long votedChoiceId) {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
         this.numOfShared = article.getNumOfShared();
-        this.author = article.getAuthor();
+        this.nickname = nickname;
         this.choices.addAll(article.toChoicesResponse());
         this.votedChoiceId = votedChoiceId;
+        this.isOwner = isOwner;
         this.createdAt = article.getCreatedAt();
     }
 }

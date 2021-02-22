@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-    Optional<Vote> findByAuthor(String author);
+    Optional<Vote> findByUserId(String userId);
 
     @Transactional
     @Modifying(clearAutomatically = true)

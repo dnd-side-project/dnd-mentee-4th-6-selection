@@ -31,16 +31,20 @@ public class Gogumas {
         this.gogumas.add(goguma);
     }
 
-    protected void delete(Long gogumaId) {
-        boolean deleted = gogumas.removeIf(originGoguma -> originGoguma.getId().equals(gogumaId));
-        if (!deleted) {
-            throw new IllegalArgumentException(String.format("해당 고구마(%s)는 존재하지 않습니다.", gogumaId));
-        }
+    protected void delete(Long gogumaId, String userId) {
+        gogumas.removeIf(originGoguma ->
+            originGoguma.getId().equals(gogumaId) && originGoguma.getUserId().equals(userId)
+        );
     }
 
-    protected void modify(Long gogumaId, GogumaRequest gogumaRequest) {
+    protected void modify(Long gogumaId, String userId, GogumaRequest gogumaRequest) {
         Goguma goguma = findById(gogumaId);
-        goguma.modifyType(gogumaRequest.getType());
+        if (goguma.getUserId().equals(userId)) {
+            throw new IllegalArgumentException(
+                String.format("해당 유저(%s)는 고구마(%d)에 접근 권한이 없습니다.", userId, gogumaId)
+            );
+        }
+        goguma.modifyGogumaType(gogumaRequest.getGogumaType());
         goguma.modifyMessage(gogumaRequest.getMessage());
     }
 }

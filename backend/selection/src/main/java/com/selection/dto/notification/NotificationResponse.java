@@ -2,8 +2,6 @@ package com.selection.dto.notification;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

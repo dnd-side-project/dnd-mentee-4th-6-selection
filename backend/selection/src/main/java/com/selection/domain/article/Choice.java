@@ -43,12 +43,12 @@ public class Choice extends BaseEntity {
         this.content = content;
     }
 
-    protected boolean existVoteByAuthor(String author) {
-        return votes.existByAuthor(author);
+    protected boolean existVoteByUserId(String userId) {
+        return votes.existByUserId(userId);
     }
 
     protected void vote(Vote vote) {
-        if (!existVoteByAuthor(vote.getAuthor())) {
+        if (!existVoteByUserId(vote.getUserId())) {
             votes.add(vote);
         }
     }
