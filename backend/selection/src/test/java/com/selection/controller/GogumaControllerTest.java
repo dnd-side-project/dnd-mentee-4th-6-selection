@@ -105,6 +105,7 @@ class GogumaControllerTest {
         return gogumaRepository.save(gogumaRequest.toEntity(author, article));
     }
 
+/*
     @Test
     @Order(1)
     @DisplayName("고구마 등록 API 테스트")
@@ -123,6 +124,7 @@ class GogumaControllerTest {
             .andExpect(status().isOk())
             .andReturn();
     }
+*/
 
     @Test
     @Order(2)
