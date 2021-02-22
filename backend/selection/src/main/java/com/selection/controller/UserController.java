@@ -68,8 +68,16 @@ public class UserController {
         return notificationService.lookUpMyNotifications(author, pr);
     }
 
+    @ApiOperation(value = "알림 읽음", tags = "마이페이지 API")
+    @ApiResponses(
+        value = {
+            @ApiResponse(code = 200, message = "읽기 성공"),
+            @ApiResponse(code = 500, message = "읽기 실패(존재하지 않는 알림)"),
+        }
+    )
     @GetMapping("/me/notifications/{notificationId}")
-    public void readNotification(@PathVariable Long notificationId) {
+    public void readNotification(
+        @ApiParam(value = "알림 번호", required = true) @PathVariable Long notificationId) {
         notificationService.read(notificationId);
     }
 
