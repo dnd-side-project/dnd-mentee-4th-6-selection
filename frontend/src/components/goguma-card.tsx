@@ -74,6 +74,7 @@ const GogumaTitle = styled.div`
 
 const GogumaContent = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
+  height: 23px;
   font-weight: 300;
   font-size: 12px;
   color: #595959;
