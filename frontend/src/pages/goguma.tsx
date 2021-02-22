@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Emoji } from "../components/emoji";
+import { ContentHeader } from "../components/content-header";
 import basket from "../styles/img/icon_guma_box.svg";
 import good from "../styles/img/icon_emotion_good.svg";
 import angry from "../styles/img/icon_emotion_angry.svg";
@@ -11,48 +13,18 @@ import goguma from "../styles/img/icon_emotion_goguma.svg";
 import surprised from "../styles/img/icon_emotion_surprised.svg";
 import relax from "../styles/img/icon_emotion_relax.svg";
 import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
-import { ContentHeader } from "../components/content-header";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisH, faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
+import icons_linkcopy from "../styles/img/icons_linkcopy.svg";
+import basket_comment from "../styles/img/basket_comment.svg";
+import background_img from "../styles/img/watercolor-paper-texture.png";
 
 const FAKE_GOGUMA_DATA = [
   {
     id: 1,
-    title: "여러분들,, 이게 진짜 맞나요..?",
+    title: "여러분들,, 이게 진짜내용..?",
     content: `저는 27살 여자구 소개로 1년가까이 만난 동갑남자친구가 있어요. 저는 직장인이구 남친은 아직 한학기 남은 휴학 취준생입니다. 원래 성격이 좀 예민하고 까탈스럽고 공감능력이 많이 떨어진다고 듣는 남자친구인데 그래도 저에겐 한없이 멋있고 좋은점도 많이 보이고 술담배도 안하고 항상 바르게 살려고 하는거같아서 계속 만나고 있는 중에 . . . . . (생략). . . . . .어떻게 해야할까요? .`,
-    tags: [
-      "댓글",
-      "태그1",
-      "태그2",
-      "작성된",
-      "태그는",
-      "태그갯수제한",
-      "여기에 계속 쌓이게",
-      "10개",
-    ],
     choices: ["확 갈라선다!", "20자인 경우 이정도 길이가 됩니다."],
-    goguma_response: [
-      {
-        responseId: 12,
-        username: "ktx 123",
-        goguma: "고구마반개",
-        content: `
-                    힘을 내용 슈퍼 고구마~
-                    원래 해뜨기 직전이 제일 어둡다잖아요.
-                    지금 님 연애전선도 그런거라고 생각 ㄱㄱ
-                `,
-      },
-      {
-        responseId: 13,
-        username: "유저 123",
-        goguma: "고구마반의반개",
-        content: `
-                    내용 내용 내용 내용 내용
-                    내용 내용 내용
-                    내용 내용 내용 내용
-                `,
-      },
-    ],
+    numOfGogumas: 100,
   },
 ];
 
@@ -67,50 +39,60 @@ interface IParams {
 export const Goguma: React.FC = () => {
   const history = useHistory();
   const { id } = useParams<IParams>();
+  const url = window.location.href;
   const [basketActive, setBasketActive] = useState(false);
   const [showheader, setShowheader] = useState(true);
-  const [pageY, setPageY] = useState(0);
-  const documentRef = useRef(document);
+  const [showClip, setShowClip] = useState(false);
+
   if (!id) {
     history.push(`/`);
   }
+
   const onBasketActive = () => {
     setBasketActive(true);
     setTimeout(() => {
       setBasketActive(false);
     }, 430);
   };
-  const handleScroll = () => {
-    const { scrollY } = window;
-    const show = scrollY < 100;
-    setShowheader(show);
-    setPageY(pageYOffset);
+
+  const onCopy = () => {
+    setShowClip(true);
+    setTimeout(() => {
+      setShowClip(false);
+    }, 2000);
   };
 
-  useEffect(() => {
-    documentRef.current.addEventListener("scroll", handleScroll);
-    return () => documentRef.current.removeEventListener("scroll", handleScroll);
-  }, [pageY]);
+  const scroll = (event: React.UIEvent<HTMLElement>) => {
+    event.stopPropagation();
+    const scrollTop = event.currentTarget.scrollTop;
+    const show = scrollTop < 80;
+    setShowheader(show);
+  };
 
   const data = FAKE_GOGUMA_DATA.find(goguma => goguma.id === +id);
 
   return (
-    <>
+    <GogumaOutContainer onScroll={scroll}>
       <Helmet>
         <title>{`${data?.title.slice(0, 5)}...` || "not found"} - GO!GUMA</title>
       </Helmet>
-      <ContentHeader isPrev={true} isNext={false} title={"갓 구운 고구마"}>
-        <>
-          <FontAwesomeIcon icon={faShareAlt} style={{ marginRight: 15 }} />
-          <FontAwesomeIcon icon={faEllipsisH} style={{ marginRight: 5 }} />
-        </>
+      <ContentHeader isPrev={true} isNext={false} title={""}>
+        <CopyToClipboard text={url} onCopy={onCopy}>
+          <LinkImg src={icons_linkcopy} />
+        </CopyToClipboard>
       </ContentHeader>
+      {showClip && <ClipBox>링크가 복사되었습니다!</ClipBox>}
       {data && (
         <>
-          <ScrollTitle className={`${showheader ? "" : "show"}`}>{data.title}</ScrollTitle>
+          {!showheader && (
+            <ScrollTitle className={`${showheader ? "" : "show"}`}>{data.title}</ScrollTitle>
+          )}
           <GogumaContainer>
             <ContentContainer>
-              <TitleBox>{data.title}</TitleBox>
+              <TitleBox>
+                {data.numOfGogumas > 0 && <img src={icon_fireguma} />}
+                {data.title}
+              </TitleBox>
               <ContentBox>{data.content}</ContentBox>
               <ChoiceBoxes>
                 {data.choices.map(choice => (
@@ -120,18 +102,14 @@ export const Goguma: React.FC = () => {
             </ContentContainer>
           </GogumaContainer>
           <BasketContainer>
-            <TagBoxes>
-              {data?.tags.map(tag => (
-                <TagBox key={tag}>#{tag}</TagBox>
-              ))}
-            </TagBoxes>
             <Link to={`/goguma/basket/${data.id}`}>
               <GogumaBasket basketActive={basketActive}>
                 <img src={basket} />
               </GogumaBasket>
             </Link>
-            <GogumaSubtext>글이 공감되시나요? 고구마로 소통할 수 있어요.</GogumaSubtext>
+            {data.numOfGogumas > 10 && <BasketComment>고구마바구니가 가득 찼어요!</BasketComment>}
           </BasketContainer>
+          <GogumaSubtext>글이 공감되시나요? 고구마로 소통할 수 있어요.</GogumaSubtext>
           <EmojiContainer>
             <GogumaEmojies>
               <GogumaEmogi>
@@ -191,16 +169,37 @@ export const Goguma: React.FC = () => {
           </NotFoundLink>
         </NotFoundContainer>
       )}
-    </>
+    </GogumaOutContainer>
   );
 };
 
+const GogumaOutContainer = styled.div`
+  width: 354px;
+  height: 732px;
+  margin: 0 -13px;
+  position: relative;
+  @media (max-width: 1025px) {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+    url(${background_img});
+`;
+
 const ScrollTitle = styled.div`
-  display: flex;
   position: fixed;
-  width: 100%;
-  max-width: 600px;
-  top: -50px;
+  width: 354px;
+  top: ${(window.innerHeight - 732) / 2 + 1}px;
+  @media (max-width: 1025px) {
+    top: 0;
+    width: 100%;
+  }
+  display: flex;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -213,9 +212,48 @@ const ScrollTitle = styled.div`
   color: #8c5cdd;
   align-items: center;
   box-sizing: border-box;
-  transition: 0.3s ease-in-out;
-  &.show {
-    transform: translateY(50px);
+`;
+
+const LinkImg = styled.img`
+  cursor: pointer;
+`;
+
+const ClipBox = styled.div`
+  position: fixed;
+  width: 330px;
+  bottom: ${(window.innerHeight - 732) / 2 + 50}px;
+  @media (max-width: 1025px) {
+    width: 90%;
+    bottom: 50px;
+  }
+  height: 45px;
+  border-radius: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: 0 19px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 16px;
+  font-weight: 300;
+  color: white;
+  display: flex;
+  align-items: center;
+  animation: clip 2s ease-in-out forwards;
+  @keyframes clip {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 `;
 
@@ -225,41 +263,21 @@ const GogumaContainer = styled.div`
   margin-top: 20px;
 `;
 
-const TagBoxes = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 15px;
-  margin-bottom: 15px;
-`;
-
-const TagBox = styled.span`
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 10px;
-  color: #989898;
-  border: 1px solid #e8e8e8;
-  height: 19px;
-  border-radius: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 7px;
-  margin-right: 5px;
-  margin-bottom: 4px;
-`;
-
 const ContentContainer = styled.div`
   min-height: 440px;
   margin-bottom: 45px;
 `;
 
 const TitleBox = styled.div`
-  font-family: MaruBuri-Regular;
-  font-size: 24px;
+  font-family: "Gaegu", cursive;
+  font-size: 25px;
   color: #8c5cdd;
   padding-bottom: 11px;
   border-bottom: 2px solid #8c5cdd;
   margin-bottom: 20px;
   word-break: keep-all;
+  display: flex;
+  align-items: flex-start;
 `;
 
 const ContentBox = styled.pre`
@@ -279,7 +297,7 @@ const ChoiceBoxes = styled.div`
   border-radius: 12px;
   border: 1px solid #8c5cdd;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-
+  background-color: white;
   overflow: hidden;
   div:not(:last-child) {
     border-right: 1px solid #8c5cdd;
@@ -302,8 +320,8 @@ const ChoiceBox = styled.div`
 
 const BasketContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+
+  align-items: center;
   padding: 0 18px;
 `;
 
@@ -332,10 +350,30 @@ const GogumaBasket = styled.div`
   }
 `;
 
+const BasketComment = styled.div`
+  width: 120px;
+  height: 60px;
+  background-image: url(${basket_comment});
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 12px;
+  color: #8c5cdd;
+  word-break: keep-all;
+  padding-left: 20px;
+  padding-right: 10px;
+  box-sizing: border-box;
+  margin-left: 10px;
+`;
+
 const GogumaSubtext = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
   color: #989898;
+  padding-left: 30px;
   margin-bottom: 15px;
 `;
 
@@ -351,15 +389,19 @@ const GogumaEmojies = styled.div`
   margin: 0 auto;
   font-size: 60px;
   width: 100%;
-  padding: 10px 0;
+  padding: 10px 17px;
+  box-sizing: border-box;
   overflow: auto;
 `;
 
 const GogumaEmogi = styled.div`
-  margin-right: 5px;
+  padding-right: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  &:last-child {
+    padding-right: 17px;
+  }
 `;
 
 const EmogiTitle = styled.div`

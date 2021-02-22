@@ -99,7 +99,7 @@ const ListContainer = styled.div`
   width: 354px;
   height: 732px;
   margin: 0 -13px;
-  @media (max-width: 1024px) {
+  @media (max-width: 1025px) {
     width: 100vw;
     height: 100vh;
     margin: 0;
@@ -112,7 +112,7 @@ const ListContainer = styled.div`
 
 const MainSubTitle = styled.div`
   width: 354px;
-  @media (max-width: 1024px) {
+  @media (max-width: 1025px) {
     width: 100vw;
     margin: 0;
   }
