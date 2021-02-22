@@ -1,23 +1,17 @@
 package com.selection.domain.article;
 
-
-import com.selection.domain.user.User;
 import com.selection.domain.user.UserService;
 import com.selection.dto.PageRequest;
-import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleSummaryProjection;
 import com.selection.dto.article.ArticleSummaryResponse;
-import com.selection.dto.goguma.GogumaResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -28,7 +22,6 @@ public class ArticleService {
     private final VoteRepository voteRepository;
     private final ChoiceRepository choiceRepository;
     private final GogumaRepository gogumaRepository;
-
     private final UserService userService;
 
     public void validationAccess(Article article, String userId) {

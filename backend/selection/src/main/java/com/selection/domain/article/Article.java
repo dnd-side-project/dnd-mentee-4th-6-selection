@@ -67,16 +67,16 @@ public class Article extends BaseEntity {
         return gogumas.findById(gogumaId);
     }
 
-    public void deleteGoguma(Long gogumaId) {
-        gogumas.delete(gogumaId);
+    public void deleteGoguma(Long gogumaId, String userId) {
+        gogumas.delete(gogumaId, userId);
     }
 
     public void modifyChoices(List<ChoiceRequest> choiceRequests) {
         choices.modify(this, choiceRequests);
     }
 
-    public void modifyGoguma(Long gogumaId, GogumaRequest gogumaRequest) {
-        gogumas.modify(gogumaId, gogumaRequest);
+    public void modifyGoguma(Long gogumaId, String userId, GogumaRequest gogumaRequest) {
+        gogumas.modify(gogumaId, userId,gogumaRequest);
     }
 
     public void voteOnChoice(Long choiceId, String userId) {

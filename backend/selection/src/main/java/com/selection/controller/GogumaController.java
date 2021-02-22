@@ -1,9 +1,10 @@
 package com.selection.controller;
 
+import com.selection.domain.article.GogumaService;
 import com.selection.domain.user.LoginUser;
+import com.selection.domain.user.Role.ROLES;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
-import com.selection.domain.article.GogumaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiResponses;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,12 +36,13 @@ public class GogumaController {
             @ApiResponse(code = 500, message = "작성 실패")
         }
     )
+    @Secured(ROLES.USER)
     @PostMapping("/{articleId}/gogumas")
     public ResponseEntity<?> createGoguma(
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
         @ApiParam(value = "고구마 정보", required = true) @RequestBody @Valid GogumaRequest gogumaRequest,
-        @ApiParam(hidden = true) @LoginUser String author) {
-        gogumaService.create(articleId, author, gogumaRequest);
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        gogumaService.create(articleId, userId, gogumaRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -50,12 +53,14 @@ public class GogumaController {
             @ApiResponse(code = 500, message = "수정 실패")
         }
     )
+    @Secured(ROLES.USER)
     @PutMapping("/{articleId}/gogumas/{gogumaId}")
     public ResponseEntity<?> modifyGoguma(
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
         @ApiParam(value = "고구마 번호", required = true) @PathVariable Long gogumaId,
-        @ApiParam(value = "고구마 정보", required = true) @RequestBody @Valid GogumaRequest gogumaRequest) {
-        gogumaService.modify(articleId, gogumaId, gogumaRequest);
+        @ApiParam(value = "고구마 정보", required = true) @RequestBody @Valid GogumaRequest gogumaRequest,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        gogumaService.modify(articleId, gogumaId, userId, gogumaRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -69,9 +74,9 @@ public class GogumaController {
     @GetMapping("/{articleId}/gogumas/{gogumaId}")
     public ResponseEntity<GogumaResponse> lookUpGoguma(
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
-        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long gogumaId) {
-        GogumaResponse gogumaResponse = gogumaService.lookUp(articleId, gogumaId);
-        return ResponseEntity.ok(gogumaResponse);
+        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long gogumaId,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        return ResponseEntity.ok(gogumaService.lookUp(articleId, gogumaId, userId));
     }
 
     @ApiOperation(value = "고구마 삭제", tags = "고구마 API")
@@ -81,11 +86,13 @@ public class GogumaController {
             @ApiResponse(code = 500, message = "삭제 실패")
         }
     )
+    @Secured(ROLES.USER)
     @DeleteMapping("/{articleId}/gogumas/{gogumaId}")
     public ResponseEntity<?> deleteGoguma(
-        @ApiParam(value = "게시글 번호",required = true) @PathVariable Long articleId,
-        @ApiParam(value = "고구마 번호",required = true) @PathVariable Long gogumaId) {
-        gogumaService.delete(articleId, gogumaId);
+        @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
+        @ApiParam(value = "고구마 번호", required = true) @PathVariable Long gogumaId,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        gogumaService.delete(articleId, gogumaId, userId);
         return ResponseEntity.ok().build();
     }
 }

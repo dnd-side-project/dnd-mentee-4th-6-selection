@@ -17,7 +17,6 @@ public class GogumaService {
     private final ArticleService articleService;
     private final GogumaRepository gogumaRepository;
     private final NotificationService notificationService;
-
     private final UserService userService;
 
     @Transactional
@@ -28,22 +27,26 @@ public class GogumaService {
     }
 
     @Transactional
-    public void modify(Long articleId, Long gogumaId, GogumaRequest gogumaRequest) {
+    public void modify(Long articleId, Long gogumaId, String userId, GogumaRequest gogumaRequest) {
         Article article = articleService.findArticleById(articleId);
-        article.modifyGoguma(gogumaId, gogumaRequest);
+        article.modifyGoguma(gogumaId, userId,gogumaRequest);
     }
 
     @Transactional
-    public GogumaResponse lookUp(Long articleId, Long gogumaId) {
+    public GogumaResponse lookUp(Long articleId, Long gogumaId, String userId) {
         Article article = articleService.findArticleById(articleId);
         Goguma goguma = article.lookUpGoguma(gogumaId);
         User user = userService.findByUserId(goguma.getUserId());
-        return new GogumaResponse(article.lookUpGoguma(gogumaId), user.getNickname());
+        return new GogumaResponse(
+            goguma,
+            user.getNickname(),
+            goguma.getUserId().equals(userId)
+        );
     }
 
     @Transactional
-    public void delete(Long articleId, Long gogumaId) {
+    public void delete(Long articleId, Long gogumaId, String userId) {
         Article article = articleService.findArticleById(articleId);
-        gogumaRepository.deleteById(gogumaId);
+        article.deleteGoguma(gogumaId, userId);
     }
 }
