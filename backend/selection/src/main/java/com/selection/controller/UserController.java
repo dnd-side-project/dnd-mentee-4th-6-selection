@@ -16,6 +16,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,5 +81,19 @@ public class UserController {
         @ApiParam(value = "알림 번호", required = true) @PathVariable Long notificationId) {
         notificationService.read(notificationId);
     }
+
+    @ApiOperation(value = "알림 삭제", tags = "마이페이지 API")
+    @ApiResponses(
+        value = {
+            @ApiResponse(code = 200, message = "읽기 성공"),
+            @ApiResponse(code = 500, message = "읽기 실패(존재하지 않는 알림)"),
+        }
+    )
+    @DeleteMapping("/me/notifications/{notificationId}")
+    public void deleteNotification(
+        @ApiParam(value = "알림 번호", required = true) @PathVariable Long notificationId) {
+        notificationService.delete(notificationId);
+    }
+
 
 }

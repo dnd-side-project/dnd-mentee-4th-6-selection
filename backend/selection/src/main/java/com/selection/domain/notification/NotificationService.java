@@ -53,4 +53,9 @@ public class NotificationService {
         ));
         notification.read();
     }
+
+    @Transactional
+    public void delete(Long notificationId) {
+        notificationRepository.deleteById(notificationId);
+    }
 }
