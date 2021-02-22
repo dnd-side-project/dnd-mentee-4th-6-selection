@@ -19,16 +19,16 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.author AS author, "
+            + "a.created_at AS createdAt, a.user_id AS userId, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a "
-            + "WHERE a.author = :author"
+            + "WHERE a.user_id = :userId"
     )
-    List<ArticleSummaryProjection> findAllByAuthor(@Param("author") String author, Pageable pageable);
+    List<ArticleSummaryProjection> findAllByAuthor(@Param("userId") String userId, Pageable pageable);
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.author AS author, "
+            + "a.created_at AS createdAt, a.user_id AS userId, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a"
     )
@@ -36,7 +36,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.author AS author, "
+            + "a.created_at AS createdAt, a.user_id AS userId, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a GROUP BY a.id HAVING (numOfGogumas >= 10 AND numOfGogumas < 50)"
     )
@@ -44,7 +44,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.author AS author, "
+            + "a.created_at AS createdAt, a.user_id AS userId, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a WHERE date(a.created_at) = :when"
     )
