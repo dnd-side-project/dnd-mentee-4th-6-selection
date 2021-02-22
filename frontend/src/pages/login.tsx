@@ -3,9 +3,11 @@ import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { BACKEND_URL, FRONTEND_URL } from "../constants";
+import { ContentHeader } from "../components/content-header";
 import icon_purpleguma from "../styles/img/icon_purpleguma_max.svg";
 import icon_google from "../styles/img/icon_google_logo.jpeg";
 import icon_naver from "../styles/img/icon_naver_logo.png";
+import icon_kakao from "../styles/img/icon_kakao_logo.png";
 
 interface IProps {
   authenticated: boolean;
@@ -20,6 +22,7 @@ export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
           <Helmet>
             <title>로그인 - GO!GUMA</title>
           </Helmet>
+          <ContentHeader isPrev={false} isNext={false} title={""} />
           <div>
             <LoginTitleContainer>
               <LoginImg src={icon_purpleguma} />
@@ -44,6 +47,12 @@ export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
                 <img src={icon_naver} width={34} height={34} />
                 <div>네이버 계정으로 로그인</div>
               </SocialLink>
+              <SocialLink
+                href={`${BACKEND_URL}/oauth2/authorize/kakao?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
+              >
+                <img src={icon_kakao} width={34} height={34} />
+                <div>카카오 계정으로 로그인</div>
+              </SocialLink>
             </LoginContainer>
           </div>
         </div>
@@ -56,8 +65,8 @@ const LoginTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 111px;
-  margin-bottom: 249px;
+  padding-top: 51px;
+  margin-bottom: 199px;
 `;
 
 const LoginImg = styled.img`
@@ -114,6 +123,14 @@ const SocialLink = styled.a`
   &:nth-child(2) {
     color: white;
     background-color: #1ec800;
+    & > div {
+      padding-left: 25px;
+      padding-right: 59px;
+    }
+  }
+  &:nth-child(3) {
+    color: black;
+    background-color: #fae300;
     & > div {
       padding-left: 25px;
       padding-right: 59px;
