@@ -59,33 +59,35 @@ export const Emoji = ({ children, title, onBasketActive }: IProps) => {
         </EmojiAni>
       )}
       {popup && (
-        <PopupContainer popupAni={popupAni} mouseX={mouseX} mouseY={mouseY}>
-          <PopupWindow popupAni={popupAni} mouseX={mouseX} mouseY={mouseY}>
-            <ExitBox>
-              <img onClick={onExitPopup} src={icon_delete} />
-            </ExitBox>
-            <PopupTitleBox>
-              {children}
-              <PopupTitle>
-                <div>
-                  <strong style={{ fontSize: 20 }}>{title}</strong> 를 선택하셨어요.
-                </div>
-                <PopupSubtext>화가 잔뜩 난 고구마 내용.</PopupSubtext>
-                <PopupSubtext>같이 화를 내줄수 있는 용기있는 내용내용내용</PopupSubtext>
-              </PopupTitle>
-            </PopupTitleBox>
-            <InputContainer>
-              <CommentInput
-                placeholder={"쪽지에 하고 싶은 말을 적어보세요.(선택)"}
-                maxLength={360}
-                spellCheck="false"
-              />
-            </InputContainer>
-            <ButtonBox>
-              <FormButton onClick={onSendHandle}>보내기</FormButton>
-            </ButtonBox>
-          </PopupWindow>
-        </PopupContainer>
+        <OuterBackground>
+          <PopupContainer popupAni={popupAni} mouseX={mouseX} mouseY={mouseY}>
+            <PopupWindow popupAni={popupAni} mouseX={mouseX} mouseY={mouseY}>
+              <ExitBox>
+                <img onClick={onExitPopup} src={icon_delete} />
+              </ExitBox>
+              <PopupTitleBox>
+                {children}
+                <PopupTitle>
+                  <div>
+                    <strong style={{ fontSize: 20 }}>{title}</strong> 를 선택하셨어요.
+                  </div>
+                  <PopupSubtext>화가 잔뜩 난 고구마 내용.</PopupSubtext>
+                  <PopupSubtext>같이 화를 내줄수 있는 용기있는 내용내용내용</PopupSubtext>
+                </PopupTitle>
+              </PopupTitleBox>
+              <InputContainer>
+                <CommentInput
+                  placeholder={"쪽지에 하고 싶은 말을 적어보세요.(선택)"}
+                  maxLength={360}
+                  spellCheck="false"
+                />
+              </InputContainer>
+              <ButtonBox>
+                <FormButton onClick={onSendHandle}>보내기</FormButton>
+              </ButtonBox>
+            </PopupWindow>
+          </PopupContainer>
+        </OuterBackground>
       )}
     </>
   );
@@ -116,26 +118,41 @@ const EmojiAni = styled.div`
       opacity: 0;
       transform: translateX(
           ${(props: IStyleProps) =>
-            props.mouseX - (window.innerWidth > 600 ? 220 : window.innerWidth / 3)}px
+            props.mouseX - (window.innerWidth > 1025 ? 110 : window.innerWidth / 2 - 80)}px
         )
         translateY(-160px);
     }
   }
 `;
 
-const PopupContainer = styled.div`
+const OuterBackground = styled.div`
   position: fixed;
   top: 0;
-  right: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  max-width: 600px;
+  display: flex;
+  align-items: center;
+  z-index: 99;
+`;
+
+const PopupContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  @media (min-width: 1025px) {
+    width: 356px;
+    height: 732px;
+    border: 1px solid #545454;
+  }
   margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0.3);
+  left: 0;
+  right: 0;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(50, 50, 50, 0.5);
+  z-index: 99;
   animation: ${(props: IStyleProps) => (props.popupAni ? "boxFadeIn" : "boxFadeOut")} 0.3s
     ease-in-out forwards;
 
@@ -159,8 +176,9 @@ const PopupContainer = styled.div`
 `;
 
 const PopupWindow = styled.div`
-  width: 356px;
+  width: 90%;
   height: 350px;
+  max-width: 500px;
   background-color: white;
   opacity: 1;
   border-radius: 28px;

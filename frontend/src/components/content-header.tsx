@@ -18,12 +18,12 @@ export const ContentHeader = ({ isPrev, isNext, title, children }: IProps) => {
       <Container>
         {isPrev ? (
           <LeftContainer>
-            <img src={icon_back} onClick={() => history.goBack()} />
+            <LeftImg src={icon_back} onClick={() => history.goBack()} />
           </LeftContainer>
         ) : (
           <LeftContainer>
             <Link to={`/`}>
-              <img src={icon_delete} />
+              <LeftImg src={icon_delete} />
             </Link>
           </LeftContainer>
         )}
@@ -44,6 +44,10 @@ const LeftContainer = styled.div`
   text-align: left;
   display: flex;
   align-items: center;
+`;
+
+const LeftImg = styled.img`
+  cursor: pointer;
 `;
 
 const CenterContainer = styled.div`

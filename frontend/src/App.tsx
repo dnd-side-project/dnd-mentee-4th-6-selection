@@ -14,7 +14,7 @@ const App: React.FC = () => {
 };
 
 const OuterContainer = styled.div`
-  @media (min-width: 1024px) {
+  @media (min-width: 1025px) {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -36,10 +36,10 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 1025px) {
     width: 100%;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1025px) {
     border: 1px solid #545454;
     width: 356px;
     height: 732px;
