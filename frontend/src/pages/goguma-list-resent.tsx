@@ -1,47 +1,47 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
+import axios from "axios";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
-import { FAKE_GOGUMA_DATA } from "../constants";
+import { BACKEND_URL, FRONTEND_URL } from "../constants";
 import draft_guma from "../styles/img/icon_draft_guma.svg";
 
 interface IData {
   id: number;
-  user: string;
-  title: string;
+  author: string;
   content: string;
   createdAt: string;
-  responseLength: number;
+  numOfGogumas: number;
+  title: string;
+  hotGogumaType: string;
 }
 
 export const GogumaListResent = () => {
   const [page, setPage] = useState(1);
-  const [dataSlice, setDateSlice] = useState<IData[]>(
-    FAKE_GOGUMA_DATA.goguma
-      .sort((gogumaA, gogumaB) => {
-        return gogumaA.createdAt < gogumaB.createdAt ? -1 : gogumaA > gogumaB ? 1 : 0;
-      })
-      .slice(0, 15),
-  );
+
+  const [dataSlice, setDataSlice] = useState<IData[]>([]);
 
   const scroll = (event: React.UIEvent<HTMLElement>) => {
     event.stopPropagation();
     const scrollTop = event.currentTarget.scrollTop;
     const clientHeight = event.currentTarget.clientHeight;
     const scrollHeight = event.currentTarget.scrollHeight;
-    if (scrollTop + clientHeight >= scrollHeight && FAKE_GOGUMA_DATA.goguma.length > page * 15) {
+    if (scrollTop + clientHeight >= scrollHeight && dataSlice.length >= page * 15) {
       setPage(page => page + 1);
     }
   };
 
+  const getData = async () => {
+    const { data } = await axios.get<IData[]>(`${BACKEND_URL}/hot/drafts?page=${page}&size=15`);
+
+    if (data) {
+      setDataSlice([...dataSlice, ...data]);
+    }
+  };
+
   useEffect(() => {
-    const data = FAKE_GOGUMA_DATA.goguma
-      .sort((gogumaA, gogumaB) => {
-        return gogumaA.createdAt > gogumaB.createdAt ? -1 : gogumaA < gogumaB ? 1 : 0;
-      })
-      .slice(0, page * 15);
-    setDateSlice(data);
+    getData();
   }, [page]);
 
   return (
@@ -53,17 +53,17 @@ export const GogumaListResent = () => {
       <MainSubTitle>&quot;금방 등록된 따끈따끈한 게시글&quot;</MainSubTitle>
       <ListBox>
         {dataSlice.map(goguma => (
-          <div key={goguma.id}>
+          <ListLink href={`${FRONTEND_URL}/goguma/${goguma.id}`} key={goguma.id}>
             <GogumaCard
               title={goguma.title}
               content={goguma.content}
-              user={goguma.user}
+              user={goguma.author}
               createdAt={goguma.createdAt}
-              responseLength={goguma.responseLength}
+              responseLength={goguma.numOfGogumas}
             >
               <img src={draft_guma} width={50} height={50} />
             </GogumaCard>
-          </div>
+          </ListLink>
         ))}
       </ListBox>
     </ListContainer>
@@ -104,4 +104,9 @@ const MainSubTitle = styled.div`
 const ListBox = styled.div`
   margin: 0 13px;
   box-sizing: border-box;
+`;
+
+const ListLink = styled.a`
+  text-decoration: none;
+  color: black;
 `;

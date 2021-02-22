@@ -160,7 +160,7 @@ const OuterBackground = styled.div`
 const SideContainer = styled.div`
   width: 100%;
   height: 100%;
-  @media (min-width: 1024px) {
+  @media (min-width: 1025px) {
     width: 356px;
     height: 732px;
     border: 1px solid #545454;

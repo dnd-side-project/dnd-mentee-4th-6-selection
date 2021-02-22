@@ -2,30 +2,26 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
-import { FAKE_GOGUMA_DATA } from "../constants";
+import { BACKEND_URL } from "../constants";
 import icon_purpleguma from "../styles/img/icon_purpleguma_sm.svg";
 import icon_back from "../styles/img/icon_back.svg";
+import axios from "axios";
 
 interface IData {
   id: number;
-  user: string;
-  title: string;
+  author: string;
   content: string;
   createdAt: string;
-  responseLength: number;
+  numOfGogumas: number;
+  title: string;
+  hotGogumaType: string;
 }
 
 export const GogumaListHonor: React.FC = () => {
   const [page, setPage] = useState(1);
   const [gogumaDate, setGogumaDate] = useState(new Date(Date.now()));
 
-  const [dataSlice, setDateSlice] = useState<IData[]>(
-    FAKE_GOGUMA_DATA.goguma
-      .sort((gogumaA, gogumaB) => {
-        return gogumaA.createdAt < gogumaB.createdAt ? -1 : gogumaA > gogumaB ? 1 : 0;
-      })
-      .slice(0, 15),
-  );
+  const [dataSlice, setDataSlice] = useState<IData[]>([]);
 
   const onClickDatePrev = () => {
     setGogumaDate(new Date(gogumaDate.getTime() - 1 * 24 * 60 * 60 * 1000));
@@ -42,19 +38,41 @@ export const GogumaListHonor: React.FC = () => {
     const scrollTop = event.currentTarget.scrollTop;
     const clientHeight = event.currentTarget.clientHeight;
     const scrollHeight = event.currentTarget.scrollHeight;
-    if (scrollTop + clientHeight >= scrollHeight && FAKE_GOGUMA_DATA.goguma.length > page * 15) {
+    if (scrollTop + clientHeight >= scrollHeight && dataSlice.length >= page * 15) {
       setPage(page => page + 1);
     }
   };
 
+  const getData = async () => {
+    const { data } = await axios.get<IData[]>(
+      `${BACKEND_URL}/hot/honors?page=${page}&size=15&when=${gogumaDate.getFullYear()}-${
+        gogumaDate.getMonth() + 1 < 10 ? `0${gogumaDate.getMonth() + 1}` : gogumaDate.getMonth() + 1
+      }-${gogumaDate.getDate() < 10 ? `0${gogumaDate.getDate()}` : gogumaDate.getDate()}`,
+    );
+    if (page === 1) {
+      if (data) {
+        setDataSlice([...data]);
+      } else {
+        setDataSlice([]);
+      }
+    } else {
+      if (data) {
+        setDataSlice([...dataSlice, ...data]);
+      }
+    }
+  };
+
   useEffect(() => {
-    const data = FAKE_GOGUMA_DATA.goguma
-      .sort((gogumaA, gogumaB) => {
-        return gogumaA.createdAt > gogumaB.createdAt ? -1 : gogumaA < gogumaB ? 1 : 0;
-      })
-      .slice(0, page * 15);
-    setDateSlice(data);
+    getData();
   }, [page]);
+
+  useEffect(() => {
+    if (page === 1) {
+      getData();
+    } else {
+      setPage(1);
+    }
+  }, [gogumaDate]);
 
   return (
     <ListContainer onScroll={scroll}>
