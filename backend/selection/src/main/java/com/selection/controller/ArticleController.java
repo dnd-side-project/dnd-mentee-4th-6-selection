@@ -27,7 +27,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     private String getAuthor() {
-        return "애플"; // 차후 Token으로 구하여 연동
+        return "delphi3228@pukyong.ac.kr"; // 차후 Token으로 구하여 연동
     }
 
     @ApiOperation(value = "게시글 작성", tags = "게시글 API")
