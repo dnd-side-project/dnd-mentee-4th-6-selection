@@ -18,15 +18,15 @@ class GogumaTest {
         // given
         final String title = "제목 1";
         final String content = "내용 1";
-        final String author = "애플";
-        final String anotherAuthor = "히히";
-        final GogumaType type = GogumaType.ANGRY;
+        final String userIdOfArticleWriter = "delphi3228@pukyong.ac.kr";
+        final String userIdOfWriterGoguma = "dnd-4th-6team@gmail.com";
+        final GogumaType gogumaType = GogumaType.ANGRY;
 
-        Article article = new Article(title, content, author);
-        Goguma goguma = new Goguma(type, anotherAuthor, article);
+        Article article = new Article(title, content, userIdOfArticleWriter);
+        Goguma goguma = new Goguma(gogumaType, userIdOfWriterGoguma, article);
 
         assertThat(goguma.getArticle()).isEqualTo(article);
-        assertThat(goguma.getType()).isEqualTo(type);
-        assertThat(goguma.getAuthor()).isEqualTo(anotherAuthor);
+        assertThat(goguma.getGogumaType()).isEqualTo(gogumaType);
+        assertThat(goguma.getUserId()).isEqualTo(userIdOfWriterGoguma);
     }
 }

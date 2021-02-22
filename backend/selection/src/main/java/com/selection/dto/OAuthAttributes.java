@@ -72,7 +72,7 @@ public class OAuthAttributes {
     public User toEntity() {
         AuthProvider authProvider = (AuthProvider) attributes.get(SOCIAL_TYPE);
         return User.builder()
-            .email(email)
+            .userId(email)
             .provider(authProvider)
             .role(Role.USER)
             .build();

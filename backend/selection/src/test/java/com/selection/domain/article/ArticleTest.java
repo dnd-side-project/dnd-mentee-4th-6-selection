@@ -17,14 +17,14 @@ class ArticleTest {
         // given
         final String title = "제목 1";
         final String content = "내용 1";
-        final String author = "애플";
-        final String anotherAuthor = "히히";
+        final String userIdOfAuthor = "delphi3228@pukyong.ac.kr";
+        final String userIdOfGogumaWriter = "dnd-4th-6team@gmail.com";
         final String choiceContent1 = "선택지 1";
         final String choiceContent2 = "선택지 2";
         final Long firstChoiceId = 1L;
         final Long secondChoiceId = 2L;
 
-        Article article = new Article(title, content, author);
+        Article article = new Article(title, content, userIdOfAuthor);
 
         final List<Choice> choices = Arrays.asList(
             new Choice(firstChoiceId,choiceContent1, article),
@@ -32,27 +32,27 @@ class ArticleTest {
         );
 
         final List<Goguma> gogumas = Arrays.asList(
-            new Goguma(GogumaType.ANGRY, anotherAuthor, article),
-            new Goguma(GogumaType.CONFUSED, anotherAuthor, article)
+            new Goguma(GogumaType.ANGRY, userIdOfGogumaWriter, article),
+            new Goguma(GogumaType.CONFUSED, userIdOfGogumaWriter, article)
         );
 
         article.addChoices(choices);
         gogumas.forEach(article::addGoguma);
 
-        article.voteOnChoice(firstChoiceId, anotherAuthor);
-        article.voteOnChoice(secondChoiceId, anotherAuthor);
+        article.voteOnChoice(firstChoiceId, userIdOfGogumaWriter);
+        article.voteOnChoice(secondChoiceId, userIdOfGogumaWriter);
 
         // when
-        Optional<Choice> choice = article.getChoices().findVotedByAuthor(anotherAuthor);
+        Optional<Choice> choice = article.getChoices().findVotedByUserId(userIdOfGogumaWriter);
 
         // then
         assertThat(article.getTitle()).isEqualTo(title);
         assertThat(article.getContent()).isEqualTo(content);
-        assertThat(article.getAuthor()).isEqualTo(author);
+        assertThat(article.getUserId()).isEqualTo(userIdOfAuthor);
         assertThat(article.getChoices().size()).isEqualTo(2);
         assertThat(article.getGogumas().size()).isEqualTo(2);
         assertThat(choice.isPresent()).isTrue();
-        assertThat(choices.get(0).existVoteByAuthor(anotherAuthor)).isFalse();
+        assertThat(choices.get(0).existVoteByUserId(userIdOfGogumaWriter)).isFalse();
         assertThat(choice.get().getId()).isEqualTo(2L);
 
     }

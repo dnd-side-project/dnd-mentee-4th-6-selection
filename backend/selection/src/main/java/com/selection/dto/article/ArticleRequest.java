@@ -42,8 +42,8 @@ public class ArticleRequest {
         this.choices = choices;
     }
 
-    public Article toEntity(@NotEmpty(message = "작성자는 필수입니다.") String author) {
-        Article article = new Article(title, content, author);
+    public Article toEntity(@NotEmpty(message = "작성자는 필수입니다.") String userId) {
+        Article article = new Article(title, content, userId);
 
         List<Choice> choiceEntities = choices.stream()
             .map(choiceRequest -> choiceRequest.toEntity(article))

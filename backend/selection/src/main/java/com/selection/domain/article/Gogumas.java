@@ -40,7 +40,7 @@ public class Gogumas {
 
     protected void modify(Long gogumaId, GogumaRequest gogumaRequest) {
         Goguma goguma = findById(gogumaId);
-        goguma.modifyType(gogumaRequest.getType());
+        goguma.modifyGogumaType(gogumaRequest.getGogumaType());
         goguma.modifyMessage(gogumaRequest.getMessage());
     }
 }

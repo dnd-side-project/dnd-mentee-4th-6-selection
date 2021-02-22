@@ -3,7 +3,6 @@ package com.selection.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -101,8 +100,8 @@ class GogumaControllerTest {
     }
 
     public Goguma setUpGoguma(Article article, GogumaRequest gogumaRequest) {
-        final String author = "애플";
-        return gogumaRepository.save(gogumaRequest.toEntity(author, article));
+        final String userId = "dnd-4th-6team@gmail.com";
+        return gogumaRepository.save(gogumaRequest.toEntity(userId, article));
     }
 
 /*
@@ -131,15 +130,15 @@ class GogumaControllerTest {
     @DisplayName("고구마 수정 API 테스트")
     public void modifyGoguma() throws Exception {
         // given
-        final GogumaType type = GogumaType.ANGRY;
+        final GogumaType gogumaType = GogumaType.ANGRY;
         final String message = "메세지";
-        GogumaRequest modifyGoguma = new GogumaRequest(type, message);
+        GogumaRequest modifyGoguma = new GogumaRequest(gogumaType, message);
 
         Article article = setUpArticle(createArticleRequest());
         Goguma goguma = setUpGoguma(article, createGogumaRequest());
         article.addGoguma(goguma);
 
-        final String putUri = String.format("/articles/%s/gogumas/%s", article.getId(), goguma.getId());
+        final String putUri = String.format("/articles/%d/gogumas/%d", article.getId(), goguma.getId());
 
         // when
         mockMvc.perform(put(putUri)
@@ -152,7 +151,7 @@ class GogumaControllerTest {
         // then
         Optional<Goguma> result = gogumaRepository.findById(goguma.getId());
         assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getType()).isEqualTo(type);
+        assertThat(result.get().getGogumaType()).isEqualTo(gogumaType);
         assertThat(result.get().getMessage()).isEqualTo(message);
     }
 
@@ -165,7 +164,7 @@ class GogumaControllerTest {
         Goguma goguma = setUpGoguma(article, createGogumaRequest());
         article.addGoguma(goguma);
 
-        final String getUri = String.format("/articles/%s/gogumas/%s", article.getId(), goguma.getId());
+        final String getUri = String.format("/articles/%d/gogumas/%d", article.getId(), goguma.getId());
 
         // when
         MvcResult result = mockMvc.perform(
@@ -178,9 +177,8 @@ class GogumaControllerTest {
             .readerFor(GogumaResponse.class).readValue(result.getResponse().getContentAsString());
 
         // then
-        assertThat(gogumaResponse.getType()).isEqualTo(goguma.getType());
+        assertThat(gogumaResponse.getType()).isEqualTo(goguma.getGogumaType());
         assertThat(gogumaResponse.getMessage()).isEqualTo(goguma.getMessage());
-        assertThat(gogumaResponse.getAuthor()).isEqualTo(goguma.getAuthor());
     }
 
     @Test
@@ -192,7 +190,7 @@ class GogumaControllerTest {
         Goguma goguma = setUpGoguma(article, createGogumaRequest());
         article.addGoguma(goguma);
 
-        final String deleteUri = String.format("/articles/%s/gogumas/%s", article.getId(), goguma.getId());
+        final String deleteUri = String.format("/articles/%d/gogumas/%d", article.getId(), goguma.getId());
 
         // when
         mockMvc.perform(delete(deleteUri)

@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 public class Vote extends BaseEntity {
 
     @Column(nullable = false)
-    String author;
+    String userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Choice choice;
 
-    public Vote(String author, Choice choice) {
-        this.author = author;
+    public Vote(String userId, Choice choice) {
+        this.userId = userId;
         this.choice = choice;
     }
 }

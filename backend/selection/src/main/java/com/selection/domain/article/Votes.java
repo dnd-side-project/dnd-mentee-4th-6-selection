@@ -19,10 +19,10 @@ public class Votes {
     }
 
     protected void delete(String author) {
-        votes.removeIf(vote -> vote.getAuthor().equals(author));
+        votes.removeIf(vote -> vote.getUserId().equals(author));
     }
 
-    public boolean existByAuthor(String author) {
-        return votes.stream().anyMatch(vote -> vote.getAuthor().equals(author));
+    public boolean existByUserId(String userId) {
+        return votes.stream().anyMatch(vote -> vote.getUserId().equals(userId));
     }
 }

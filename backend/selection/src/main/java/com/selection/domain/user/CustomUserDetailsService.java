@@ -16,12 +16,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String userId)
         throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() ->
-                new UsernameNotFoundException("User not found with email : " + email)
-            );
+        User user = userRepository.findByUserId(userId).orElseThrow(() ->
+            new UsernameNotFoundException(
+                String.format("해당 이메일(%s)는 존재하지 하는 유저 이메일입니다.", userId)
+            )
+        );
         return UserPrincipal.create(user);
     }
 }

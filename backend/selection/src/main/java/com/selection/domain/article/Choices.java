@@ -76,15 +76,15 @@ public class Choices {
             .forEach(this::add);
     }
 
-    protected Optional<Choice> findVotedByAuthor(String author) {
+    protected Optional<Choice> findVotedByUserId(String userId) {
         return choices.stream()
-            .filter(choice -> choice.existVoteByAuthor(author))
+            .filter(choice -> choice.existVoteByUserId(userId))
             .findFirst();
     }
 
-    protected void vote(Long choiceId, String author) {
+    protected void vote(Long choiceId, String userId) {
         Choice choice = get(choiceId);
-        choice.vote(new Vote(author, choice));
+        choice.vote(new Vote(userId, choice));
     }
 
     protected void cancelVote(Long choiceId, String author) {

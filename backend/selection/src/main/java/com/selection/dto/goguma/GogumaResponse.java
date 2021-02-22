@@ -16,13 +16,13 @@ public class GogumaResponse {
     private String message;
     @ApiModelProperty(notes = "고구마 타입", required = true, example = "HAPPY")
     private GogumaType type;
-    @ApiModelProperty(notes = "작성자", required = true, example = "애플")
-    private String author;
+    @ApiModelProperty(notes = "작성자 닉네임", required = true, example = "애플")
+    private String nickname;
 
-    public GogumaResponse(Goguma goguma) {
+    public GogumaResponse(Goguma goguma, String nickname) {
         this.id = goguma.getId();
         this.message = goguma.getMessage();
-        this.type = goguma.getType();
-        this.author = goguma.getAuthor();
+        this.type = goguma.getGogumaType();
+        this.nickname = nickname;
     }
 }
