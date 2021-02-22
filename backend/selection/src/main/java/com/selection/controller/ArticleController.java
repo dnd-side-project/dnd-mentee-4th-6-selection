@@ -1,14 +1,12 @@
 package com.selection.controller;
 
 import com.selection.domain.article.ArticleService;
-import com.selection.dto.article.ArticleLatestResponse;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -100,17 +98,5 @@ public class ArticleController {
         @ApiParam(value = "선택지 번호", required = true) @PathVariable Long choiceId) {
         articleService.vote(articleId, choiceId, getAuthor());
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/latest")
-    public ResponseEntity<List<ArticleLatestResponse>> getLatestArticles() {
-        final Long NUM_OF_LATEST_ARTICLES = 10L;
-        return ResponseEntity
-            .ok(articleService.lookUpLatest(NUM_OF_LATEST_ARTICLES));
-    }
-
-    @GetMapping("/favorite")
-    public ResponseEntity<List<ArticleResponse>> getFavoriteArticles() {
-        return null;
     }
 }

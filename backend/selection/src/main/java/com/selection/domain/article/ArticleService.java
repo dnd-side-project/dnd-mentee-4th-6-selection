@@ -8,6 +8,7 @@ import com.selection.dto.article.ArticleResponse;
 import com.selection.dto.article.ArticleSummaryProjection;
 import com.selection.dto.article.ArticleSummaryResponse;
 import com.selection.dto.goguma.GogumaResponse;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,20 +73,39 @@ public class ArticleService {
         article.voteOnChoice(choiceId, author);
     }
 
-    @Transactional
-    public List<ArticleLatestResponse> lookUpLatest(Long numOfLatestArticles) {
-        PageRequest latest = new PageRequest(1, numOfLatestArticles.intValue(), Direction.DESC);
-        Page<Article> latestArticles = articleRepository.findAll(latest.of());
-
-        return latestArticles.stream()
-            .map(ArticleLatestResponse::new)
-            .collect(Collectors.toList());
-    }
-
     public List<ArticleSummaryResponse> lookUpMyArticles(String author, PageRequest pageRequest) {
         List<ArticleSummaryProjection> pagesWithMyArticles =
             articleRepository.findAllByAuthor(author, pageRequest.of());
         return pagesWithMyArticles.stream().map(ArticleSummaryResponse::new)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ArticleSummaryResponse> lookUpInDrafts(PageRequest pageRequest) {
+        List<ArticleSummaryProjection> articles =
+            articleRepository.findDraftGogumas(pageRequest.of());
+
+        return articles.stream()
+            .map(ArticleSummaryResponse::new)
+            .collect(Collectors.toList());
+    }
+
+    public List<ArticleSummaryResponse> lookUpInFires(PageRequest pageRequest) {
+        List<ArticleSummaryProjection> articles =
+            articleRepository.findFireGogumas(pageRequest.of());
+
+        return articles.stream()
+            .map(ArticleSummaryResponse::new)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ArticleSummaryResponse> lookUpInHonors(LocalDate when, PageRequest pageRequest) {
+        List<ArticleSummaryProjection> articles =
+            articleRepository.findHonorGogumasAtTime(when, pageRequest.of());
+
+        return articles.stream()
+            .map(ArticleSummaryResponse::new)
             .collect(Collectors.toList());
     }
 }
