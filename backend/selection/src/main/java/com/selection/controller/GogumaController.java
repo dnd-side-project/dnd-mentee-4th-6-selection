@@ -1,5 +1,6 @@
 package com.selection.controller;
 
+import com.selection.domain.user.LoginUser;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
 import com.selection.domain.article.GogumaService;
@@ -26,10 +27,6 @@ public class GogumaController {
 
     private final GogumaService gogumaService;
 
-    private String getAuthor() {
-        return "애플"; // 차후 Token으로 구하여 연동
-    }
-
     @ApiOperation(value = "고구마 작성", tags = "고구마 API")
     @ApiResponses(
         value = {
@@ -40,8 +37,9 @@ public class GogumaController {
     @PostMapping("/{articleId}/gogumas")
     public ResponseEntity<?> createGoguma(
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
-        @ApiParam(value = "고구마 정보", required = true) @RequestBody @Valid GogumaRequest gogumaRequest) {
-        gogumaService.create(articleId, getAuthor(), gogumaRequest);
+        @ApiParam(value = "고구마 정보", required = true) @RequestBody @Valid GogumaRequest gogumaRequest,
+        @ApiParam(hidden = true) @LoginUser String author) {
+        gogumaService.create(articleId, author, gogumaRequest);
         return ResponseEntity.ok().build();
     }
 

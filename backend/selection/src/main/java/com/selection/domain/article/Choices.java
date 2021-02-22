@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Choices {
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Choice> choices = new ArrayList<>();
 
     protected int size() {

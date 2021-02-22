@@ -1,5 +1,7 @@
 package com.selection.domain.article;
 
+import com.selection.domain.notification.Notification;
+import com.selection.domain.notification.NotificationService;
 import com.selection.dto.goguma.GogumaRequest;
 import com.selection.dto.goguma.GogumaResponse;
 import javax.transaction.Transactional;
@@ -11,12 +13,14 @@ import org.springframework.stereotype.Service;
 public class GogumaService {
 
     private final ArticleService articleService;
-
     private final GogumaRepository gogumaRepository;
+    private final NotificationService notificationService;
+
     @Transactional
     public void create(Long articleId, String author, GogumaRequest gogumaRequest) {
         Article article = articleService.findArticleById(articleId);
         article.addGoguma(gogumaRequest.toEntity(author, article));
+        notificationService.send(author, article.getAuthor(), article);
     }
 
     @Transactional
