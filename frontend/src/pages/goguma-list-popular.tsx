@@ -52,7 +52,7 @@ export const GogumaListPopular = () => {
       <MainSubTitle>&quot;실시간으로 불타오르는 인기 게시글&quot;</MainSubTitle>
       <ListBox>
         {dataSlice.map(goguma => (
-          <div key={goguma.id}>
+          <GogumaListLink href={`goguma/${goguma.id}`} key={goguma.id}>
             <GogumaCard
               title={goguma.title}
               content={goguma.content}
@@ -62,7 +62,7 @@ export const GogumaListPopular = () => {
             >
               <img src={icon_fireguma} width={50} height={50} />
             </GogumaCard>
-          </div>
+          </GogumaListLink>
         ))}
       </ListBox>
     </ListContainer>
@@ -103,4 +103,9 @@ const MainSubTitle = styled.div`
 const ListBox = styled.div`
   margin: 0 13px;
   box-sizing: border-box;
+`;
+
+const GogumaListLink = styled.a`
+  text-decoration: none;
+  color: black;
 `;

@@ -97,16 +97,18 @@ export const GogumaListHonor: React.FC = () => {
       </DateBox>
       <ListBox>
         {dataSlice.map((goguma, index) => (
-          <GogumaCard key={goguma.id}>
-            {index < 3 ? (
-              <GogumaHighRank>{index + 1}</GogumaHighRank>
-            ) : (
-              <GogumaRank>{index + 1}</GogumaRank>
-            )}
-            <GogumaTitle>
-              {goguma.title.length > 30 ? `${goguma.title.slice(0, 30)}...` : goguma.title}
-            </GogumaTitle>
-          </GogumaCard>
+          <GogumaListLink href={`goguma/${goguma.id}`} key={goguma.id}>
+            <GogumaCard>
+              {index < 3 ? (
+                <GogumaHighRank>{index + 1}</GogumaHighRank>
+              ) : (
+                <GogumaRank>{index + 1}</GogumaRank>
+              )}
+              <GogumaTitle>
+                {goguma.title.length > 30 ? `${goguma.title.slice(0, 30)}...` : goguma.title}
+              </GogumaTitle>
+            </GogumaCard>
+          </GogumaListLink>
         ))}
       </ListBox>
     </ListContainer>
@@ -200,4 +202,9 @@ const ListBox = styled.div`
 
 const GogumaTitle = styled.div`
   word-break: keep-all;
+`;
+
+const GogumaListLink = styled.a`
+  text-decoration: none;
+  color: black;
 `;

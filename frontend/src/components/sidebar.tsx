@@ -328,6 +328,7 @@ const UserLoginBtn = styled.a`
 const OutBackground = styled.div`
   width: 100%;
   height: 100%;
+  position: relative;
 `;
 
 const MenuLink = styled.a`
@@ -340,7 +341,7 @@ const NotificationLink = styled.a`
   color: black;
   position: absolute;
   top: 140px;
-  left: 195px;
+  left: 15px;
 `;
 
 const NotificationBox = styled.div`
