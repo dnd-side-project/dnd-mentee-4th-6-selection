@@ -19,7 +19,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.user_id AS userId, "
+            + "a.created_at AS createdAt, "
+            + "(SELECT u.nickname FROM users AS u WHERE u.user_id = a.user_id) AS nickname, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a "
             + "WHERE a.user_id = :userId"
@@ -28,7 +29,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.user_id AS userId, "
+            + "a.created_at AS createdAt, "
+            + "(SELECT u.nickname FROM users AS u WHERE u.user_id = a.user_id) AS nickname, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a"
     )
@@ -36,7 +38,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.user_id AS userId, "
+            + "a.created_at AS createdAt, "
+            + "(SELECT u.nickname FROM users AS u WHERE u.user_id = a.user_id) AS nickname, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a GROUP BY a.id HAVING (numOfGogumas >= 10 AND numOfGogumas < 50)"
     )
@@ -44,7 +47,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
-            + "a.created_at AS createdAt, a.user_id AS userId, "
+            + "a.created_at AS createdAt, "
+            + "(SELECT u.nickname FROM users AS u WHERE u.user_id = a.user_id) AS nickname, "
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a WHERE date(a.created_at) = :when"
     )

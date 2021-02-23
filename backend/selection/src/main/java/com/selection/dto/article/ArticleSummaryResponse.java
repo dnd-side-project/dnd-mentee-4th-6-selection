@@ -17,8 +17,8 @@ public class ArticleSummaryResponse {
     private String title;
     @ApiModelProperty(notes = "본문", required = true, example = "본문")
     private String content;
-    @ApiModelProperty(notes = "작성자", required = true, example = "xxx@google.com")
-    private String userId;
+    @ApiModelProperty(notes = "작성자(닉네임)", required = true, example = "xxx@google.com")
+    private String nickname;
     @ApiModelProperty(notes = "고구마 수", required = true, example = "100")
     private Long numOfGogumas;
     @ApiModelProperty(notes = "핫 고구마 타입", required = true, example = "DRAFTGUMA")
@@ -38,7 +38,7 @@ public class ArticleSummaryResponse {
     public ArticleSummaryResponse(ArticleSummaryProjection articleSummaryProjection) {
         this.id = articleSummaryProjection.getId().longValue();
         this.title = articleSummaryProjection.getTitle();
-        this.userId = articleSummaryProjection.getUserId();
+        this.nickname = articleSummaryProjection.getNickname();
         this.numOfGogumas = articleSummaryProjection.getNumOfGogumas().longValue();
         this.hotGogumaType = calculateHotGogumaType(this.numOfGogumas);
         this.createdAt = articleSummaryProjection.getCreatedAt().toLocalDateTime();

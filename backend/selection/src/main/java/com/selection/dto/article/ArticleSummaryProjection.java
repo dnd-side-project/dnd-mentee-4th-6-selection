@@ -8,6 +8,6 @@ public interface ArticleSummaryProjection {
     String getTitle();
     String getContent();
     Timestamp getCreatedAt();
-    String getUserId();
+    String getNickname();
     BigInteger getNumOfGogumas();
 }
