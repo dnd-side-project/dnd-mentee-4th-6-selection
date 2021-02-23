@@ -32,19 +32,10 @@ public class ArticleResponse {
     @ApiModelProperty(notes = "작성일자", required = true)
     private LocalDateTime createdAt;
 
-    private String ommitContent(String content) {
-        final int OMMIT_LENGTH = 52;
-        if (content.length() > OMMIT_LENGTH) {
-            return content.substring(0, OMMIT_LENGTH) + "...";
-        } else {
-            return content;
-        }
-    }
-
     public ArticleResponse(Article article, String nickname, boolean isOwner, Long votedChoiceId) {
         this.id = article.getId();
         this.title = article.getTitle();
-        this.content = ommitContent(article.getContent());
+        this.content = article.getContent();
         this.numOfShared = article.getNumOfShared();
         this.nickname = nickname;
         this.choices.addAll(article.toChoicesResponse());
