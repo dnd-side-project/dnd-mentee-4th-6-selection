@@ -203,7 +203,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
       ) : (
         <>
           <ContentHeader isPrev={true} isNext={false} title={""}>
-            {gogumaData?.owner || true ? (
+            {gogumaData?.owner ? (
               <>
                 {isModify ? (
                   <>
