@@ -1,16 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { BACKEND_URL } from "../constants";
+import axios from "axios";
 import styled from "styled-components";
 import GumaIcon from "../styles/img/icon_draft_guma.svg";
-
-const FAKE_RECENT_GOGUMA_DATA = [
-  { id: 1, title: "제 얘기좀 듣고 가세요;;" },
-  { id: 2, title: "니 알바 아니라는 남자친구, 헤어질까요?" },
-  { id: 3, title: "인생 역대급 인연을 만나고 있습니다..." },
-  { id: 4, title: "최준ㅋㅋㅋ 영상아세요?" },
-  { id: 5, title: "눈치 없는 남자친구 ㅠ……어쩌죠" },
-];
+import { ISimplifiedGoguamList } from "../interface/IData";
 
 const SuccessTitle = styled.div`
   margin-top: 12vh;
@@ -20,19 +15,22 @@ const SuccessTitle = styled.div`
   text-align: center;
 `;
 
-const SuccessDescription = styled.div`
+const SuccessDescription = styled.p`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 14px;
-  margin-bottom: 43px;
   text-align: center;
+  line-height: 24px;
+  margin: 0;
 `;
 
 const GogumaImg = styled.img`
   width: 122px;
   margin: auto;
+  display: block;
 `;
 
 const ViewOthersContainer = styled.div`
+  margin-top: 43px;
   text-align: center;
 `;
 
@@ -99,6 +97,16 @@ const GogumaSlideItemText = styled.p`
 `;
 
 export const AskSuccess: React.FC = () => {
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get<ISimplifiedGoguamList[]>(`${BACKEND_URL}/hot/drafts`);
+      if (data) {
+        setRecentGogumas([...data]);
+      }
+    })();
+  }, []);
+
+  const [recentGogumas, setRecentGogumas] = useState<ISimplifiedGoguamList[]>([]);
   return (
     <>
       <Helmet>
@@ -106,23 +114,21 @@ export const AskSuccess: React.FC = () => {
       </Helmet>
       <SuccessTitle>등록완료!</SuccessTitle>
       <GogumaImg src={GumaIcon} />
-      <SuccessDescription>
-        <p>따끈따끈한 고구마 게시글이 등록됐어요.</p>
-        <p>다른사람들의 반응을 고구마 바구니에서 확인해주세요:)</p>
-      </SuccessDescription>
+      <SuccessDescription>따끈따끈한 고구마 게시글이 등록됐어요.</SuccessDescription>
+      <SuccessDescription>다른사람들의 반응을 고구마 바구니에서 확인해주세요:)</SuccessDescription>
       <ViewOthersContainer>
-        <ViewOthers>
-          <Link to="/">내가 쓴 글 보기</Link>
-        </ViewOthers>
-        <ViewOthers>
-          <Link to="/">메인으로</Link>
-        </ViewOthers>
+        <Link to="/goguma-list/me">
+          <ViewOthers>내가 쓴 글 보기</ViewOthers>
+        </Link>
+        <Link to="/">
+          <ViewOthers>메인으로</ViewOthers>
+        </Link>
       </ViewOthersContainer>
       <RecentGogumaContainer>
         <SectionTitle>갓 구운 고구마</SectionTitle>
         <SectionDescription>지금 막 등록된 글들을 확인해보세요!</SectionDescription>
         <GogumaSlide>
-          {FAKE_RECENT_GOGUMA_DATA.map(item => (
+          {recentGogumas.map(item => (
             <GogumaSlideItem key={item.id}>
               <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
             </GogumaSlideItem>
