@@ -22,10 +22,18 @@ interface IStyleProps {
   isActive: boolean;
 }
 
+interface IData {
+  id: number;
+  nickname: string;
+  sendedTime: Date;
+  title: string;
+}
+
 const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }: IProps) => {
   const [isUser, setIsUser] = useState(false);
   const [userName, setUserName] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [isNotification, setIsNotification] = useState(false);
   const localToken = localStorage.getItem("token");
 
   const onClickOut = () => {
@@ -46,6 +54,19 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
     }
   };
 
+  const getNotice = async () => {
+    if (isUser) {
+      const { data } = await axios.get<IData[]>(`${BACKEND_URL}/users/me/notifications`, {
+        headers: {
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+      if (data.length > 0) {
+        setIsNotification(true);
+      }
+    }
+  };
+
   useEffect(() => {
     if (userToken.token) {
       setIsUser(true);
@@ -63,13 +84,12 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
   }, [userToken.token]);
 
   useEffect(() => {
-    if (userName) {
-      setIsUser(true);
-    }
-    if (!userName) {
-      setIsUser(false);
-    }
+    setIsUser(Boolean(userName));
   }, [userName]);
+
+  useEffect(() => {
+    getNotice();
+  }, [isUser]);
 
   return (
     <OuterBackground>
@@ -130,7 +150,14 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
             )}
           </div>
         </SidebarMenu>
-        <OutBackground onClick={onClickOut}></OutBackground>
+        <OutBackground onClick={onClickOut}>
+          <NotificationLink href={`/notifications`}>
+            <NotificationBox>
+              <img src={veryhappy} width={30} height={30} />
+              {isNotification && <NotificationNew />}
+            </NotificationBox>
+          </NotificationLink>
+        </OutBackground>
       </SideContainer>
     </OuterBackground>
   );
@@ -299,11 +326,39 @@ const UserLoginBtn = styled.a`
 `;
 
 const OutBackground = styled.div`
-  width: 410px;
+  width: 100%;
   height: 100%;
 `;
 
 const MenuLink = styled.a`
   text-decoration: none;
   color: black;
+`;
+
+const NotificationLink = styled.a`
+  text-decoration: none;
+  color: black;
+  position: absolute;
+  top: 140px;
+  left: 195px;
+`;
+
+const NotificationBox = styled.div`
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NotificationNew = styled.div`
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #8c5cdd;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
