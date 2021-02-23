@@ -3,7 +3,7 @@ package com.selection.security.oauth;
 import static com.selection.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 import com.selection.config.AppProperties;
-import com.selection.exception.BadRequestException;
+import com.selection.advice.exception.UnAuthorizedRedirectUriException;
 import com.selection.security.token.TokenProvider;
 import com.selection.security.util.CookieUtils;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             .map(Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            throw new BadRequestException(
+            throw new UnAuthorizedRedirectUriException(
                 "Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
 

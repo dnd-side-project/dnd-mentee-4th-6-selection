@@ -1,5 +1,6 @@
 package com.selection.domain.notification;
 
+import com.selection.advice.exception.NotificationNotFoundException;
 import com.selection.domain.article.Article;
 import com.selection.domain.user.User;
 import com.selection.domain.user.UserService;
@@ -19,6 +20,13 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final UserService userService;
+
+    private Notification findById(Long notificationId) {
+        return notificationRepository.findById(notificationId)
+            .orElseThrow(() -> new NotificationNotFoundException(
+                String.format("해당 알림(%s)는 존재하지 않습니다.", notificationId)
+            ));
+    }
 
     private NotificationResponse createNotification(Notification notification) {
         String title = notification.getArticle().getTitle();
@@ -50,15 +58,13 @@ public class NotificationService {
 
     @Transactional
     public void read(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId)
-            .orElseThrow(() -> new IllegalArgumentException(
-                String.format("해당 알림(%s)는 존재하지 않습니다.", notificationId)
-            ));
+        Notification notification = findById(notificationId);
         notification.read();
     }
 
     @Transactional
     public void delete(Long notificationId) {
-        notificationRepository.deleteById(notificationId);
+        Notification notification = findById(notificationId);
+        notificationRepository.deleteById(notification.getId());
     }
 }

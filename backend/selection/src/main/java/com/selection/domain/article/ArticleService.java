@@ -1,5 +1,7 @@
 package com.selection.domain.article;
 
+import com.selection.advice.exception.ArticleAccessException;
+import com.selection.advice.exception.ArticleNotFoundException;
 import com.selection.domain.user.UserService;
 import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleRequest;
@@ -26,7 +28,7 @@ public class ArticleService {
 
     public void validationAccess(Article article, String userId) {
         if (!article.getUserId().equals(userId)) {
-            throw new IllegalArgumentException(
+            throw new ArticleAccessException(
                 String.format("해당 유저(%s)는 게시물(%d)에 접근 권한이 없습니다.", userId, article.getId())
             );
         }
@@ -34,9 +36,9 @@ public class ArticleService {
 
     public Article findArticleById(Long articleId) {
         return articleRepository.findById(articleId)
-            .orElseThrow(
-                () -> new IllegalArgumentException(
-                    String.format("해당 게시글(%s)는 존재하지 않습니다.", articleId)));
+            .orElseThrow(() -> new ArticleNotFoundException(
+                String.format("해당 게시글(%s)는 존재하지 않습니다.", articleId)
+            ));
     }
 
     public Long findChoiceIdByVotedUserId(String userId) {

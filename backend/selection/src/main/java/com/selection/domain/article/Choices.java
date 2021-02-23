@@ -1,6 +1,7 @@
 package com.selection.domain.article;
 
 import com.google.common.collect.Sets;
+import com.selection.advice.exception.ChoiceNotFoundException;
 import com.selection.domain.BaseEntity;
 import com.selection.dto.choice.ChoiceRequest;
 import com.selection.dto.choice.ChoiceResponse;
@@ -26,12 +27,18 @@ public class Choices {
         return choices.size();
     }
 
+    protected boolean contains(Long choiceId) {
+        return choices.stream()
+            .anyMatch(choice -> choice.getId().equals(choiceId));
+    }
+
     protected Choice get(Long choiceId) {
         return choices.stream()
             .filter(choice -> choice.getId().equals(choiceId))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(
-                String.format("해당 선택지(%s)는 존재하지 않습니다.", choiceId)));
+            .orElseThrow(() -> new ChoiceNotFoundException(
+                String.format("해당 선택지(%s)는 존재하지 않습니다.", choiceId)
+            ));
     }
 
     protected void add(Choice choice) {
