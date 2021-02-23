@@ -28,7 +28,7 @@ export const GogumaCard = ({
       <GogumaContentBox>
         <GogumaTitle>{title.length >= 25 ? `${title.slice(0, 25)}...` : title}</GogumaTitle>
         <GogumaContent>
-          {content.length >= 60 ? `${content.slice(0, 55)}...` : content}
+          {content.length >= 55 ? `${content.slice(0, 55)}...` : content}
         </GogumaContent>
         <div>
           <GogumaUser>{user}</GogumaUser>

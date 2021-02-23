@@ -45,17 +45,17 @@ const MyPage = ({ userToken, addTokenLocal }: IProps) => {
   const getUser = async () => {
     if (userToken.token) {
       const {
-        data: { name },
+        data: { nickname },
       } = await axios.get(`${BACKEND_URL}/users/me/`, {
         headers: {
           Authorization: `Bearer ${userToken.token}`,
         },
       });
-      if (!name) {
+      if (!nickname) {
         localStorage.removeItem("token");
         addTokenLocal({ token: "" });
       }
-      setUserName(name);
+      setUserName(nickname);
     }
   };
 

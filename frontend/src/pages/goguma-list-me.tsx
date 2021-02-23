@@ -1,48 +1,80 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
+import { BACKEND_URL } from "../constants";
+import axios from "axios";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
-import { FAKE_GOGUMA_DATA } from "../constants";
 import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+interface IParams {
+  token: string;
+}
+
+interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
+}
 
 interface IData {
   id: number;
-  user: string;
-  title: string;
+  author: string;
   content: string;
   createdAt: string;
-  responseLength: number;
+  numOfGogumas: number;
+  title: string;
+  hotGogumaType: string;
 }
 
-export const GogumaListMe = () => {
+const GogumaListMe = ({ userToken, addTokenLocal }: IProps) => {
   const [page, setPage] = useState(1);
-  const [dataSlice, setDateSlice] = useState<IData[]>(
-    FAKE_GOGUMA_DATA.goguma
-      .sort((gogumaA, gogumaB) => {
-        return gogumaA.createdAt < gogumaB.createdAt ? -1 : gogumaA > gogumaB ? 1 : 0;
-      })
-      .slice(0, 15),
-  );
+  const [dataSlice, setDataSlice] = useState<IData[]>([]);
+  const history = useHistory();
+  const localToken = localStorage.getItem("token");
 
   const scroll = (event: React.UIEvent<HTMLElement>) => {
     event.stopPropagation();
     const scrollTop = event.currentTarget.scrollTop;
     const clientHeight = event.currentTarget.clientHeight;
     const scrollHeight = event.currentTarget.scrollHeight;
-    if (scrollTop + clientHeight >= scrollHeight && FAKE_GOGUMA_DATA.goguma.length > page * 15) {
+    if (scrollTop + clientHeight >= scrollHeight && dataSlice.length >= page * 15) {
       setPage(page => page + 1);
     }
   };
 
+  const getData = async () => {
+    const { data } = await axios.get<IData[]>(
+      `${BACKEND_URL}/users/me/article?page=${page}&size=15`,
+      {
+        headers: {
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      },
+    );
+
+    if (data) {
+      setDataSlice([...dataSlice, ...data]);
+    }
+  };
+
   useEffect(() => {
-    const data = FAKE_GOGUMA_DATA.goguma
-      .sort((gogumaA, gogumaB) => {
-        return gogumaA.createdAt > gogumaB.createdAt ? -1 : gogumaA < gogumaB ? 1 : 0;
-      })
-      .slice(0, page * 15);
-    setDateSlice(data);
-  }, [page]);
+    if (!userToken.token) {
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+      if (!localToken) {
+        history.push("/");
+      }
+    }
+  }, [userToken]);
+
+  useEffect(() => {
+    getData();
+  }, [page, userToken]);
 
   return (
     <ListContainer onScroll={scroll}>
@@ -50,23 +82,37 @@ export const GogumaListMe = () => {
         <title>내가 쓴 글 - 고구마</title>
       </Helmet>
       <ContentHeader isPrev={true} isNext={false} title={"내가 쓴 글"} />
-      <ListBox>
-        {dataSlice.map(goguma => (
-          <GogumaCard
-            key={goguma.id}
-            title={goguma.title}
-            content={goguma.content}
-            user={goguma.user}
-            createdAt={goguma.createdAt}
-            responseLength={goguma.responseLength}
-          >
-            <img src={icon_fireguma} width={50} height={50} />
-          </GogumaCard>
-        ))}
-      </ListBox>
+      {dataSlice.length > 0 ? (
+        <ListBox>
+          {dataSlice.map(goguma => (
+            <GogumaCard
+              key={goguma.id}
+              title={goguma.title}
+              content={goguma.content}
+              user={goguma.author}
+              createdAt={goguma.createdAt}
+              responseLength={goguma.numOfGogumas}
+            >
+              <img src={icon_fireguma} width={50} height={50} />
+            </GogumaCard>
+          ))}
+        </ListBox>
+      ) : (
+        <NotList>아직 작성한 글이 없습니다!</NotList>
+      )}
     </ListContainer>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GogumaListMe);
 
 const ListContainer = styled.div`
   width: 354px;
@@ -86,4 +132,14 @@ const ListContainer = styled.div`
 const ListBox = styled.div`
   margin: 0 13px;
   box-sizing: border-box;
+`;
+
+const NotList = styled.div`
+  margin-top: 50px;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  color: #989898;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

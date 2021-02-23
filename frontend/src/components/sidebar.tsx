@@ -44,13 +44,13 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
   const getUser = async () => {
     if (userToken.token) {
       const {
-        data: { name },
+        data: { nickname },
       } = await axios.get(`${BACKEND_URL}/users/me/`, {
         headers: {
           Authorization: `Bearer ${userToken.token}`,
         },
       });
-      setUserName(name);
+      setUserName(nickname);
     }
   };
 
