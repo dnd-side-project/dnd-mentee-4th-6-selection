@@ -2,7 +2,6 @@ package com.selection.dto.goguma;
 
 import com.selection.domain.article.Goguma;
 import com.selection.domain.article.GogumaType;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -104,5 +104,4 @@ public class Choices {
             .map(ChoiceResponse::new)
             .collect(Collectors.toList());
     }
-
 }

@@ -32,23 +32,25 @@ public class ArticleController {
     @ApiOperation(value = "게시글 작성", tags = "게시글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "게시글 번호", response = Long.class),
-            @ApiResponse(code = 500, message = "존재하지 않는 게시글")
+            @ApiResponse(code = 200, message = "게시글 작성 성공(게시글 번호)", response = Long.class),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "게시글 작성 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)
     @PostMapping
     public ResponseEntity<Long> createArticle(
         @ApiParam(value = "게시글 정보", required = true) @RequestBody @Valid ArticleRequest articleRequest,
-        @ApiParam(hidden  = true) @LoginUser String userId) {
+        @ApiParam(hidden = true) @LoginUser String userId) {
         return ResponseEntity.ok(articleService.create(userId, articleRequest));
     }
 
     @ApiOperation(value = "게시글 수정", tags = "게시글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "수정 성공"),
-            @ApiResponse(code = 500, message = "수정 실패")
+            @ApiResponse(code = 200, message = "게시글 수정 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "게시글 수정 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)
@@ -57,15 +59,16 @@ public class ArticleController {
         @ApiParam(value = "게시글 번호", required = true) @PathVariable Long articleId,
         @ApiParam(value = "게시글 정보", required = true) @RequestBody @Valid ArticleRequest articleRequest,
         @ApiParam(hidden = true) @LoginUser String userId) {
-        articleService.modify(articleId, userId,articleRequest);
+        articleService.modify(articleId, userId, articleRequest);
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "게시글 조회", tags = "게시글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "조회 성공", response = ArticleResponse.class),
-            @ApiResponse(code = 500, message = "조회 실패(존재하지 않는 게시글일 경우)")
+            @ApiResponse(code = 200, message = "게시글 조회 성공", response = ArticleResponse.class),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "게시글 조회 실패 이유 정보")
         }
     )
     @GetMapping("/{articleId}")
@@ -78,8 +81,9 @@ public class ArticleController {
     @ApiOperation(value = "게시글 삭제", tags = "게시글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "삭제 성공"),
-            @ApiResponse(code = 500, message = "삭제 실패(존재하지 않는 게시글일 경우)")
+            @ApiResponse(code = 200, message = "게시글 삭제 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "게시글 삭제 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)
@@ -94,8 +98,9 @@ public class ArticleController {
     @ApiOperation(value = "선택지 투표", tags = "선택지 투표 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "투표 성공"),
-            @ApiResponse(code = 500, message = "투표 실패(존재하지 않는 선택지이거나 게시글일 경우)")
+            @ApiResponse(code = 200, message = "선택지 투표 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "선택지 투표 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)

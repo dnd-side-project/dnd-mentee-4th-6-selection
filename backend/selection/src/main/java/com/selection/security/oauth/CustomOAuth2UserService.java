@@ -50,5 +50,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             .orElse(attributes.toEntity().update(attributes.getNickname()));
         return userRepository.save(user);
     }
-
 }

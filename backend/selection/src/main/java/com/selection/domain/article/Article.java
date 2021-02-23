@@ -10,7 +10,6 @@ import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -86,17 +85,18 @@ public class Article extends BaseEntity {
                 String.format("해당 선택지(%s)는 존재하지 않습니다.", choiceId)
             );
         }
+
         Optional<Choice> choice = choices.findVotedByUserId(userId);
         choice.ifPresent(ch -> {
             if (!ch.getId().equals(choiceId)) {
                 ch.cancelVote(userId);
             }
         });
+
         choices.vote(choiceId, userId);
     }
 
     public List<ChoiceResponse> toChoicesResponse() {
         return choices.toResponse();
     }
-
 }

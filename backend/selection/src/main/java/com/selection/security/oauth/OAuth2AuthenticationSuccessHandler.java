@@ -2,12 +2,11 @@ package com.selection.security.oauth;
 
 import static com.selection.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
-import com.selection.config.AppProperties;
 import com.selection.advice.exception.UnAuthorizedRedirectUriException;
+import com.selection.config.AppProperties;
 import com.selection.security.token.TokenProvider;
 import com.selection.security.util.CookieUtils;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -48,12 +47,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
             throw new UnAuthorizedRedirectUriException(
-                "Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
+                "허가 되지 않은 리다이레션 경로입니다.");
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         String token = tokenProvider.createToken(authentication);
-        
+
         return UriComponentsBuilder.fromUriString(targetUrl)
             .queryParam("token", token)
             .build().toUriString();
@@ -67,15 +66,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private boolean isAuthorizedRedirectUri(String uri) {
-        URI clientRedirectUri = URI.create(uri);
-
         return appProperties.getOAuth2().getAuthorizedRedirectUris()
             .stream()
-            .anyMatch(authorizedRedirectUri -> {
-                // Only validate host and port. Let the clients use different paths if they want to
-                URI authorizedURI = URI.create(authorizedRedirectUri);
-                return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                    && authorizedURI.getPort() == clientRedirectUri.getPort();
-            });
+            .anyMatch(authorizedRedirectUri ->
+                authorizedRedirectUri.equalsIgnoreCase(uri)
+            );
     }
 }

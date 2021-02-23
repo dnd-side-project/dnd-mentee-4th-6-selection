@@ -32,8 +32,9 @@ public class GogumaController {
     @ApiOperation(value = "고구마 작성", tags = "고구마 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "작성 성공"),
-            @ApiResponse(code = 500, message = "작성 실패")
+            @ApiResponse(code = 200, message = "고구마 작성 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "고구마 작성 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)
@@ -49,8 +50,9 @@ public class GogumaController {
     @ApiOperation(value = "고구마 수정", tags = "고구마 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "수정 성공"),
-            @ApiResponse(code = 500, message = "수정 실패")
+            @ApiResponse(code = 200, message = "고구마 수정 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "고구마 수정 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)
@@ -67,8 +69,9 @@ public class GogumaController {
     @ApiOperation(value = "고구마 조회", tags = "고구마 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "조회 성공", response = GogumaResponse.class),
-            @ApiResponse(code = 500, message = "조회 실패")
+            @ApiResponse(code = 200, message = "고구마 조회 성공", response = GogumaResponse.class),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "고구마 조회 실패 이유 정보")
         }
     )
     @GetMapping("/{articleId}/gogumas/{gogumaId}")
@@ -82,8 +85,9 @@ public class GogumaController {
     @ApiOperation(value = "고구마 삭제", tags = "고구마 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "삭제 성공"),
-            @ApiResponse(code = 500, message = "삭제 실패")
+            @ApiResponse(code = 200, message = "고구마 삭제 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "고구마 삭제 실패 이유 정보")
         }
     )
     @Secured(ROLES.USER)

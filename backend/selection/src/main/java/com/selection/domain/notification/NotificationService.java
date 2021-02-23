@@ -55,7 +55,6 @@ public class NotificationService {
             .collect(Collectors.toList());
     }
 
-
     @Transactional
     public void read(Long notificationId) {
         Notification notification = findById(notificationId);

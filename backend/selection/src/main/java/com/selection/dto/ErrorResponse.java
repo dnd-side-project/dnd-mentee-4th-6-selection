@@ -1,7 +1,7 @@
 package com.selection.dto;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,13 +10,13 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ErrorResponse {
 
+    private final int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+    private final HttpStatus error = HttpStatus.INTERNAL_SERVER_ERROR;
+    private final Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+    private String message;
 
-    private final int statusCode = HttpStatus.INTERNAL_SERVER_ERROR.value();
-    private List<String> errorMessages;
-    private final LocalDateTime when = LocalDateTime.now();
-
-    public ErrorResponse(List<String> errorMessages) {
-        this.errorMessages = errorMessages;
+    public ErrorResponse(String message) {
+        this.message = message;
     }
 }
 

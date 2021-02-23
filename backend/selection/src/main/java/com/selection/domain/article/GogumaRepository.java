@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface GogumaRepository extends JpaRepository<Goguma, Long> {
 
-
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("DELETE FROM Goguma g WHERE g.id = :gogumaId")

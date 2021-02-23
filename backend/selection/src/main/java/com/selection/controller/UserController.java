@@ -39,24 +39,29 @@ public class UserController {
     @ApiOperation(value = "내 정보 조회", tags = "마이페이지 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "내 정보",
+            @ApiResponse(code = 200, message = "내 정보 조회 성공",
                 response = ProfileResponse.class,
                 responseContainer = "list"
             ),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "내 정보 조회 실패 이유 정보"),
         }
     )
     @GetMapping("/me")
-    public ResponseEntity<ProfileResponse> lookUpMyProfile(@ApiParam(hidden = true) @LoginUser String userId) {
+    public ResponseEntity<ProfileResponse> lookUpMyProfile(
+        @ApiParam(hidden = true) @LoginUser String userId) {
         return ResponseEntity.ok(userService.lookUpMyProfile(userId));
     }
 
     @ApiOperation(value = "내가 쓴 글 조회", tags = "마이페이지 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "내가 쓴 글",
+            @ApiResponse(code = 200, message = "내가 쓴 글 조회 성공",
                 response = ArticleSummaryResponse.class,
                 responseContainer = "list"
             ),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "내가 쓴 글 조회 실패 이유 정보"),
         }
     )
     @GetMapping("/me/article")
@@ -72,10 +77,12 @@ public class UserController {
     @ApiOperation(value = "알림 조회", tags = "마이페이지 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "알림 목록",
+            @ApiResponse(code = 200, message = "알림 목록 조회 성공",
                 response = NotificationResponse.class,
                 responseContainer = "list"
             ),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "알림 목록 조회 실패 이유 정보"),
         }
     )
     @GetMapping("/me/notifications")
@@ -87,11 +94,12 @@ public class UserController {
         return ResponseEntity.ok(notificationService.lookUpMyNotifications(userId, pr));
     }
 
-    @ApiOperation(value = "알림 읽음", tags = "마이페이지 API")
+    @ApiOperation(value = "알림 읽기", tags = "마이페이지 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "읽기 성공"),
-            @ApiResponse(code = 500, message = "읽기 실패(존재하지 않는 알림)"),
+            @ApiResponse(code = 200, message = "알림 읽기 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "알림 읽기 실패 이유 정보"),
         }
     )
     @GetMapping("/me/notifications/{notificationId}")
@@ -103,8 +111,9 @@ public class UserController {
     @ApiOperation(value = "알림 삭제", tags = "마이페이지 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "읽기 성공"),
-            @ApiResponse(code = 500, message = "읽기 실패(존재하지 않는 알림)"),
+            @ApiResponse(code = 200, message = "알림 삭제 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "알림 삭제 실패 이유 정보"),
         }
     )
     @DeleteMapping("/me/notifications/{notificationId}")
@@ -112,6 +121,4 @@ public class UserController {
         @ApiParam(value = "알림 번호", required = true) @PathVariable Long notificationId) {
         notificationService.delete(notificationId);
     }
-
-
 }

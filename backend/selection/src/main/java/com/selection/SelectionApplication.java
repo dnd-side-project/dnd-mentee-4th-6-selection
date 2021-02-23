@@ -1,6 +1,5 @@
 package com.selection;
 
-import com.selection.advice.ExceptionAdvice;
 import com.selection.config.AppProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

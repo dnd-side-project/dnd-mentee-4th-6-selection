@@ -17,8 +17,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest,
         HttpServletResponse httpServletResponse,
         AuthenticationException e) throws IOException {
-        logger.error("Responding with unauthorized error. Message - {}", e.getMessage());
+        logger.error("올바르지 않은 접근 경로를 통한 접속 발생.");
         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-            e.getLocalizedMessage());
+            "올바르지 않은 접근 방법입니다.");
     }
 }
