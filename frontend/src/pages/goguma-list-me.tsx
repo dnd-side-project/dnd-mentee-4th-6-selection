@@ -85,16 +85,17 @@ const GogumaListMe = ({ userToken, addTokenLocal }: IProps) => {
       {dataSlice.length > 0 ? (
         <ListBox>
           {dataSlice.map(goguma => (
-            <GogumaCard
-              key={goguma.id}
-              title={goguma.title}
-              content={goguma.content}
-              user={goguma.author}
-              createdAt={goguma.createdAt}
-              responseLength={goguma.numOfGogumas}
-            >
-              <img src={icon_fireguma} width={50} height={50} />
-            </GogumaCard>
+            <GogumaListLink href={`/goguma/${goguma.id}`} key={goguma.id}>
+              <GogumaCard
+                title={goguma.title}
+                content={goguma.content}
+                user={goguma.author}
+                createdAt={goguma.createdAt}
+                responseLength={goguma.numOfGogumas}
+              >
+                <img src={icon_fireguma} width={50} height={50} />
+              </GogumaCard>
+            </GogumaListLink>
           ))}
         </ListBox>
       ) : (
@@ -142,4 +143,9 @@ const NotList = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+`;
+
+const GogumaListLink = styled.a`
+  text-decoration: none;
+  color: black;
 `;
