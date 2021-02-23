@@ -64,10 +64,11 @@ public class ArticleService {
     @Transactional
     public ArticleResponse lookUp(Long articleId, String userId) {
         Article article = findArticleById(articleId);
+        String userIdOfArticleAuthor = article.getUserId();
         return new ArticleResponse(
             article,
-            userService.findByUserId(userId).getNickname(),
-            article.getUserId().equals(userId),
+            userService.findByUserId(userIdOfArticleAuthor).getNickname(),
+            userIdOfArticleAuthor.equals(userId),
             findChoiceIdByVotedUserId(userId)
         );
     }
