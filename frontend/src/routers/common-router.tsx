@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { addToken } from "../stores/userStore";
 import { NotFound } from "../pages/404";
-import { Goguma } from "../pages/goguma";
+import Goguma from "../pages/goguma";
 import { Home } from "../pages/home";
 import { GogumaBasket } from "../pages/goguma-basket";
 import { Search } from "../pages/search";
