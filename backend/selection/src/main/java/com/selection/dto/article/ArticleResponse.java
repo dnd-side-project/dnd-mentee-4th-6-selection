@@ -23,13 +23,10 @@ public class ArticleResponse {
     private String nickname;
     @ApiModelProperty(notes = "공유수", required = true, example = "0")
     private Long numOfShared;
-    
     @ApiModelProperty(notes = "작성자 여부", required = true, example = "false")
     private boolean isOwner;
-
     @ApiModelProperty(notes = "선택지", required = true)
     private final List<ChoiceResponse> choices = new ArrayList<>();
-
     @ApiModelProperty(notes = "조회자가 선택한 선택지 번호", required = true, example = "-1")
     private Long votedChoiceId;
     @ApiModelProperty(notes = "작성일자", required = true)

@@ -14,13 +14,16 @@ public class OAuthAttributes {
     private final Map<String, Object> attributes;
     private final String nameAttributeKey;
     private final String email;
+    private final String nickname;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String email,
+        String nickname,
         AuthProvider authProvider) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.email = email;
+        this.nickname = nickname;
         attributes.put(SOCIAL_TYPE, authProvider);
     }
 
@@ -39,6 +42,7 @@ public class OAuthAttributes {
         Map<String, Object> attributes) {
         return OAuthAttributes.builder()
             .email((String) attributes.get("email"))
+            .nickname((String)attributes.get("name"))
             .attributes(attributes)
             .nameAttributeKey(userNameAttributeName)
             .authProvider(AuthProvider.GOOGLE)
@@ -51,6 +55,7 @@ public class OAuthAttributes {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
         return OAuthAttributes.builder()
             .email((String) response.get("email"))
+            .nickname((String)response.get("name"))
             .attributes(response)
             .nameAttributeKey(userNameAttributeName)
             .authProvider(AuthProvider.NAVER)
@@ -61,8 +66,11 @@ public class OAuthAttributes {
     public static OAuthAttributes ofKakao(String userNameAttributeName,
         Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> profile = (Map<String, Object>)response.get("profile");
+
         return OAuthAttributes.builder()
             .email((String) response.get("email"))
+            .nickname((String)profile.get("nickname"))
             .attributes(attributes)
             .nameAttributeKey(userNameAttributeName)
             .authProvider(AuthProvider.KAKAO)
@@ -73,6 +81,7 @@ public class OAuthAttributes {
         AuthProvider authProvider = (AuthProvider) attributes.get(SOCIAL_TYPE);
         return User.builder()
             .userId(email)
+            .nickname(nickname)
             .provider(authProvider)
             .role(Role.USER)
             .build();

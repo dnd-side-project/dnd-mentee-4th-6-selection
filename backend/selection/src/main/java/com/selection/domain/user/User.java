@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -28,7 +29,7 @@ public class User extends BaseEntity {
     private String userId;
 
     @Column(nullable = false)
-    private String nickname = "애플";
+    private String nickname = Strings.EMPTY;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -39,14 +40,20 @@ public class User extends BaseEntity {
     private Role role;
 
     @Builder
-    public User(@Email String userId,
+    public User(@Email String userId, String nickname,
         @NotNull AuthProvider provider, Role role) {
         this.userId = userId;
+        this.nickname = nickname;
         this.provider = provider;
         this.role = role;
     }
 
     public String getRoleAuthority() {
         return this.role.getAuthority();
+    }
+
+    public User update(String nickname) {
+        this.nickname = nickname;
+        return this;
     }
 }

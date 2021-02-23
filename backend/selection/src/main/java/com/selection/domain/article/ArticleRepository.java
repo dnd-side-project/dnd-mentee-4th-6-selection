@@ -24,7 +24,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             + "FROM articles AS a "
             + "WHERE a.user_id = :userId"
     )
-    List<ArticleSummaryProjection> findAllByAuthor(@Param("userId") String userId, Pageable pageable);
+    List<ArticleSummaryProjection> findAllByUserId(@Param("userId") String userId, Pageable pageable);
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "

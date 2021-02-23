@@ -39,7 +39,7 @@ public class ArticleService {
                     String.format("해당 게시글(%s)는 존재하지 않습니다.", articleId)));
     }
 
-    public Long findChoiceIdByVotedAuthor(String userId) {
+    public Long findChoiceIdByVotedUserId(String userId) {
         Optional<Vote> vote = voteRepository.findByUserId(userId);
         return vote.isPresent() ? vote.get().getChoice().getId() : -1L;
     }
@@ -66,7 +66,7 @@ public class ArticleService {
             article,
             userService.findByUserId(userId).getNickname(),
             article.getUserId().equals(userId),
-            findChoiceIdByVotedAuthor(userId)
+            findChoiceIdByVotedUserId(userId)
         );
     }
 
@@ -87,9 +87,9 @@ public class ArticleService {
         article.voteOnChoice(choiceId, userId);
     }
 
-    public List<ArticleSummaryResponse> lookUpMyArticles(String author, PageRequest pageRequest) {
+    public List<ArticleSummaryResponse> lookUpMyArticles(String userId, PageRequest pageRequest) {
         List<ArticleSummaryProjection> pagesWithMyArticles =
-            articleRepository.findAllByAuthor(author, pageRequest.of());
+            articleRepository.findAllByUserId(userId, pageRequest.of());
         return pagesWithMyArticles.stream().map(ArticleSummaryResponse::new)
             .collect(Collectors.toList());
     }
