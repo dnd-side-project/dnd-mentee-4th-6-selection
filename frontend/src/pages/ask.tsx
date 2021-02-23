@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, ChangeEvent } from "react";
+import React, { useState, MouseEvent } from "react";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
 import styled from "styled-components";
