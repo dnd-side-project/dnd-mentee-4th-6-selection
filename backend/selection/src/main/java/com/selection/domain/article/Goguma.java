@@ -50,5 +50,4 @@ public class Goguma extends BaseEntity {
     protected void modifyGogumaType(GogumaType gogumaType) {
         this.gogumaType = gogumaType;
     }
-
 }

@@ -58,8 +58,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("API Swagger")
-            .description("테스트")
+            .title("고구마 API 문서")
+            .description("고구마 API 테스트 Swagger 페이지")
             .build();
 
     }

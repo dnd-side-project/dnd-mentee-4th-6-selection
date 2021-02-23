@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 public class TokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
-
     private final AppProperties appProperties;
 
     private String getTokenSecret() {
@@ -72,15 +71,15 @@ public class TokenProvider {
             Jwts.parser().setSigningKey(getTokenSecret()).parseClaimsJws(jwtToken);
             return true;
         } catch (SignatureException ex) {
-            logger.error("Invalid JWT signature");
+            logger.error("해당 토큰({})는 유효하지 않은 JWT 시그니처입니다.", jwtToken);
         } catch (MalformedJwtException ex) {
-            logger.error("Invalid JWT token");
+            logger.error("해당 토큰({})는 유효하지 않은 JWT 토큰입니다.", jwtToken);
         } catch (ExpiredJwtException ex) {
-            logger.error("Expired JWT token");
+            logger.error("해당 토큰({})은 만료된 JWT 토큰입니다.", jwtToken);
         } catch (UnsupportedJwtException ex) {
-            logger.error("Unsupported JWT token");
+            logger.error("해당 토큰({})는 지원하지 않는 형식의 JWT 토큰입니다.", jwtToken);
         } catch (IllegalArgumentException ex) {
-            logger.error("JWT claims string is empty.");
+            logger.error("해당 토큰({})의 claims 정보가 존재하지 않습니다.", jwtToken);
         }
         return false;
     }

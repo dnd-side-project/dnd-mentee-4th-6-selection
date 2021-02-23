@@ -28,7 +28,8 @@ public class HotArticleController {
     @ApiOperation(value = "갓 구운 고구마 API", tags = "인기글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 200, message = "갓 구운 고구마 조회 성공"),
+            @ApiResponse(code = 500, message = "갓 구운 고구마 조회 실패 이유 정보"),
         }
     )
     @GetMapping("/drafts")
@@ -44,7 +45,8 @@ public class HotArticleController {
     @ApiOperation(value = "불타는 고구마 API", tags = "인기글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 200, message = "불타는 고구마 조회 성공"),
+            @ApiResponse(code = 500, message = "불타는 고구마 조회 실패 이유 정보"),
         }
     )
     @GetMapping("/fires")
@@ -60,7 +62,8 @@ public class HotArticleController {
     @ApiOperation(value = "명예 고구마 API", tags = "인기글 API")
     @ApiResponses(
         value = {
-            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 200, message = "명예 고구마 조회 조회 성공"),
+            @ApiResponse(code = 500, message = "명예 고구마 조회 실패 이유 정보"),
         }
     )
     @GetMapping("/honors")

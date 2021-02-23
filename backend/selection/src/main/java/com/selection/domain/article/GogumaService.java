@@ -1,6 +1,5 @@
 package com.selection.domain.article;
 
-import com.selection.domain.notification.Notification;
 import com.selection.domain.notification.NotificationService;
 import com.selection.domain.user.User;
 import com.selection.domain.user.UserService;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class GogumaService {
 
     private final ArticleService articleService;
-    private final GogumaRepository gogumaRepository;
     private final NotificationService notificationService;
     private final UserService userService;
 

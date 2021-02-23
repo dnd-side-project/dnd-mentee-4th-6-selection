@@ -2,9 +2,11 @@ package com.selection.security.oauth;
 
 import com.selection.domain.user.LoginUser;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -18,16 +20,26 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterAnnotation(LoginUser.class) != null;
+        Authentication authentication = SecurityContextHolder
+            .getContext().getAuthentication();
+        return parameter.getParameterAnnotation(LoginUser.class) != null
+            && authentication instanceof UsernamePasswordAuthenticationToken;
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter,
         @Nullable ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
-        UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder
+        Authentication authentication = SecurityContextHolder
             .getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) authToken.getPrincipal();
-        return userPrincipal.getEmail();
+
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            UsernamePasswordAuthenticationToken authenticationToken
+                = (UsernamePasswordAuthenticationToken) authentication;
+            UserPrincipal userPrincipal = (UserPrincipal) authenticationToken.getPrincipal();
+            return userPrincipal.getEmail();
+        } else {
+            return Strings.EMPTY;
+        }
     }
 }
