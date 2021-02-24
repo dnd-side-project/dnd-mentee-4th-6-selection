@@ -28,6 +28,9 @@ public class Goguma extends BaseEntity {
     @Column(nullable = false)
     private String userId;
 
+    @Column(nullable = false)
+    private boolean isRead = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Article article;
@@ -49,5 +52,9 @@ public class Goguma extends BaseEntity {
 
     protected void modifyGogumaType(GogumaType gogumaType) {
         this.gogumaType = gogumaType;
+    }
+
+    protected void read() {
+        this.isRead = true;
     }
 }

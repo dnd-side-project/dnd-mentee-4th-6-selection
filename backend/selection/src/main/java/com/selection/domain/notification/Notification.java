@@ -2,6 +2,7 @@ package com.selection.domain.notification;
 
 import com.selection.domain.BaseEntity;
 import com.selection.domain.article.Article;
+import com.selection.domain.article.Goguma;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,12 +29,12 @@ public class Notification extends BaseEntity {
 
     @ManyToOne
     @JoinColumn
-    private Article article;
+    private Goguma goguma;
 
-    public Notification(String userIdOfReceiver, String userIdOfSender, Article article) {
+    public Notification(String userIdOfReceiver, String userIdOfSender, Goguma goguma) {
         this.senderUserId = userIdOfReceiver;
         this.receiverUserId = userIdOfSender;
-        this.article = article;
+        this.goguma = goguma;
     }
 
     public void read() {

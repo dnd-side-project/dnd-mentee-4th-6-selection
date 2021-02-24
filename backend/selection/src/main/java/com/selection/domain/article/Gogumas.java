@@ -5,6 +5,7 @@ import com.selection.advice.exception.GogumaNotFoundException;
 import com.selection.dto.goguma.GogumaRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -67,5 +68,9 @@ public class Gogumas {
         }
         goguma.modifyGogumaType(gogumaRequest.getGogumaType());
         goguma.modifyMessage(gogumaRequest.getMessage());
+    }
+
+    protected Stream<Goguma> stream() {
+        return gogumas.stream();
     }
 }
