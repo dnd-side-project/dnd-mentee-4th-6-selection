@@ -9,7 +9,7 @@ import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
 
 interface IData {
   id: number;
-  author: string;
+  nickname: string;
   content: string;
   createdAt: string;
   numOfGogumas: number;
@@ -56,7 +56,7 @@ export const GogumaListPopular = () => {
             <GogumaCard
               title={goguma.title}
               content={goguma.content}
-              user={goguma.author}
+              user={goguma.nickname}
               createdAt={goguma.createdAt}
               responseLength={goguma.numOfGogumas}
             >

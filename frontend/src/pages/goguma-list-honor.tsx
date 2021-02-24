@@ -9,7 +9,7 @@ import axios from "axios";
 
 interface IData {
   id: number;
-  author: string;
+  nickname: string;
   content: string;
   createdAt: string;
   numOfGogumas: number;
