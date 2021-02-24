@@ -147,6 +147,7 @@ const QuestionDescription = styled.div`
   line-height: 15px;
   margin-top: 5px;
   color: #c1c1c1;
+  font-weight: 400; //Regular
 `;
 
 const AskContainer = styled.div`
