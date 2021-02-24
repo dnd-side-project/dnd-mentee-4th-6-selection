@@ -22,7 +22,7 @@ interface IProps {
 
 interface IData {
   id: number;
-  author: string;
+  nickname: string;
   content: string;
   createdAt: string;
   numOfGogumas: number;
@@ -89,7 +89,7 @@ const GogumaListMe = ({ userToken, addTokenLocal }: IProps) => {
               <GogumaCard
                 title={goguma.title}
                 content={goguma.content}
-                user={goguma.author}
+                user={goguma.nickname}
                 createdAt={goguma.createdAt}
                 responseLength={goguma.numOfGogumas}
               >

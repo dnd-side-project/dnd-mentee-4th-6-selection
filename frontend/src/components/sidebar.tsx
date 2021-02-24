@@ -6,6 +6,7 @@ import axios from "axios";
 import { addToken } from "../stores/userStore";
 import { BACKEND_URL } from "../constants";
 import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
+import icon_alarm from "../styles/img/icon_alarm.svg";
 
 interface IParams {
   token: string;
@@ -152,10 +153,12 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
         </SidebarMenu>
         <OutBackground onClick={onClickOut}>
           <NotificationLink href={`/notifications`}>
-            <NotificationBox>
-              <img src={veryhappy} width={30} height={30} />
-              {isNotification && <NotificationNew />}
-            </NotificationBox>
+            {isUser && (
+              <NotificationBox>
+                <img src={icon_alarm} width={30} height={30} />
+                {isNotification && <NotificationNew />}
+              </NotificationBox>
+            )}
           </NotificationLink>
         </OutBackground>
       </SideContainer>
