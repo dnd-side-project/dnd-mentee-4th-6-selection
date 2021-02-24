@@ -9,7 +9,7 @@ import draft_guma from "../styles/img/icon_draft_guma.svg";
 
 interface IData {
   id: number;
-  author: string;
+  nickname: string;
   content: string;
   createdAt: string;
   numOfGogumas: number;
@@ -57,7 +57,7 @@ export const GogumaListResent = () => {
             <GogumaCard
               title={goguma.title}
               content={goguma.content}
-              user={goguma.author}
+              user={goguma.nickname}
               createdAt={goguma.createdAt}
               responseLength={goguma.numOfGogumas}
             >
