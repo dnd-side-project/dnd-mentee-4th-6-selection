@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
@@ -17,16 +17,12 @@ import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
 import icons_linkcopy from "../styles/img/icons_linkcopy.svg";
 import basket_comment from "../styles/img/basket_comment.svg";
 import background_img from "../styles/img/watercolor-paper-texture.png";
-
-const FAKE_GOGUMA_DATA = [
-  {
-    id: 1,
-    title: "여러분들,, 이게 진짜내용..?",
-    content: `저는 27살 여자구 소개로 1년가까이 만난 동갑남자친구가 있어요. 저는 직장인이구 남친은 아직 한학기 남은 휴학 취준생입니다. 원래 성격이 좀 예민하고 까탈스럽고 공감능력이 많이 떨어진다고 듣는 남자친구인데 그래도 저에겐 한없이 멋있고 좋은점도 많이 보이고 술담배도 안하고 항상 바르게 살려고 하는거같아서 계속 만나고 있는 중에 . . . . . (생략). . . . . .어떻게 해야할까요? .`,
-    choices: ["확 갈라선다!", "20자인 경우 이정도 길이가 됩니다."],
-    numOfGogumas: 100,
-  },
-];
+import axios from "axios";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
+import { connect } from "react-redux";
+import { BACKEND_URL } from "../constants";
+import { useForm } from "react-hook-form";
 
 interface IStyleProps {
   basketActive: boolean;
@@ -36,13 +32,48 @@ interface IParams {
   id: string;
 }
 
-export const Goguma: React.FC = () => {
+interface IPropParams {
+  token: string;
+}
+
+interface IProps {
+  userToken: IPropParams;
+  addTokenLocal: (token: IPropParams) => void;
+}
+
+interface IChoices {
+  id: number;
+  content: string;
+}
+
+interface IData {
+  id: number;
+  title: string;
+  content: string;
+  nickname: string;
+  numOfShared: number;
+  choices: IChoices[];
+  votedChoiceId: number;
+  createdAt: string;
+  owner: boolean;
+}
+
+const Goguma = ({ userToken, addTokenLocal }: IProps) => {
   const history = useHistory();
   const { id } = useParams<IParams>();
   const url = window.location.href;
+  const { register, getValues } = useForm();
   const [basketActive, setBasketActive] = useState(false);
   const [showheader, setShowheader] = useState(true);
   const [showClip, setShowClip] = useState(false);
+  const [gogumaData, setGogumaData] = useState<IData>();
+  const [isModify, setIsModify] = useState(false);
+  const [titleValue, setTitleValue] = useState("");
+  const [contentValue, setContentValue] = useState("");
+  const [choiceOValue, setChoiceOValue] = useState("");
+  const [choiceTValue, setChoiceTValue] = useState("");
+  const [loading, setLoading] = useState(true);
+  const localToken = localStorage.getItem("token");
 
   if (!id) {
     history.push(`/`);
@@ -69,109 +100,294 @@ export const Goguma: React.FC = () => {
     setShowheader(show);
   };
 
-  const data = FAKE_GOGUMA_DATA.find(goguma => goguma.id === +id);
+  const getData = async () => {
+    setLoading(true);
+    if (userToken.token) {
+      const { data } = await axios.get(`${BACKEND_URL}/articles/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+      if (data) {
+        await setGogumaData(data);
+      }
+    } else {
+      const { data } = await axios.get(`${BACKEND_URL}/articles/${id}`);
+      if (data) {
+        await setGogumaData(data);
+      }
+    }
+    setLoading(false);
+  };
+
+  const setData = () => {
+    if (gogumaData) {
+      setTitleValue(gogumaData.title);
+      setContentValue(gogumaData.content);
+      if (gogumaData.choices.length > 0) {
+        setChoiceOValue(gogumaData.choices[0].content);
+        setChoiceTValue(gogumaData.choices[1].content);
+      }
+    }
+  };
+
+  const onChange = () => {
+    const { title, content } = getValues();
+    setTitleValue(title);
+    setContentValue(content);
+    if (gogumaData && gogumaData.choices.length > 0) {
+      const { choice1, choice2 } = getValues();
+      setChoiceOValue(choice1);
+      setChoiceTValue(choice2);
+    }
+  };
+
+  const onSubmit = async () => {
+    const gogumaConfirm = confirm("정말 게시글을 수정 하시겠어요?");
+    if (gogumaConfirm) {
+      let data;
+      if (gogumaData && gogumaData?.choices.length > 0) {
+        data = {
+          content: contentValue,
+          title: titleValue,
+          choices: [{ content: choiceOValue }, { content: choiceTValue }],
+        };
+      } else {
+        data = {
+          content: contentValue,
+          title: titleValue,
+          choices: [],
+        };
+      }
+      await axios.put(`${BACKEND_URL}/articles/${id}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+      setIsModify(false);
+    }
+  };
+
+  const onDelete = async () => {
+    const gogumaConfirm = confirm("정말 게시글을 삭제 하시겠어요?");
+    if (gogumaConfirm) {
+      await axios.delete(`${BACKEND_URL}/articles/${id}`);
+      history.push(`/`);
+    }
+  };
+
+  useEffect(() => {
+    setData();
+  }, [gogumaData]);
+
+  useEffect(() => {
+    if (!userToken.token) {
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+    }
+  }, [localToken, userToken]);
+
+  useEffect(() => {
+    getData();
+  }, [id, isModify]);
 
   return (
     <GogumaOutContainer onScroll={scroll}>
       <Helmet>
-        <title>{`${data?.title.slice(0, 5)}...` || "not found"} - GO!GUMA</title>
+        <title>{`${gogumaData?.title.slice(0, 5)}...` || "not found"} - GO!GUMA</title>
       </Helmet>
-      <ContentHeader isPrev={true} isNext={false} title={""}>
-        <CopyToClipboard text={url} onCopy={onCopy}>
-          <LinkImg src={icons_linkcopy} />
-        </CopyToClipboard>
-      </ContentHeader>
-      {showClip && <ClipBox>링크가 복사되었습니다!</ClipBox>}
-      {data && (
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
         <>
-          {!showheader && (
-            <ScrollTitle className={`${showheader ? "" : "show"}`}>{data.title}</ScrollTitle>
+          <ContentHeader isPrev={true} isNext={false} title={""}>
+            {gogumaData?.owner ? (
+              <>
+                {isModify ? (
+                  <>
+                    <div style={{ marginRight: 30, cursor: "pointer" }} onClick={onSubmit}>
+                      등록
+                    </div>
+                    <div
+                      style={{ marginRight: 20, cursor: "pointer" }}
+                      onClick={() => setIsModify(false)}
+                    >
+                      취소
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      style={{ marginRight: 30, cursor: "pointer" }}
+                      onClick={() => setIsModify(true)}
+                    >
+                      편집
+                    </div>
+                    <div style={{ marginRight: 20, cursor: "pointer" }} onClick={onDelete}>
+                      삭제
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <CopyToClipboard text={url} onCopy={onCopy}>
+                <LinkImg src={icons_linkcopy} />
+              </CopyToClipboard>
+            )}
+          </ContentHeader>
+          {showClip && <ClipBox>링크가 복사되었습니다!</ClipBox>}
+          {gogumaData && (
+            <>
+              {!showheader && (
+                <ScrollTitle className={`${showheader ? "" : "show"}`}>
+                  {gogumaData.title}
+                </ScrollTitle>
+              )}
+              {isModify ? (
+                <GogumaContainer>
+                  <ContentContainer>
+                    <TitleInput
+                      ref={register({ maxLength: 30 })}
+                      value={titleValue}
+                      name={"title"}
+                      onChange={onChange}
+                      maxLength={30}
+                    />
+                    <ContentInput
+                      ref={register({ maxLength: 200 })}
+                      value={contentValue}
+                      name={"content"}
+                      onChange={onChange}
+                      maxLength={200}
+                      spellCheck={false}
+                    />
+                    {gogumaData.choices.length > 0 && (
+                      <ChoiceBoxes>
+                        <ChoiceInput
+                          ref={register({ maxLength: 30 })}
+                          value={choiceOValue}
+                          name={"choice1"}
+                          onChange={onChange}
+                          maxLength={30}
+                        />
+                        <ChoiceInput
+                          ref={register({ maxLength: 30 })}
+                          value={choiceTValue}
+                          name={"choice2"}
+                          onChange={onChange}
+                          maxLength={30}
+                        />
+                      </ChoiceBoxes>
+                    )}
+                  </ContentContainer>
+                </GogumaContainer>
+              ) : (
+                <GogumaContainer>
+                  <ContentContainer>
+                    <TitleBox>
+                      {gogumaData.numOfShared > 0 && <img src={icon_fireguma} />}
+                      {gogumaData.title}
+                    </TitleBox>
+                    <ContentBox>{gogumaData.content}</ContentBox>
+                    {gogumaData.choices.length > 0 && (
+                      <ChoiceBoxes>
+                        {gogumaData.choices.map(choice => (
+                          <ChoiceBox key={choice.id}>{choice.content}</ChoiceBox>
+                        ))}
+                      </ChoiceBoxes>
+                    )}
+                  </ContentContainer>
+                </GogumaContainer>
+              )}
+              <BasketContainer>
+                <Link to={`/goguma/basket/${gogumaData.id}`}>
+                  <GogumaBasket basketActive={basketActive}>
+                    <img src={basket} />
+                  </GogumaBasket>
+                </Link>
+                {gogumaData.numOfShared > 10 && (
+                  <BasketComment>고구마바구니가 가득 찼어요!</BasketComment>
+                )}
+              </BasketContainer>
+              <GogumaSubtext>글이 공감되시나요? 고구마로 소통할 수 있어요.</GogumaSubtext>
+              <EmojiContainer>
+                <GogumaEmojies>
+                  <GogumaEmogi>
+                    <Emoji title={"훈-훈 하구마~"} onBasketActive={onBasketActive}>
+                      <img src={good} />
+                    </Emoji>
+                    <EmogiTitle>훈-훈 하구마~</EmogiTitle>
+                  </GogumaEmogi>
+                  <GogumaEmogi>
+                    <Emoji title={"뭐구마!!!!"} onBasketActive={onBasketActive}>
+                      <img src={angry} />
+                    </Emoji>
+                    <EmogiTitle>뭐구마!!!!</EmogiTitle>
+                  </GogumaEmogi>
+                  <GogumaEmogi>
+                    <Emoji title={"슬프구마.."} onBasketActive={onBasketActive}>
+                      <img src={sad} />
+                    </Emoji>
+                    <EmogiTitle>슬프구마..</EmogiTitle>
+                  </GogumaEmogi>
+                  <GogumaEmogi>
+                    <Emoji title={"고..고구마"} onBasketActive={onBasketActive}>
+                      <img src={goguma} />
+                    </Emoji>
+                    <EmogiTitle>고..고구마</EmogiTitle>
+                  </GogumaEmogi>
+                  <GogumaEmogi>
+                    <Emoji title={"??뭐구마..?!"} onBasketActive={onBasketActive}>
+                      <img src={surprised} />
+                    </Emoji>
+                    <EmogiTitle>??뭐구마..?!</EmogiTitle>
+                  </GogumaEmogi>
+                  <GogumaEmogi>
+                    <Emoji title={"relax"} onBasketActive={onBasketActive}>
+                      <img src={relax} />
+                    </Emoji>
+                    <EmogiTitle>relax</EmogiTitle>
+                  </GogumaEmogi>
+                  <GogumaEmogi>
+                    <Emoji title={"veryhappy"} onBasketActive={onBasketActive}>
+                      <img src={veryhappy} />
+                    </Emoji>
+                    <EmogiTitle>veryhappy</EmogiTitle>
+                  </GogumaEmogi>
+                </GogumaEmojies>
+              </EmojiContainer>
+            </>
           )}
-          <GogumaContainer>
-            <ContentContainer>
-              <TitleBox>
-                {data.numOfGogumas > 0 && <img src={icon_fireguma} />}
-                {data.title}
-              </TitleBox>
-              <ContentBox>{data.content}</ContentBox>
-              <ChoiceBoxes>
-                {data.choices.map(choice => (
-                  <ChoiceBox key={choice}>{choice}</ChoiceBox>
-                ))}
-              </ChoiceBoxes>
-            </ContentContainer>
-          </GogumaContainer>
-          <BasketContainer>
-            <Link to={`/goguma/basket/${data.id}`}>
-              <GogumaBasket basketActive={basketActive}>
-                <img src={basket} />
-              </GogumaBasket>
-            </Link>
-            {data.numOfGogumas > 10 && <BasketComment>고구마바구니가 가득 찼어요!</BasketComment>}
-          </BasketContainer>
-          <GogumaSubtext>글이 공감되시나요? 고구마로 소통할 수 있어요.</GogumaSubtext>
-          <EmojiContainer>
-            <GogumaEmojies>
-              <GogumaEmogi>
-                <Emoji title={"훈-훈 하구마~"} onBasketActive={onBasketActive}>
-                  <img src={good} />
-                </Emoji>
-                <EmogiTitle>훈-훈 하구마~</EmogiTitle>
-              </GogumaEmogi>
-              <GogumaEmogi>
-                <Emoji title={"뭐구마!!!!"} onBasketActive={onBasketActive}>
-                  <img src={angry} />
-                </Emoji>
-                <EmogiTitle>뭐구마!!!!</EmogiTitle>
-              </GogumaEmogi>
-              <GogumaEmogi>
-                <Emoji title={"슬프구마.."} onBasketActive={onBasketActive}>
-                  <img src={sad} />
-                </Emoji>
-                <EmogiTitle>슬프구마..</EmogiTitle>
-              </GogumaEmogi>
-              <GogumaEmogi>
-                <Emoji title={"고..고구마"} onBasketActive={onBasketActive}>
-                  <img src={goguma} />
-                </Emoji>
-                <EmogiTitle>고..고구마</EmogiTitle>
-              </GogumaEmogi>
-              <GogumaEmogi>
-                <Emoji title={"??뭐구마..?!"} onBasketActive={onBasketActive}>
-                  <img src={surprised} />
-                </Emoji>
-                <EmogiTitle>??뭐구마..?!</EmogiTitle>
-              </GogumaEmogi>
-              <GogumaEmogi>
-                <Emoji title={"relax"} onBasketActive={onBasketActive}>
-                  <img src={relax} />
-                </Emoji>
-                <EmogiTitle>relax</EmogiTitle>
-              </GogumaEmogi>
-              <GogumaEmogi>
-                <Emoji title={"veryhappy"} onBasketActive={onBasketActive}>
-                  <img src={veryhappy} />
-                </Emoji>
-                <EmogiTitle>veryhappy</EmogiTitle>
-              </GogumaEmogi>
-            </GogumaEmojies>
-          </EmojiContainer>
+          {!gogumaData && (
+            <NotFoundContainer>
+              <NotFoundTitle>찾을수 없는 게시글 입니다.</NotFoundTitle>
+              <NotFoundContent>
+                삭제되거나 없는 게시글 입니다. 다시 한번 확인해주세요
+              </NotFoundContent>
+              <NotFoundLink>
+                <Link to={`/`} style={{ textDecoration: "none", color: "#505050" }}>
+                  홈으로 돌아가기
+                </Link>
+              </NotFoundLink>
+            </NotFoundContainer>
+          )}
         </>
-      )}
-      {!data && (
-        <NotFoundContainer>
-          <NotFoundTitle>찾을수 없는 게시글 입니다.</NotFoundTitle>
-          <NotFoundContent>삭제되거나 없는 게시글 입니다. 다시 한번 확인해주세요</NotFoundContent>
-          <NotFoundLink>
-            <Link to={`/`} style={{ textDecoration: "none", color: "#505050" }}>
-              홈으로 돌아가기
-            </Link>
-          </NotFoundLink>
-        </NotFoundContainer>
       )}
     </GogumaOutContainer>
   );
 };
+
+const mapStateToProps = (state: IPropParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IPropParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Goguma);
 
 const GogumaOutContainer = styled.div`
   width: 354px;
@@ -205,10 +421,9 @@ const ScrollTitle = styled.div`
   margin: 0 auto;
   height: 50px;
   background-color: white;
-  border-bottom: 1px solid #d5d5d5;
   padding: 0 27px;
-  font-family: MaruBuri-Regular;
-  font-size: 20px;
+  font-family: "Gaegu", cursive;
+  font-size: 18px;
   color: #8c5cdd;
   align-items: center;
   box-sizing: border-box;
@@ -300,6 +515,9 @@ const ChoiceBoxes = styled.div`
   background-color: white;
   overflow: hidden;
   div:not(:last-child) {
+    border-right: 1px solid #8c5cdd;
+  }
+  input:not(:last-child) {
     border-right: 1px solid #8c5cdd;
   }
 `;
@@ -442,5 +660,58 @@ const NotFoundLink = styled.div`
   }
   &:active {
     background-color: #a0a0a0;
+  }
+`;
+
+const TitleInput = styled.input`
+  width: 100%;
+  font-family: "Gaegu", cursive;
+  font-size: 25px;
+  color: #8c5cdd;
+  padding-bottom: 11px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-bottom: 2px solid #8c5cdd;
+  margin-bottom: 20px;
+  word-break: keep-all;
+  display: flex;
+  align-items: flex-start;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ContentInput = styled.textarea`
+  width: 100%;
+  height: 175px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 25px;
+  margin-bottom: 45px;
+  word-break: keep-all;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ChoiceInput = styled.input`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #8c5cdd;
+  width: 100%;
+  height: 100%;
+  padding: 0 15px;
+  border: none;
+  word-break: keep-all;
+  text-align: center;
+  &:focus {
+    outline: none;
   }
 `;
