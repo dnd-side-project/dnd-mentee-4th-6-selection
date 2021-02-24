@@ -196,7 +196,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
   return (
     <GogumaOutContainer onScroll={scroll}>
       <Helmet>
-        <title>{`${gogumaData?.title.slice(0, 5)}...` || "not found"} - GO!GUMA</title>
+        <title>{`${gogumaData?.title.slice(0, 5)}...` || "not found"} - 고구마</title>
       </Helmet>
       {loading ? (
         <div>Loading...</div>
