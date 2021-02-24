@@ -5,7 +5,7 @@ import { BACKEND_URL } from "../constants";
 import axios from "axios";
 import styled from "styled-components";
 import GumaIcon from "../styles/img/icon_draft_guma.svg";
-import { ISimplifiedGoguamList } from "../interface/IData";
+import { ISimplifiedGoguamListData } from "../interface/IData";
 
 const SuccessTitle = styled.div`
   margin-top: 12vh;
@@ -99,14 +99,14 @@ const GogumaSlideItemText = styled.p`
 export const AskSuccess: React.FC = () => {
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get<ISimplifiedGoguamList[]>(`${BACKEND_URL}/hot/drafts`);
+      const { data } = await axios.get<ISimplifiedGoguamListData[]>(`${BACKEND_URL}/hot/drafts`);
       if (data) {
         setRecentGogumas([...data]);
       }
     })();
   }, []);
 
-  const [recentGogumas, setRecentGogumas] = useState<ISimplifiedGoguamList[]>([]);
+  const [recentGogumas, setRecentGogumas] = useState<ISimplifiedGoguamListData[]>([]);
   return (
     <>
       <Helmet>
