@@ -19,6 +19,7 @@ import { GogumaListPopular } from "../pages/goguma-list-popular";
 import { GogumaListHonor } from "../pages/goguma-list-honor";
 import GogumaListMe from "../pages/goguma-list-me";
 import Notifications from "../pages/notifications";
+import Gogumas from "../pages/goguma-gogumas";
 
 const commenRoutes = [
   {
@@ -52,6 +53,10 @@ const commenRoutes = [
   {
     path: "/goguma-info",
     component: <GogumaInfo />,
+  },
+  {
+    path: "/goguma/:gogumaId/gogumas/:gogumasId",
+    component: <Gogumas />,
   },
 ];
 
