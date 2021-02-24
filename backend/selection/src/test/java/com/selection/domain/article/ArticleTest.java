@@ -33,7 +33,7 @@ class ArticleTest {
 
         final List<Goguma> gogumas = Arrays.asList(
             new Goguma(GogumaType.ANGRY, userIdOfGogumaWriter, article),
-            new Goguma(GogumaType.CONFUSED, userIdOfGogumaWriter, article)
+            new Goguma(GogumaType.VERYHAPPY, userIdOfGogumaWriter, article)
         );
 
         article.addChoices(choices);
