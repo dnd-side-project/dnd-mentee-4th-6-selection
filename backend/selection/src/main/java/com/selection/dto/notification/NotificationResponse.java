@@ -12,6 +12,9 @@ public class NotificationResponse {
     @ApiModelProperty(notes = "번호", required = true, example = "1")
     private Long id;
 
+    @ApiModelProperty(notes = "고구마 번호", required = true, example = "1")
+    private Long gogumaId;
+
     @ApiModelProperty(notes = "게시글 제목", required = true, example = "제목")
     private String title;
 
@@ -21,9 +24,10 @@ public class NotificationResponse {
     @ApiModelProperty(notes = "보낸 날짜", required = true)
     private LocalDateTime sendedTime;
 
-    public NotificationResponse(Long id, String title, String nickname,
+    public NotificationResponse(Long id, Long gogumaId, String title, String nickname,
         LocalDateTime sendedTime) {
         this.id = id;
+        this.gogumaId = gogumaId;
         this.title = title;
         this.nickname = nickname;
         this.sendedTime = sendedTime;

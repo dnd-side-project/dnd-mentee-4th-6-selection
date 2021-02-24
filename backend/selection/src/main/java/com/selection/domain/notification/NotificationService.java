@@ -1,7 +1,7 @@
 package com.selection.domain.notification;
 
 import com.selection.advice.exception.NotificationNotFoundException;
-import com.selection.domain.article.Article;
+import com.selection.domain.article.Goguma;
 import com.selection.domain.user.User;
 import com.selection.domain.user.UserService;
 import com.selection.dto.PageRequest;
@@ -29,19 +29,21 @@ public class NotificationService {
     }
 
     private NotificationResponse createNotification(Notification notification) {
-        String title = notification.getArticle().getTitle();
+        Goguma targetGoguma = notification.getGoguma();
+        String title = targetGoguma.getArticle().getTitle();
         String userIdOfSender = notification.getSenderUserId();
         String nicknameOfSender = userService.findByUserId(userIdOfSender).getNickname();
         LocalDateTime when = notification.getCreatedAt();
-        return new NotificationResponse(notification.getId(), title, nicknameOfSender, when);
+        return new NotificationResponse(notification.getId(), targetGoguma.getId(), title,
+            nicknameOfSender, when);
     }
 
     @Transactional
-    public void send(String userIdOfReceiver, String userIdOfSender, Article article) {
+    public void send(String userIdOfReceiver, String userIdOfSender, Goguma goguma) {
         User userOfReceiver = userService.findByUserId(userIdOfReceiver);
         User userOfSender = userService.findByUserId(userIdOfSender);
         Notification notification = new Notification(userOfReceiver.getUserId(),
-            userOfSender.getUserId(), article);
+            userOfSender.getUserId(), goguma);
         notificationRepository.save(notification);
     }
 

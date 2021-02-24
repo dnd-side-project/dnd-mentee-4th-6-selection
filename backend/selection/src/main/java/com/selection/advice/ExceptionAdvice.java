@@ -3,6 +3,8 @@ package com.selection.advice;
 import com.selection.advice.exception.ArticleAccessException;
 import com.selection.advice.exception.ArticleNotFoundException;
 import com.selection.advice.exception.ChoiceNotFoundException;
+import com.selection.advice.exception.GogumaAccessException;
+import com.selection.advice.exception.GogumaNotFoundException;
 import com.selection.advice.exception.NotificationNotFoundException;
 import com.selection.advice.exception.UserNotFoundException;
 import com.selection.dto.ErrorResponse;
@@ -60,6 +62,18 @@ public class ExceptionAdvice {
     @ExceptionHandler(ChoiceNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorResponse choiceNotFoundException(ChoiceNotFoundException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(GogumaNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse gogumaNotFoundException (GogumaNotFoundException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(GogumaAccessException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse gogumaAccessException(GogumaAccessException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 }

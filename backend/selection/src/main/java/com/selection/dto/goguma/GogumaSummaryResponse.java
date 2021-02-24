@@ -1,6 +1,5 @@
 package com.selection.dto.goguma;
 
-import com.selection.domain.article.Goguma;
 import com.selection.domain.article.GogumaType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -8,24 +7,26 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class GogumaResponse {
+public class GogumaSummaryResponse {
 
     @ApiModelProperty(notes = "번호", required = true, example = "1")
     private Long id;
-    @ApiModelProperty(notes = "쪽지 내용", required = true, example = "공감합니다!")
-    private String message;
     @ApiModelProperty(notes = "고구마 타입", required = true, example = "GOOD")
     private GogumaType gogumaType;
-    @ApiModelProperty(notes = "작성자 닉네임", required = true, example = "애플")
-    private String nickname;
     @ApiModelProperty(notes = "작성자 여부", required = true, example = "false")
     private boolean isOwner;
+    @ApiModelProperty(notes = "작성자 읽음 여부", required = true, example = "false")
+    private boolean isRead;
+    @ApiModelProperty(notes = "내용 존재 여부", required = true, example = "false")
+    private boolean isBody;
 
-    public GogumaResponse(Goguma goguma, String nickname, boolean isOwner) {
-        this.id = goguma.getId();
-        this.message = goguma.getMessage();
-        this.gogumaType = goguma.getGogumaType();
+
+    public GogumaSummaryResponse(Long id, GogumaType gogumaType, boolean isOwner, boolean isRead,
+        boolean isBody) {
+        this.id = id;
+        this.gogumaType = gogumaType;
         this.isOwner = isOwner;
-        this.nickname = nickname;
+        this.isRead = isRead;
+        this.isBody = isBody;
     }
 }

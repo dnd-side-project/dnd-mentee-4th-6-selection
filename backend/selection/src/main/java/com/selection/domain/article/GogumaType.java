@@ -6,7 +6,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum GogumaType {
-    HAPPY("HAPPY"), ANGRY("ANGRY"), CONFUSED("CONFUSED");
-
+    VERYHAPPY("VERYHAPPY"),
+    RELAX("RELAX"),
+    SUPRISED("SUPRISED"),
+    GOGUMA("GOGUMA"),
+    SAD("SAD"),
+    ANGRY("ANGRY"),
+    GOOD("GOOD");
     private final String value;
 }
