@@ -39,14 +39,13 @@ const Notification = ({ userToken, addTokenLocal }: IProps) => {
 
   const getUser = async () => {
     if (userToken.token) {
-      const {
-        data: { nickname },
-      } = await axios.get(`${BACKEND_URL}/users/me/`, {
-        headers: {
-          Authorization: `Bearer ${userToken.token}`,
-        },
-      });
-      if (!nickname) {
+      try {
+        await axios.get(`${BACKEND_URL}/users/me/`, {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+      } catch {
         localStorage.removeItem("token");
         addTokenLocal({ token: "" });
       }

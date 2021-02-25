@@ -20,6 +20,8 @@ import { GogumaListHonor } from "../pages/goguma-list-honor";
 import GogumaListMe from "../pages/goguma-list-me";
 import Notifications from "../pages/notifications";
 import Gogumas from "../pages/goguma-gogumas";
+import axios from "axios";
+import { BACKEND_URL } from "../constants";
 
 const commenRoutes = [
   {
@@ -104,31 +106,49 @@ interface IProps {
 }
 
 const CommonRouter = ({ userToken, addTokenLocal }: IProps) => {
-  const [isLoading, setIsLoading] = useState(true);
   const [isUser, setIsUser] = useState(false);
-  const process = async () => {
+  const [userName, setUserName] = useState("");
+  const localToken = localStorage.getItem("token");
+
+  const getUser = async () => {
+    if (userToken.token) {
+      try {
+        const { data: nickname } = await axios.get(`${BACKEND_URL}/users/me/`, {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+        setUserName(nickname);
+      } catch {
+        localStorage.removeItem("token");
+        addTokenLocal({ token: "" });
+      }
+    }
+  };
+
+  useEffect(() => {
     if (userToken.token) {
       setIsUser(true);
     }
     if (!userToken.token) {
-      const localToken = localStorage.getItem("token");
-      await setIsUser(false);
+      setIsUser(false);
       if (localToken) {
         addTokenLocal({ token: `${localToken}` });
       }
     }
-    setIsLoading(false);
-  };
+  }, [isUser, userToken]);
 
   useEffect(() => {
-    process();
-  }, [isUser, userToken]);
+    getUser();
+  }, [userToken.token]);
+
+  useEffect(() => {
+    setIsUser(Boolean(userName));
+  }, [userName]);
 
   return (
     <>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : isUser ? (
+      {isUser ? (
         <BrowserRouter>
           <Switch>
             {loggedInRoutes.map(route => (
