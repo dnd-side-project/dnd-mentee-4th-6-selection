@@ -228,7 +228,6 @@ const GogumaSlideItem = styled.li`
   height: 120px;
   display: inline-grid;
   text-align: center;
-  word-break: keep-all;
   vertical-align: middle;
   cursor: grab;
   overflow: auto;
