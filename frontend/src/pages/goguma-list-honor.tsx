@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
-import { BACKEND_URL } from "../constants";
+import { BACKEND_URL, FRONTEND_URL } from "../constants";
 import icon_purpleguma from "../styles/img/icon_purpleguma_sm.svg";
 import icon_back from "../styles/img/icon_back.svg";
 import axios from "axios";
@@ -97,7 +97,7 @@ export const GogumaListHonor: React.FC = () => {
       </DateBox>
       <ListBox>
         {dataSlice.map((goguma, index) => (
-          <GogumaListLink href={`goguma/${goguma.id}`} key={goguma.id}>
+          <GogumaListLink href={`${FRONTEND_URL}/goguma/${goguma.id}`} key={goguma.id}>
             <GogumaCard>
               {index < 3 ? (
                 <GogumaHighRank>{index + 1}</GogumaHighRank>

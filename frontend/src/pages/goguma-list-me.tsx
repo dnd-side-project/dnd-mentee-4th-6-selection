@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { BACKEND_URL } from "../constants";
+import { BACKEND_URL, FRONTEND_URL } from "../constants";
 import axios from "axios";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
@@ -85,7 +85,7 @@ const GogumaListMe = ({ userToken, addTokenLocal }: IProps) => {
       {dataSlice.length > 0 ? (
         <ListBox>
           {dataSlice.map(goguma => (
-            <GogumaListLink href={`/goguma/${goguma.id}`} key={goguma.id}>
+            <GogumaListLink href={`${FRONTEND_URL}/goguma/${goguma.id}`} key={goguma.id}>
               <GogumaCard
                 title={goguma.title}
                 content={goguma.content}

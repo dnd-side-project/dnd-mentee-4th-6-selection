@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
-import { BACKEND_URL } from "../constants";
+import { BACKEND_URL, FRONTEND_URL } from "../constants";
 import icon_fireguma from "../styles/img/icon_fireguma_max.svg";
 
 interface IData {
@@ -52,7 +52,7 @@ export const GogumaListPopular = () => {
       <MainSubTitle>&quot;실시간으로 불타오르는 인기 게시글&quot;</MainSubTitle>
       <ListBox>
         {dataSlice.map(goguma => (
-          <GogumaListLink href={`goguma/${goguma.id}`} key={goguma.id}>
+          <GogumaListLink href={`${FRONTEND_URL}/goguma/${goguma.id}`} key={goguma.id}>
             <GogumaCard
               title={goguma.title}
               content={goguma.content}
