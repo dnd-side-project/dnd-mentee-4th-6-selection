@@ -144,6 +144,7 @@ export const Ask: React.FC = () => {
 const QuestionDescription = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
+  font-weight: 400;
   line-height: 15px;
   margin-top: 5px;
   color: #c1c1c1;
