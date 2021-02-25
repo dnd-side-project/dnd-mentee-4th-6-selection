@@ -46,7 +46,7 @@ const GOGUMA_TYPE = [
     img: goguma,
   },
   {
-    type: "SUPRISED",
+    type: "SURPRISED",
     name: "??뭐구마..?!",
     content: "놀라 자빠져버린 ",
     subcontent: "사연을 듣고 너무 놀라 말이 안나올 때.. 뭐..뭐구마?!",

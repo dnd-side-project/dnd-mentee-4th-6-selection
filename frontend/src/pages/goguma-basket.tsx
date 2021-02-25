@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import basket from "../styles/img/icon_guma_box_sm.svg";
+import empty_basket from "../styles/img/icon_guma_box_empty.svg";
+import middle_basket from "../styles/img/icon_guma_box_middle.svg";
+import full_basket from "../styles/img/icon_guma_box.svg";
 import good from "../styles/img/icon_emotion_good.svg";
 import angry from "../styles/img/icon_emotion_angry.svg";
 import sad from "../styles/img/icon_emotion_sad.svg";
@@ -11,83 +13,101 @@ import surprised from "../styles/img/icon_emotion_surprised.svg";
 import relax from "../styles/img/icon_emotion_relax.svg";
 import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
 import dot from "../styles/img/icon_emotion_empty_dot.svg";
-import messageIcon from "../styles/img/message_icon.png";
 import { ContentHeader } from "../components/content-header";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
+import axios from "axios";
+import { BACKEND_URL } from "../constants";
 
-const FAKE_GOGUMA_DATA = [
+const GOGUMA_TYPE = [
   {
-    id: 1,
-    username: "구마",
-    goguma_basket: [
-      {
-        responseId: 12,
-        gogumaId: 3,
-        username: "ktx 123",
-        content: `나는야 슬픈고구마 엉엉`,
-      },
-      {
-        responseId: 13,
-        gogumaId: 4,
-        username: "asdf",
-      },
-      {
-        responseId: 14,
-        gogumaId: 2,
-        username: "asdf",
-      },
-      {
-        responseId: 15,
-        gogumaId: 3,
-        username: "asdf",
-        content: `저는 27살 여자구 소개로 1년가까이 만난 동갑남자 친구가 있어요. 저는 직장인이구 남친은 아직 한학기 남은 휴학 취준생입니다. 원래 성격이 좀 예민하고 . .`,
-      },
-      {
-        responseId: 16,
-        gogumaId: 1,
-        username: "asdf",
-      },
-      {
-        responseId: 17,
-        gogumaId: 1,
-        username: "asdf",
-      },
-      {
-        responseId: 18,
-        gogumaId: 5,
-        username: "asdf",
-        content: `저는 27살 여자구 소개로 1년가까이 만난 동갑남자 친구가 있어요. 저는 직장인이구 남친은 아직 한학기 남은 휴학 취준생입니다. 원래 성격이 좀 예민하고 . .`,
-      },
-      {
-        responseId: 19,
-        gogumaId: 2,
-        username: "asdf",
-      },
-      {
-        responseId: 20,
-        gogumaId: 3,
-        username: "asdf",
-      },
-      {
-        responseId: 21,
-        gogumaId: 6,
-        username: "asdf",
-      },
-    ],
+    type: "GOOD",
+    img: good,
+  },
+  {
+    type: "ANGRY",
+    img: angry,
+  },
+  {
+    type: "SAD",
+    img: sad,
+  },
+  {
+    type: "GOGUMA",
+    img: goguma,
+  },
+  {
+    type: "SURPRISED",
+    img: surprised,
+  },
+  {
+    type: "RELAX",
+    img: relax,
+  },
+  {
+    type: "VERYHAPPY",
+    img: veryhappy,
   },
 ];
 
-interface IParams {
+interface ILocationParams {
   id: string;
 }
 
-export const GogumaBasket = () => {
+interface IParams {
+  token: string;
+}
+
+interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
+}
+
+interface IData {
+  id: number;
+  gogumaType: string;
+  isRead: boolean;
+  isExistMessage: boolean;
+  isOwner: boolean;
+}
+
+const GogumaBasket = ({ userToken, addTokenLocal }: IProps) => {
+  const [gogumasData, setGogumasData] = useState<IData[]>();
   const history = useHistory();
-  const { id } = useParams<IParams>();
+  const { id } = useParams<ILocationParams>();
+  const localToken = localStorage.getItem("token");
+
   if (!id) {
     history.push(`/`);
   }
-  const data = FAKE_GOGUMA_DATA.find(goguma => goguma.id === +id);
-  const emptyList = ((5 - (data?.goguma_basket.length || 0)) % 5) + 5;
+
+  const getData = async () => {
+    try {
+      const { data } = await axios.get(`${BACKEND_URL}/articles/${id}/gogumas?size=9999`, {
+        headers: {
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+      setGogumasData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!userToken.token) {
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+    }
+  }, [userToken, localToken]);
+
+  useEffect(() => {
+    getData();
+  }, [id, userToken]);
+
+  const emptyList = ((5 - (gogumasData?.length || 0)) % 5) + 5;
 
   return (
     <>
@@ -96,51 +116,84 @@ export const GogumaBasket = () => {
       </Helmet>
       <ContentHeader isPrev={false} isNext={false} title={"고구마 바구니"} />
       <ImageContainer>
-        <img src={basket} />
+        {gogumasData && gogumasData.length === 0 ? (
+          <img src={empty_basket} width={61} height={61} />
+        ) : gogumasData && gogumasData.length <= 10 ? (
+          <img src={middle_basket} width={61} height={61} />
+        ) : (
+          <img src={full_basket} width={61} height={61} />
+        )}
       </ImageContainer>
       <BasketInfo>
-        사람들이 주고간 고구마를 확인할 수 있어요! 쪽지가 숨겨진 고구마를 찾아보세요
+        {gogumasData && gogumasData.length > 10 ? (
+          <span>
+            긴 말보다, 함께라서 든든한 고구마!
+            <br />
+            여러 고구마들이 함께하고 있어요 :)
+          </span>
+        ) : (
+          <span>
+            사람들이 주고간 고구마를 확인할 수 있어요!
+            <br />
+            쪽지가 숨겨진 고구마를 찾아보세요
+          </span>
+        )}
       </BasketInfo>
       <GogumaEmojies>
-        {data?.goguma_basket.map(comment => (
-          <GogumaEmoji key={comment.responseId}>
-            {comment.gogumaId === 1 && <img src={good} width={55} height={55} />}
-            {comment.gogumaId === 2 && <img src={angry} width={55} height={55} />}
-            {comment.gogumaId === 3 && <img src={sad} width={55} height={55} />}
-            {comment.gogumaId === 4 && <img src={goguma} width={55} height={55} />}
-            {comment.gogumaId === 5 && <img src={surprised} width={55} height={55} />}
-            {comment.gogumaId === 6 && <img src={relax} width={55} height={55} />}
-            {comment.gogumaId === 7 && <img src={veryhappy} width={55} height={55} />}
-            {comment.content && (
-              <MessageIcon>
-                <img src={messageIcon} />
-              </MessageIcon>
-            )}
+        {gogumasData?.map(comment => (
+          <GogumaEmoji key={comment.id}>
+            <GogumasLink
+              href={comment.isExistMessage ? `/goguma/${id}/gogumas/${comment.id}` : "#"}
+            >
+              <GogumasBox>
+                <img
+                  src={GOGUMA_TYPE.find(gogumas => gogumas.type === comment.gogumaType)?.img}
+                  width={55}
+                  height={55}
+                />
+                {comment.isOwner ? <OwnerText>Me</OwnerText> : <OwnerText />}
+                {comment.isExistMessage && comment.isRead && <ReadDot />}
+                {comment.isExistMessage && !comment.isRead && <NotReadDot />}
+              </GogumasBox>
+            </GogumasLink>
           </GogumaEmoji>
         ))}
-        {[...Array(emptyList)].map(index => {
-          return (
-            <GogumaEmoji key={index}>
-              <img src={dot} />
-            </GogumaEmoji>
-          );
-        })}
+        {emptyList > 0 &&
+          [...Array(emptyList)].map((_, index) => {
+            return (
+              <GogumaEmoji key={index + 9999}>
+                <img src={dot} />
+              </GogumaEmoji>
+            );
+          })}
       </GogumaEmojies>
     </>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GogumaBasket);
 
 const ImageContainer = styled.div`
   width: 100%;
   margin-top: 15px;
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 const BasketInfo = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
   width: 220px;
+  line-height: 19px;
   word-break: keep-all;
   text-align: center;
   left: 0;
@@ -159,20 +212,49 @@ const GogumaEmoji = styled.div`
   width: 55px;
   height: 55px;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   transition: transform 220ms ease-in-out;
   &:active {
     transform: scale(0.9);
   }
 `;
 
-const MessageIcon = styled.div`
+const NotReadDot = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #26ffd5;
   position: absolute;
-  width: 10px;
-  height: 5.53px;
   top: 0;
-  img {
-    position: absolute;
-    top: 0;
-  }
+  left: 0;
+`;
+
+const ReadDot = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #e4e4e4;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const GogumasBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const OwnerText = styled.div`
+  margin-top: -7px;
+  width: 100%;
+  height: 5px;
+  font-family: "Gaegu", cursive;
+  font-size: 15px;
+  text-align: center;
+`;
+
+const GogumasLink = styled.a`
+  text-decoration: none;
+  color: black;
 `;
