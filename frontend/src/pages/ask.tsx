@@ -242,6 +242,8 @@ const TextCounter = styled.div`
   color: #989898;
   float: right;
   display: block;
+  font-weight: 400;
+  margin-top: 3px;
 `;
 
 const ChoiceBoxes = styled.div`
