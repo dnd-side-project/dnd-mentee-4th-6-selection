@@ -61,7 +61,7 @@ const loggedInRoutes = [
     component: <Ask />,
   },
   {
-    path: "/ask-success",
+    path: "/ask/success",
     component: <AskSuccess />,
   },
   {
