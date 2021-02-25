@@ -176,7 +176,7 @@ const MyPageInputImg = styled.img`
 const MyPageContent = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
-  padding: 27px 5px;
+  padding: 29px 5px;
   margin: 0 17px;
   border-bottom: 0.75px solid #cecece;
   display: flex;

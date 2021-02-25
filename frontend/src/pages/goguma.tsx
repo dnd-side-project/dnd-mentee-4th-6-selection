@@ -306,12 +306,14 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
                       {gogumaData.title}
                     </TitleBox>
                     <ContentBox>{gogumaData.content}</ContentBox>
-                    {gogumaData.choices.length > 0 && (
+                    {gogumaData.choices.length > 0 ? (
                       <ChoiceBoxes>
                         {gogumaData.choices.map(choice => (
                           <ChoiceBox key={choice.id}>{choice.content}</ChoiceBox>
                         ))}
                       </ChoiceBoxes>
+                    ) : (
+                      <div style={{ marginBottom: 16 }}></div>
                     )}
                   </ContentContainer>
                 </GogumaContainer>
@@ -495,23 +497,22 @@ const ClipBox = styled.div`
 
 const GogumaContainer = styled.div`
   box-sizing: border-box;
-  padding: 0px 18px;
-  margin-top: 20px;
+  padding: 0px 30px;
+  margin-top: 25px;
 `;
 
 const ContentContainer = styled.div`
-  min-height: 440px;
-  margin-bottom: 45px;
+  margin-bottom: 30px;
 `;
 
 const TitleBox = styled.div`
   font-family: "Gaegu", cursive;
   font-size: 25px;
   color: #8c5cdd;
-  padding-bottom: 11px;
+  padding-bottom: 8px;
   border-bottom: 2px solid #8c5cdd;
   margin-bottom: 20px;
-  word-break: keep-all;
+  word-break: break-all;
   display: flex;
   align-items: flex-start;
 `;
@@ -521,13 +522,15 @@ const ContentBox = styled.pre`
   font-weight: 300;
   font-size: 14px;
   line-height: 25px;
-  margin-bottom: 45px;
+  margin-bottom: 150px;
   white-space: pre-wrap;
-  word-break: keep-all;
+  word-break: break-all;
 `;
 
 const ChoiceBoxes = styled.div`
-  height: 67px;
+  width: calc(100% - 15px);
+  margin: 0 auto;
+  height: 86px;
   display: flex;
   place-items: center;
   border-radius: 12px;
@@ -553,7 +556,7 @@ const ChoiceBox = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 15px;
-  word-break: keep-all;
+  word-break: break-all;
   text-align: center;
 `;
 
@@ -613,7 +616,6 @@ const GogumaSubtext = styled.div`
   font-size: 12px;
   color: #989898;
   padding-left: 30px;
-  margin-bottom: 15px;
 `;
 
 const EmojiContainer = styled.div`
@@ -628,7 +630,7 @@ const GogumaEmojies = styled.div`
   margin: 0 auto;
   font-size: 60px;
   width: 100%;
-  padding: 10px 17px;
+  padding: 10px 15px;
   box-sizing: border-box;
   overflow: auto;
 `;
@@ -639,7 +641,7 @@ const GogumaEmogi = styled.div`
   flex-direction: column;
   align-items: center;
   &:last-child {
-    padding-right: 17px;
+    padding-right: 15px;
   }
 `;
 

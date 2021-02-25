@@ -260,8 +260,6 @@ const UserBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 120px;
-  margin-bottom: 100px;
 `;
 
 const MenuBox = styled.div`
@@ -271,15 +269,16 @@ const MenuBox = styled.div`
   flex-direction: column;
   align-items: center;
   span {
-    margin-bottom: 29px;
+    margin-bottom: 22px;
   }
 `;
 
 const MenuBorder = styled.div`
   width: 74px;
-  height: 32px;
+  height: 9px;
+  border-bottom: 0.75px solid #cecece;
   margin: 0 auto;
-  border-top: 0.75px solid #cecece;
+  margin-bottom: 33px;
 `;
 
 const ImgBox = styled.div`
@@ -288,12 +287,13 @@ const ImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 143px;
 `;
 
 const UserName = styled.span`
   font-family: "Gaegu", cursive;
   font-size: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 119px;
 `;
 
 const NotUserTitle = styled.div`
@@ -301,7 +301,8 @@ const NotUserTitle = styled.div`
   font-size: 12px;
   text-align: center;
   width: 106px;
-  margin-bottom: 27px;
+  margin-top: 154px;
+  margin-bottom: 25px;
 `;
 
 const NotUserColor = styled.div`
@@ -311,7 +312,7 @@ const NotUserColor = styled.div`
 
 const UserLoginBtn = styled.a`
   text-decoration: none;
-  margin-bottom: 17px;
+  margin-bottom: 106px;
   width: 92px;
   height: 35px;
   border-radius: 24px;
@@ -340,7 +341,7 @@ const NotificationLink = styled.a`
   text-decoration: none;
   color: black;
   position: absolute;
-  top: 140px;
+  top: 160px;
   left: 15px;
 `;
 

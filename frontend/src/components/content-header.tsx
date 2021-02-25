@@ -35,7 +35,7 @@ export const ContentHeader = ({ isPrev, isNext, title, children }: IProps) => {
 };
 
 const Container = styled.div`
-  padding: 1rem 0;
+  padding: 10px 15px;
   display: flex;
 `;
 
@@ -57,7 +57,6 @@ const CenterContainer = styled.div`
   align-items: center;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
-  font-weight: 500;
 `;
 
 const RightContainer = styled.div`

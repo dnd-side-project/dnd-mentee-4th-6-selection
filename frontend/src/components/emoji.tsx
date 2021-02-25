@@ -206,10 +206,10 @@ const Emoji = ({ children, onBasketActive, type, userToken, addTokenLocal }: IPr
                 <img onClick={onExitPopup} src={icon_delete} />
               </ExitBox>
               <PopupTitleBox>
-                {children}
+                <img src={gogumaType?.img} style={{ marginRight: 15 }} />
                 <PopupTitle>
-                  <div style={{ fontSize: 14 }}>
-                    <strong style={{ fontSize: 18 }}>{gogumaType?.name}</strong> 를 선택하셨어요.
+                  <div style={{ fontSize: 14, marginBottom: 5 }}>
+                    <span style={{ fontSize: 20 }}>{gogumaType?.name}</span> 를 선택하셨어요.
                   </div>
                   <PopupSubtext>
                     {gogumaType?.content}
@@ -299,7 +299,6 @@ const PopupContainer = styled.div`
   @media (min-width: 1025px) {
     width: 356px;
     height: 732px;
-    border: 1px solid #545454;
   }
   margin: 0 auto;
   left: 0;
@@ -334,12 +333,12 @@ const PopupContainer = styled.div`
 
 const PopupWindow = styled.div`
   width: 90%;
-  height: 350px;
+  height: 335px;
   max-width: 500px;
   background-color: white;
   opacity: 1;
   border-radius: 28px;
-  padding: 20px 10px;
+  padding: 15px 20px;
   box-sizing: border-box;
   animation: ${(props: IStyleProps) => (props.popupAni ? "popupMoveIn" : "popupMoveOut")} 0.3s
     ease-in-out forwards;
@@ -368,6 +367,7 @@ const ExitBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 4px;
 `;
 
 const PopupTitleBox = styled.div`
@@ -384,14 +384,13 @@ const PopupTitle = styled.div`
   flex-direction: column;
   height: 53px;
   justify-content: space-between;
-  margin-left: 10px;
-  margin-right: 10px;
 `;
 
 const PopupSubtext = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 10px;
   color: #595959;
+  margin-bottom: 3px;
 `;
 
 const InputContainer = styled.div`
@@ -399,20 +398,19 @@ const InputContainer = styled.div`
   margin: 10px 0;
   display: flex;
   justify-content: center;
-  margin-bottom: 0;
+  margin-bottom: 15px;
 `;
 
 const CommentInput = styled.textarea`
-  width: 85%;
+  width: 100%;
   height: 150px;
   border: none;
   background-attachment: local;
-  background-image: linear-gradient(to right, white 10px, transparent 10px),
-    linear-gradient(to left, white 10px, transparent 10px),
-    repeating-linear-gradient(white, white 45px, #ccc 45px, #ccc 46px, white 31px);
+  background-image: linear-gradient(to right, white 0px, transparent 0px),
+    linear-gradient(to left, white 0px, transparent 0px),
+    repeating-linear-gradient(white, white 45px, #f2f2f2 45px, #f2f2f2 46px, white 31px);
   line-height: 46px;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
-  padding: 8px 10px;
   font-size: 14px;
   resize: none;
   &:focus {
@@ -431,17 +429,10 @@ const ButtonBox = styled.div`
 
 const FormButton = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-weight: 500;
-  font-size: 17px;
+  font-size: 14px;
   color: #8c5cdd;
   display: flex;
-  width: 90px;
-  height: 40px;
   justify-content: center;
   align-items: center;
-  border-radius: 7px;
-  transition: background-color 0.2s ease-in-out;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
+  cursor: pointer;
 `;

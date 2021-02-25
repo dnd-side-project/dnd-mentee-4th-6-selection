@@ -20,32 +20,34 @@ export const GogumaCard = ({
   responseLength,
 }: IProps) => {
   return (
-    <GogumaCardBox>
-      <GogumaEmoji>
-        {children}
-        <ResponseCount>{responseLength && responseLength}</ResponseCount>
-      </GogumaEmoji>
-      <GogumaContentBox>
-        <GogumaTitle>{title.length >= 25 ? `${title.slice(0, 25)}...` : title}</GogumaTitle>
-        <GogumaContent>
-          {content.length >= 55 ? `${content.slice(0, 55)}...` : content}
-        </GogumaContent>
-        <div>
-          <GogumaUser>{user}</GogumaUser>
-          <GogumaDate>
-            <DisplayTime createdAt={new Date(createdAt)} />
-          </GogumaDate>
-        </div>
-      </GogumaContentBox>
-    </GogumaCardBox>
+    <>
+      <GogumaCardBox>
+        <GogumaEmoji>
+          {children}
+          <ResponseCount>{responseLength && responseLength}</ResponseCount>
+        </GogumaEmoji>
+        <GogumaContentBox>
+          <GogumaTitle>{title.length >= 25 ? `${title.slice(0, 25)}...` : title}</GogumaTitle>
+          <GogumaContent>
+            {content.length >= 55 ? `${content.slice(0, 55)}...` : content}
+          </GogumaContent>
+          <div>
+            <GogumaUser>{user}</GogumaUser>
+            <GogumaDate>
+              <DisplayTime createdAt={new Date(createdAt)} />
+            </GogumaDate>
+          </div>
+        </GogumaContentBox>
+      </GogumaCardBox>
+      <CardBorder />
+    </>
   );
 };
 
 const GogumaCardBox = styled.div`
   width: 100%;
   display: flex;
-  padding: 15px 0;
-  border-bottom: 2px solid #f2f2f2;
+  padding: 20px 0 0 0;
 `;
 
 const GogumaEmoji = styled.div`
@@ -74,11 +76,10 @@ const GogumaTitle = styled.div`
 
 const GogumaContent = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
-  height: 23px;
+  height: 29px;
   font-weight: 300;
   font-size: 12px;
   color: #595959;
-  margin-bottom: 2px;
   padding-right: 5px;
 `;
 
@@ -95,4 +96,11 @@ const GogumaDate = styled.span`
   font-weight: 300;
   font-size: 12px;
   color: #989898;
+`;
+
+const CardBorder = styled.div`
+  width: calc(100% - 30px);
+  margin: 0 auto;
+  margin-top: 15.5px;
+  border-bottom: 2px solid #f2f2f2;
 `;

@@ -161,14 +161,14 @@ const NoticeContainer = styled.div`
 const NoticeCard = styled.div`
   display: flex;
   align-items: center;
-  padding: 15px 16px;
+  padding: 20px 20px 15px 20px;
   background-color: ${(props: IStyleProps) => props.isChecked && "#fafafa"};
 `;
 
 const ImgEmoji = styled.img`
   width: 40px;
   height: 40px;
-  margin-right: 10px;
+  margin-right: 15px;
   filter: ${(props: IStyleProps) => props.isChecked && "grayscale(100%)"};
 `;
 
