@@ -195,6 +195,7 @@ const PageContainer = styled.div`
 const Question = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 18px;
+  font-weight: 400;
 `;
 
 const ShortInput = styled.input`
