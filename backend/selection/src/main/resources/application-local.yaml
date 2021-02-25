@@ -5,6 +5,9 @@ spring:
   h2:
     console:
       enabled: true
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
 
   datasource:
     hikari:
@@ -18,3 +21,4 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
     show_sql: true
     generate-ddl: true
+    open-in-view: false

@@ -1,5 +1,6 @@
 package com.selection.dto.article;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.selection.domain.article.Article;
 import com.selection.dto.choice.ChoiceResponse;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ArticleResponse {
 
-    @ApiModelProperty(notes = "번호", required = true, example = "1")
+    @ApiModelProperty(notes = "게시글 번호", required = true, example = "1")
     private Long id;
     @ApiModelProperty(notes = "제목", required = true, example = "제목")
     private String title;
@@ -23,7 +24,6 @@ public class ArticleResponse {
     private String nickname;
     @ApiModelProperty(notes = "공유수", required = true, example = "0")
     private Long numOfShared;
-    @ApiModelProperty(notes = "작성자 여부", required = true, example = "false")
     private boolean isOwner;
     @ApiModelProperty(notes = "선택지", required = true)
     private final List<ChoiceResponse> choices = new ArrayList<>();
@@ -42,5 +42,11 @@ public class ArticleResponse {
         this.votedChoiceId = votedChoiceId;
         this.isOwner = isOwner;
         this.createdAt = article.getCreatedAt();
+    }
+
+    @ApiModelProperty(notes = "작성자 여부", required = true, example = "false")
+    @JsonProperty("isOwner")
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 }

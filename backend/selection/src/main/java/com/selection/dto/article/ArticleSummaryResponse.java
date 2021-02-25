@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ArticleSummaryResponse {
 
-    @ApiModelProperty(notes = "번호", required = true, example = "1")
+    @ApiModelProperty(notes = "게시글 번호", required = true, example = "1")
     private Long id;
     @ApiModelProperty(notes = "제목", required = true, example = "제목")
     private String title;
