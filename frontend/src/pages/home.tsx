@@ -49,8 +49,10 @@ const CardContainer = styled.div`
   background-image: url(${background_img});
   background-repeat: repeat;
   position: relative;
+  margin: auto -13px;
   @media (max-width: 1025px) {
     height: 90vh;
+    margin: auto;
   }
 `;
 
