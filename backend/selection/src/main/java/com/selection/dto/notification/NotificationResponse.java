@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class NotificationResponse {
 
-    @ApiModelProperty(notes = "번호", required = true, example = "1")
+    @ApiModelProperty(notes = "알림 번호", required = true, example = "1")
     private Long id;
 
     @ApiModelProperty(notes = "고구마 번호", required = true, example = "1")

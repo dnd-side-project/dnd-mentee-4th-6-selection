@@ -1,5 +1,6 @@
 package com.selection.advice;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.selection.advice.exception.ArticleAccessException;
 import com.selection.advice.exception.ArticleNotFoundException;
 import com.selection.advice.exception.ChoiceNotFoundException;
@@ -75,5 +76,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorResponse gogumaAccessException(GogumaAccessException ex) {
         return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse httpMessageNotReadableException(InvalidFormatException ex) {
+        return new ErrorResponse(ex.getOriginalMessage());
     }
 }

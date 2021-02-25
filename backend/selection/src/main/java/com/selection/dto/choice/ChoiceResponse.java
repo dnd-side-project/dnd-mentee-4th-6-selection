@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ChoiceResponse {
 
-    @ApiModelProperty(notes = "번호", required = true, example = "1")
+    @ApiModelProperty(notes = "선택지 번호", required = true, example = "1")
     private Long id;
     @ApiModelProperty(notes = "내용", required = true, example = "선택지 1")
     private String content;
