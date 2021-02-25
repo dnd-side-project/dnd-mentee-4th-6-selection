@@ -107,10 +107,10 @@ const GogumaBasket = ({ userToken, addTokenLocal }: IProps) => {
     getData();
   }, [id, userToken]);
 
-  const emptyList = ((5 - (gogumasData?.length || 0)) % 5) + 5;
+  const emptyList = (5 - (gogumasData?.length || 0)) % 5;
 
   return (
-    <>
+    <ListContainer>
       <Helmet>
         <title>고구마 바구니 - GO!GUMA</title>
       </Helmet>
@@ -167,7 +167,7 @@ const GogumaBasket = ({ userToken, addTokenLocal }: IProps) => {
             );
           })}
       </GogumaEmojies>
-    </>
+    </ListContainer>
   );
 };
 
@@ -181,31 +181,46 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(GogumaBasket);
 
+const ListContainer = styled.div`
+  width: 354px;
+  height: 732px;
+  margin: 0 -13px;
+  @media (max-width: 1024px) {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
+
 const ImageContainer = styled.div`
   width: 100%;
-  margin-top: 15px;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin: 20px 0;
 `;
 
 const BasketInfo = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
   width: 220px;
-  line-height: 19px;
+  line-height: 18px;
   word-break: keep-all;
   text-align: center;
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-bottom: 55px;
+  margin-bottom: 50px;
 `;
 
 const GogumaEmojies = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   place-items: center;
+  padding: 0 30px;
 `;
 
 const GogumaEmoji = styled.div`

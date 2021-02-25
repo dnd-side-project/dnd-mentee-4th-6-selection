@@ -174,10 +174,10 @@ const DateText = styled.div`
 `;
 
 const GogumaCard = styled.div`
-  height: 75px;
   display: flex;
   align-items: center;
-  padding: 0 17px;
+  margin: 0 2px;
+  padding: 30px 15px;
   border-bottom: 2px solid #f2f2f2;
 `;
 
@@ -185,14 +185,14 @@ const GogumaHighRank = styled.span`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
   color: #8c8cdd;
-  margin-right: 30px;
+  margin-right: 35px;
 `;
 
 const GogumaRank = styled.span`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
   color: #595959;
-  margin-right: 30px;
+  margin-right: 35px;
 `;
 
 const ListBox = styled.div`

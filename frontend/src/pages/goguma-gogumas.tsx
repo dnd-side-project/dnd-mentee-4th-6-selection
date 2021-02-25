@@ -125,7 +125,11 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
 
   const getData = async () => {
     setLoading(true);
-    const { data } = await axios.get(`${BACKEND_URL}/articles/${gogumaId}/gogumas/${gogumasId}`);
+    const { data } = await axios.get(`${BACKEND_URL}/articles/${gogumaId}/gogumas/${gogumasId}`, {
+      headers: {
+        Authorization: `Bearer ${userToken.token}`,
+      },
+    });
     const {
       data: { nickname },
     } = await axios.get(`${BACKEND_URL}/articles/${gogumaId}`);
@@ -144,6 +148,18 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
       if (gogumaType) {
         setGogumasEmojiData(gogumaType);
       }
+    }
+  };
+
+  const DeleteEmojiData = async () => {
+    try {
+      await axios.delete(`${BACKEND_URL}/articles/${gogumaId}/gogumas/${gogumasId}`, {
+        headers: {
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -185,6 +201,13 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
       ) : (
         <>
           <GogumasContainer>
+            {gogumasData?.isOwner ? (
+              <DeleteButton>
+                <div onClick={DeleteEmojiData}>삭제</div>
+              </DeleteButton>
+            ) : (
+              <DeleteButton />
+            )}
             <GogumaBackImg />
             <GogumasBox>
               <GogumasContent>
@@ -210,14 +233,6 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
               </GogumasContent>
             </GogumasBox>
           </GogumasContainer>
-          {isUser && (
-            <>
-              <GogumasComment>댓글</GogumasComment>
-              <InputContainer>
-                <GogumasCommentInput placeholder="답글 남기기..." />
-              </InputContainer>
-            </>
-          )}
         </>
       )}
     </>
@@ -246,7 +261,6 @@ const GogumaBackImg = styled.div`
   height: 250px;
   background-image: url(${backImg});
   background-size: 100% 360px;
-  margin-top: 130px;
 `;
 
 const GogumasBox = styled.div`
@@ -264,10 +278,10 @@ const GogumasContent = styled.div`
   min-height: 200px;
   background-color: white;
   border-radius: 20px;
-  margin: 0 auto 10px auto;
+  margin: -10px auto 10px auto;
   display: flex;
   flex-direction: column;
-  padding: 40px 12px 30px 12px;
+  padding: 40px 20px 30px 20px;
   box-sizing: border-box;
 `;
 
@@ -289,7 +303,7 @@ const GogumasName = styled.span`
 const GogumasTitle = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 `;
 
 const GogumasSubtitle = styled.div`
@@ -308,33 +322,15 @@ const GogumasNote = styled.div`
   white-space: normal;
 `;
 
-const InputContainer = styled.div`
+const DeleteButton = styled.div`
   width: 100%;
+  height: 30px;
+  padding: 0 7px;
   display: flex;
-  justify-content: center;
-`;
-
-const GogumasComment = styled.div`
-  padding-left: 17px;
+  justify-content: flex-end;
+  align-items: center;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 22px;
-`;
-
-const GogumasCommentInput = styled.input`
-  width: 97%;
-  border: none;
-  border-radius: 7px;
-  background-color: #fafafa;
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 16px;
-  padding: 12px 18px;
-  box-sizing: border-box;
-  &:focus {
-    outline: none;
-  }
-  &::placeholder {
-    color: #989898;
-  }
+  font-size: 14px;
+  font-weight: 300;
+  margin-top: 100px;
 `;

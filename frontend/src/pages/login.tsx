@@ -15,7 +15,7 @@ interface IProps {
 
 export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
   return (
-    <>
+    <ListContainer>
       {authenticated && <Redirect to={`/`} />}
       {!authenticated && (
         <div>
@@ -57,15 +57,30 @@ export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
           </div>
         </div>
       )}
-    </>
+    </ListContainer>
   );
 };
+
+const ListContainer = styled.div`
+  width: 354px;
+  height: 732px;
+  margin: 0 -13px;
+  @media (max-width: 1025px) {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
 
 const LoginTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 51px;
+  padding-top: 56px;
   margin-bottom: 199px;
 `;
 
@@ -91,7 +106,7 @@ const LoginSubtitle = styled.div`
 
 const LoginContainer = styled.div`
   width: 100%;
-  padding: 0 17px;
+  padding: 0 30px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

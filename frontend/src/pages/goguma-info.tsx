@@ -11,7 +11,7 @@ import { ContentHeader } from "../components/content-header";
 
 export const GogumaInfo = () => {
   return (
-    <>
+    <ListContainer>
       <Helmet>
         <title>고구마는.. - 고구마</title>
       </Helmet>
@@ -65,12 +65,27 @@ export const GogumaInfo = () => {
           </InfoPerson>
         </InfoPeople>
       </InfoMainContainer>
-    </>
+    </ListContainer>
   );
 };
 
+const ListContainer = styled.div`
+  width: 354px;
+  height: 732px;
+  margin: 0 -13px;
+  @media (max-width: 1025px) {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
+
 const InfoMainContainer = styled.div`
-  margin: 0 17px;
+  margin: 0 30px;
 `;
 
 const InfoTitle = styled.div`

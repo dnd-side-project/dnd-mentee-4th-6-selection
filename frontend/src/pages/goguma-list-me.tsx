@@ -131,7 +131,7 @@ const ListContainer = styled.div`
 `;
 
 const ListBox = styled.div`
-  margin: 0 13px;
+  margin: 0 15px;
   box-sizing: border-box;
 `;
 

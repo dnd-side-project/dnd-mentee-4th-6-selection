@@ -95,14 +95,14 @@ const MainSubTitle = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
   color: #5f5f5f;
-  height: 36px;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const ListBox = styled.div`
-  margin: 0 13px;
+  margin: 0 15px;
   box-sizing: border-box;
 `;
 
