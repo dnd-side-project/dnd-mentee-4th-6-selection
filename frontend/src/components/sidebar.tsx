@@ -31,7 +31,6 @@ interface IData {
 }
 
 const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }: IProps) => {
-  const [isUser, setIsUser] = useState(false);
   const [userName, setUserName] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [isNotification, setIsNotification] = useState(false);
@@ -44,19 +43,24 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
 
   const getUser = async () => {
     if (userToken.token) {
-      const {
-        data: { nickname },
-      } = await axios.get(`${BACKEND_URL}/users/me/`, {
-        headers: {
-          Authorization: `Bearer ${userToken.token}`,
-        },
-      });
-      setUserName(nickname);
+      try {
+        const {
+          data: { nickname },
+        } = await axios.get(`${BACKEND_URL}/users/me/`, {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+        setUserName(nickname);
+      } catch {
+        localStorage.removeItem("token");
+        addTokenLocal({ token: "" });
+      }
     }
   };
 
   const getNotice = async () => {
-    if (isUser) {
+    if (userName) {
       const { data } = await axios.get<IData[]>(`${BACKEND_URL}/users/me/notifications`, {
         headers: {
           Authorization: `Bearer ${userToken.token}`,
@@ -69,28 +73,20 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
   };
 
   useEffect(() => {
-    if (userToken.token) {
-      setIsUser(true);
-    }
     if (!userToken.token) {
-      setIsUser(false);
       if (localToken) {
         addTokenLocal({ token: `${localToken}` });
       }
     }
-  }, [isUser, userToken]);
+  }, [userName, userToken]);
 
   useEffect(() => {
     getUser();
   }, [userToken.token]);
 
   useEffect(() => {
-    setIsUser(Boolean(userName));
-  }, [userName]);
-
-  useEffect(() => {
     getNotice();
-  }, [isUser]);
+  }, [userName]);
 
   return (
     <OuterBackground>
@@ -98,14 +94,15 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
         <SidebarMenu isActive={isActive}>
           <div>
             <UserBox>
-              {isUser ? (
+              {userName && (
                 <>
                   <ImgBox>
                     <img src={veryhappy} width={53} height={53} />
                   </ImgBox>
                   <UserName>{userName} 님</UserName>
                 </>
-              ) : (
+              )}
+              {!userName && (
                 <>
                   <NotUserTitle>
                     <NotUserColor>
@@ -132,7 +129,7 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
                 <MenuLink href={`/goguma-list/resent`}>최신글</MenuLink>
               </span>
             </MenuBox>
-            {isUser && (
+            {userName && (
               <>
                 <MenuBorder />
                 <MenuBox>
@@ -153,7 +150,7 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
         </SidebarMenu>
         <OutBackground onClick={onClickOut}>
           <NotificationLink href={`/notifications`}>
-            {isUser && (
+            {userName && (
               <NotificationBox>
                 <img src={icon_alarm} width={30} height={30} />
                 {isNotification && <NotificationNew />}
