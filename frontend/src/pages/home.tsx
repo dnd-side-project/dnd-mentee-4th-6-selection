@@ -9,7 +9,7 @@ import openIcon from "../styles/img/icon_small_open.svg";
 import background_img from "../styles/img/watercolor-paper-texture.png";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
-import { ISimplifiedGoguamList } from "../interface/IData";
+import { ISimplifiedGoguamListData } from "../interface/IData";
 
 const FAKE_MAIN_GOGUMA_DATA = [
   {
@@ -227,14 +227,14 @@ const GogumaSlideItemText = styled.p`
 
 export const Home: React.FC = () => {
   const getRecentGogumas = async () => {
-    const { data } = await axios.get<ISimplifiedGoguamList[]>(`${BACKEND_URL}/hot/drafts`);
+    const { data } = await axios.get<ISimplifiedGoguamListData[]>(`${BACKEND_URL}/hot/drafts`);
     if (data) {
       setRecentGogumas([...data]);
     }
   };
   const getHonorGogumas = async () => {
     const gogumaDate = new Date(Date.now());
-    const { data } = await axios.get<ISimplifiedGoguamList[]>(
+    const { data } = await axios.get<ISimplifiedGoguamListData[]>(
       `${BACKEND_URL}/hot/honors?when=${gogumaDate.getFullYear()}-${
         gogumaDate.getMonth() + 1 < 10 ? `0${gogumaDate.getMonth() + 1}` : gogumaDate.getMonth() + 1
       }-${gogumaDate.getDate() < 10 ? `0${gogumaDate.getDate()}` : gogumaDate.getDate()}`,
@@ -244,7 +244,7 @@ export const Home: React.FC = () => {
     }
   };
   const getPopularGogumas = async () => {
-    const { data } = await axios.get<ISimplifiedGoguamList[]>(`${BACKEND_URL}/hot/fires`);
+    const { data } = await axios.get<ISimplifiedGoguamListData[]>(`${BACKEND_URL}/hot/fires`);
     if (data) {
       setPopularGogumas([...data]);
     }
@@ -256,9 +256,9 @@ export const Home: React.FC = () => {
     getHonorGogumas();
   }, []);
 
-  const [recentGogumas, setRecentGogumas] = useState<ISimplifiedGoguamList[]>([]);
-  const [popularGogumas, setPopularGogumas] = useState<ISimplifiedGoguamList[]>([]);
-  const [honoredGogumas, setHonoredGogumas] = useState<ISimplifiedGoguamList[]>([]);
+  const [recentGogumas, setRecentGogumas] = useState<ISimplifiedGoguamListData[]>([]);
+  const [popularGogumas, setPopularGogumas] = useState<ISimplifiedGoguamListData[]>([]);
+  const [honoredGogumas, setHonoredGogumas] = useState<ISimplifiedGoguamListData[]>([]);
 
   return (
     <>

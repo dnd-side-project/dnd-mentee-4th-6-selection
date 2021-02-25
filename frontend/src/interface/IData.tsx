@@ -1,4 +1,4 @@
-export interface ISimplifiedGoguamList {
+export interface ISimplifiedGoguamListData {
   id: number;
   title: string;
 }

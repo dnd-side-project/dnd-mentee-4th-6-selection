@@ -12,7 +12,7 @@ export const Ask: React.FC = () => {
   const initialGogumaData = {
     title: "",
     content: "",
-    choices: ["선택지1", "선택지2"],
+    choices: [] as string[],
   };
   const [gogumaData, setGogumaData] = useState(initialGogumaData);
   const onTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +63,7 @@ export const Ask: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>고구마 등록하기 - go!guma</title>
+        <title>고구마 등록하기 - 고구마</title>
       </Helmet>
       <ContentHeader isPrev={false} isNext={true} title={"등록하기"} />
       <AskContainer>
@@ -129,11 +129,17 @@ export const Ask: React.FC = () => {
           <div style={{ marginTop: "97px" }}></div>
           <Question>각 선택지의 내용을 입력해주세요.</Question>
           <ChoiceBoxes>
-            {gogumaData.choices.map((choice, index) => (
-              <ChoiceBox key={index} onClick={onChoiceBoxClicked}>
-                {choice}
-              </ChoiceBox>
-            ))}
+            {gogumaData.choices.length === 0
+              ? ["선택지1", "선택지2"].map((choice, index) => (
+                  <ChoiceBox key={index} onClick={onChoiceBoxClicked}>
+                    {choice}
+                  </ChoiceBox>
+                ))
+              : gogumaData.choices.map((choice, index) => (
+                  <ChoiceBox key={index} onClick={onChoiceBoxClicked}>
+                    {choice}
+                  </ChoiceBox>
+                ))}
           </ChoiceBoxes>
         </PageContainer>
       </AskContainer>
@@ -147,6 +153,7 @@ const QuestionDescription = styled.div`
   line-height: 15px;
   margin-top: 5px;
   color: #c1c1c1;
+  font-weight: 400; //Regular
 `;
 
 const AskContainer = styled.div`
