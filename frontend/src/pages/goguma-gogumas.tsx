@@ -18,7 +18,7 @@ import backImg from "../styles/img/yellow_backImg.svg";
 
 const GOGUMA_TYPE = [
   {
-    type: "HAPPY",
+    type: "GOOD",
     name: "훈-훈 하구마~",
     content: "훈훈한 일에는 언제나 훈-훈 하구마~가 함께해요.",
     img: good,
@@ -42,7 +42,7 @@ const GOGUMA_TYPE = [
     img: goguma,
   },
   {
-    type: "SURPRISE",
+    type: "SUPRISED",
     name: "??뭐구마..?!",
     content: "사연에 너무놀라 충격을 받았어요.",
     img: surprised,
@@ -54,8 +54,8 @@ const GOGUMA_TYPE = [
     img: relax,
   },
   {
-    type: "HAPPY",
-    name: "슬프구마",
+    type: "VERYHAPPY",
+    name: "베리굿구마~",
     content: "행복한 소식을 고구마에 자주 전해주세요 !",
     img: veryhappy,
   },
@@ -80,7 +80,7 @@ interface IData {
   message: string;
   nickname: string;
   owner: boolean;
-  type: string;
+  gogumaType: string;
 }
 
 interface IEmojiData {
@@ -140,7 +140,7 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
 
   const getEmojiData = async () => {
     if (gogumasData) {
-      const gogumaType = GOGUMA_TYPE.find(gogumas => gogumas.type === gogumasData.type);
+      const gogumaType = GOGUMA_TYPE.find(gogumas => gogumas.type === gogumasData.gogumaType);
       if (gogumaType) {
         setGogumasEmojiData(gogumaType);
       }
@@ -197,9 +197,10 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
                       </GogumasTitle>
                       <GogumasSubtitle>{gogumasEmojiData?.name}를 주셨어요.</GogumasSubtitle>
                       <GogumasSubtitle>
-                        {gogumasEmojiData?.type === "ANGRY" ||
+                        {(gogumasEmojiData?.type === "ANGRY" ||
                           gogumasEmojiData?.type === "SAD" ||
-                          (gogumasEmojiData?.type === "GOGUMA" && gogumaData)}
+                          gogumasEmojiData?.type === "GOGUMA") &&
+                          gogumaData}
                         {gogumasEmojiData?.content}
                       </GogumasSubtitle>
                     </div>
@@ -266,7 +267,7 @@ const GogumasContent = styled.div`
   margin: 0 auto 10px auto;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px 30px 20px;
+  padding: 40px 12px 30px 12px;
   box-sizing: border-box;
 `;
 
@@ -277,7 +278,7 @@ const GogumasMainBox = styled.div`
 `;
 
 const GogumasImg = styled.img`
-  margin-right: 15px;
+  margin-right: 10px;
 `;
 
 const GogumasName = styled.span`

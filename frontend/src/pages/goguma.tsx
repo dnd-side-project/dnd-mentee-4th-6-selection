@@ -3,7 +3,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Emoji } from "../components/emoji";
+import Emoji from "../components/emoji";
 import { ContentHeader } from "../components/content-header";
 import basket from "../styles/img/icon_guma_box.svg";
 import good from "../styles/img/icon_emotion_good.svg";
@@ -75,10 +75,6 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
   const [loading, setLoading] = useState(true);
   const localToken = localStorage.getItem("token");
 
-  if (!id) {
-    history.push(`/`);
-  }
-
   const onBasketActive = () => {
     setBasketActive(true);
     setTimeout(() => {
@@ -102,7 +98,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
 
   const getData = async () => {
     setLoading(true);
-    if (userToken.token) {
+    try {
       const { data } = await axios.get(`${BACKEND_URL}/articles/${id}`, {
         headers: {
           Authorization: `Bearer ${userToken.token}`,
@@ -111,11 +107,8 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
       if (data) {
         await setGogumaData(data);
       }
-    } else {
-      const { data } = await axios.get(`${BACKEND_URL}/articles/${id}`);
-      if (data) {
-        await setGogumaData(data);
-      }
+    } catch (error) {
+      console.log(error);
     }
     setLoading(false);
   };
@@ -315,46 +308,46 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
               <EmojiContainer>
                 <GogumaEmojies>
                   <GogumaEmogi>
-                    <Emoji title={"훈-훈 하구마~"} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="GOOD">
                       <img src={good} />
                     </Emoji>
                     <EmogiTitle>훈-훈 하구마~</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji title={"뭐구마!!!!"} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="ANGRY">
                       <img src={angry} />
                     </Emoji>
                     <EmogiTitle>뭐구마!!!!</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji title={"슬프구마.."} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="SAD">
                       <img src={sad} />
                     </Emoji>
                     <EmogiTitle>슬프구마..</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji title={"고..고구마"} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="GOGUMA">
                       <img src={goguma} />
                     </Emoji>
                     <EmogiTitle>고..고구마</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji title={"??뭐구마..?!"} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="SUPRISED">
                       <img src={surprised} />
                     </Emoji>
                     <EmogiTitle>??뭐구마..?!</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji title={"relax"} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="RELAX">
                       <img src={relax} />
                     </Emoji>
-                    <EmogiTitle>relax</EmogiTitle>
+                    <EmogiTitle>좋구마~</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji title={"veryhappy"} onBasketActive={onBasketActive}>
+                    <Emoji onBasketActive={onBasketActive} type="VERYHAPPY">
                       <img src={veryhappy} />
                     </Emoji>
-                    <EmogiTitle>veryhappy</EmogiTitle>
+                    <EmogiTitle>베리굿구마~</EmogiTitle>
                   </GogumaEmogi>
                 </GogumaEmojies>
               </EmojiContainer>
