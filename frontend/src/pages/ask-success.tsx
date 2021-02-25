@@ -63,6 +63,11 @@ const RecentGogumaContainer = styled.div`
   margin: 21vh 17px 10vh 17px;
 `;
 
+const ListLink = styled.a`
+  color: black;
+  text-decoration: none;
+`;
+
 const GogumaSlide = styled.div`
   margin-top: 17px;
   vertical-align: middle;
@@ -129,9 +134,11 @@ export const AskSuccess: React.FC = () => {
         <SectionDescription>지금 막 등록된 글들을 확인해보세요!</SectionDescription>
         <GogumaSlide>
           {recentGogumas.map(item => (
-            <GogumaSlideItem key={item.id}>
-              <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
-            </GogumaSlideItem>
+            <ListLink href={`/goguma/${item.id}`} key={item.id}>
+              <GogumaSlideItem key={item.id}>
+                <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
+              </GogumaSlideItem>
+            </ListLink>
           ))}
         </GogumaSlide>
       </RecentGogumaContainer>
