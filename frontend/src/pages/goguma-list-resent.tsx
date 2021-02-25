@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import { ContentHeader } from "../components/content-header";
 import { GogumaCard } from "../components/goguma-card";
-import { BACKEND_URL, FRONTEND_URL } from "../constants";
+import { BACKEND_URL } from "../constants";
 import draft_guma from "../styles/img/icon_draft_guma.svg";
 
 interface IData {
@@ -53,7 +53,7 @@ export const GogumaListResent = () => {
       <MainSubTitle>&quot;금방 등록된 따끈따끈한 게시글&quot;</MainSubTitle>
       <ListBox>
         {dataSlice.map(goguma => (
-          <ListLink href={`${FRONTEND_URL}/goguma/${goguma.id}`} key={goguma.id}>
+          <ListLink href={`/goguma/${goguma.id}`} key={goguma.id}>
             <GogumaCard
               title={goguma.title}
               content={goguma.content}

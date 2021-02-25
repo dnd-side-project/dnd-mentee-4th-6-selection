@@ -42,7 +42,7 @@ const GOGUMA_TYPE = [
     img: goguma,
   },
   {
-    type: "SUPRISED",
+    type: "SURPRISED",
     name: "??뭐구마..?!",
     content: "사연에 너무놀라 충격을 받았어요.",
     img: surprised,
@@ -79,7 +79,7 @@ interface IData {
   id: number;
   message: string;
   nickname: string;
-  owner: boolean;
+  isOwner: boolean;
   gogumaType: string;
 }
 

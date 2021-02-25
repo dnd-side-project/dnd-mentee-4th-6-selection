@@ -5,7 +5,9 @@ import { Helmet } from "react-helmet-async";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Emoji from "../components/emoji";
 import { ContentHeader } from "../components/content-header";
-import basket from "../styles/img/icon_guma_box.svg";
+import empty_basket from "../styles/img/icon_guma_box_empty.svg";
+import middle_basket from "../styles/img/icon_guma_box_middle.svg";
+import full_basket from "../styles/img/icon_guma_box.svg";
 import good from "../styles/img/icon_emotion_good.svg";
 import angry from "../styles/img/icon_emotion_angry.svg";
 import sad from "../styles/img/icon_emotion_sad.svg";
@@ -55,7 +57,15 @@ interface IData {
   choices: IChoices[];
   votedChoiceId: number;
   createdAt: string;
-  owner: boolean;
+  isOwner: boolean;
+}
+
+interface IBasketData {
+  id: number;
+  gogumaType: string;
+  isRead: boolean;
+  isExistMessage: boolean;
+  isOwner: boolean;
 }
 
 const Goguma = ({ userToken, addTokenLocal }: IProps) => {
@@ -67,6 +77,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
   const [showheader, setShowheader] = useState(true);
   const [showClip, setShowClip] = useState(false);
   const [gogumaData, setGogumaData] = useState<IData>();
+  const [basketData, setBasketData] = useState<IBasketData[]>();
   const [isModify, setIsModify] = useState(false);
   const [titleValue, setTitleValue] = useState("");
   const [contentValue, setContentValue] = useState("");
@@ -104,6 +115,17 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
           Authorization: `Bearer ${userToken.token}`,
         },
       });
+      const { data: basketData } = await axios.get(
+        `${BACKEND_URL}/articles/${id}/gogumas?size=9999`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        },
+      );
+      if (basketData) {
+        setBasketData(basketData);
+      }
       if (data) {
         await setGogumaData(data);
       }
@@ -196,7 +218,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
       ) : (
         <>
           <ContentHeader isPrev={true} isNext={false} title={""}>
-            {gogumaData?.owner ? (
+            {gogumaData?.isOwner ? (
               <>
                 {isModify ? (
                   <>
@@ -280,7 +302,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
                 <GogumaContainer>
                   <ContentContainer>
                     <TitleBox>
-                      {gogumaData.numOfShared > 0 && <img src={icon_fireguma} />}
+                      {basketData && basketData.length > 0 && <img src={icon_fireguma} />}
                       {gogumaData.title}
                     </TitleBox>
                     <ContentBox>{gogumaData.content}</ContentBox>
@@ -297,10 +319,16 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
               <BasketContainer>
                 <Link to={`/goguma/basket/${gogumaData.id}`}>
                   <GogumaBasket basketActive={basketActive}>
-                    <img src={basket} />
+                    {basketData && basketData.length > 10 ? (
+                      <img src={full_basket} />
+                    ) : basketData && basketData.length > 0 ? (
+                      <img src={middle_basket} />
+                    ) : (
+                      <img src={empty_basket} />
+                    )}
                   </GogumaBasket>
                 </Link>
-                {gogumaData.numOfShared > 10 && (
+                {basketData && basketData.length > 10 && (
                   <BasketComment>고구마바구니가 가득 찼어요!</BasketComment>
                 )}
               </BasketContainer>
@@ -332,7 +360,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
                     <EmogiTitle>고..고구마</EmogiTitle>
                   </GogumaEmogi>
                   <GogumaEmogi>
-                    <Emoji onBasketActive={onBasketActive} type="SUPRISED">
+                    <Emoji onBasketActive={onBasketActive} type="SURPRISED">
                       <img src={surprised} />
                     </Emoji>
                     <EmogiTitle>??뭐구마..?!</EmogiTitle>
