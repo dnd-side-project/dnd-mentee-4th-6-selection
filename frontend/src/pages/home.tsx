@@ -49,8 +49,10 @@ const CardContainer = styled.div`
   background-image: url(${background_img});
   background-repeat: repeat;
   position: relative;
+  margin: auto -13px;
   @media (max-width: 1025px) {
     height: 90vh;
+    margin: auto;
   }
 `;
 
@@ -169,6 +171,11 @@ const SectionSeeMore = styled.span`
   float: right;
 `;
 
+const ListLink = styled.a`
+  color: black;
+  text-decoration: none;
+`;
+
 const GogumaList = styled.ul`
   list-style: none;
   padding: 0;
@@ -186,6 +193,7 @@ const GogumaListItemText = styled.p`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 15px;
   padding-left: 5px;
+  width: 100%;
   margin: 0;
 `;
 
@@ -301,7 +309,9 @@ export const Home: React.FC = () => {
           <GogumaList>
             {popularGogumas.map(item => (
               <GogumaListItem key={item.id}>
-                <GogumaListItemText>{item.title}</GogumaListItemText>
+                <ListLink href={`/goguma/${item.id}`} key={item.id}>
+                  <GogumaListItemText>{item.title}</GogumaListItemText>
+                </ListLink>
               </GogumaListItem>
             ))}
           </GogumaList>
@@ -319,7 +329,9 @@ export const Home: React.FC = () => {
           <GogumaList>
             {recentGogumas.map(item => (
               <GogumaListItem key={item.id}>
-                <GogumaListItemText>{item.title}</GogumaListItemText>
+                <ListLink href={`/goguma/${item.id}`} key={item.id}>
+                  <GogumaListItemText>{item.title}</GogumaListItemText>
+                </ListLink>
               </GogumaListItem>
             ))}
           </GogumaList>
@@ -336,9 +348,11 @@ export const Home: React.FC = () => {
           </SectionTitleContainer>
           <GogumaSlide>
             {honoredGogumas.map(item => (
-              <GogumaSlideItem key={item.id}>
-                <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
-              </GogumaSlideItem>
+              <ListLink href={`/goguma/${item.id}`} key={item.id}>
+                <GogumaSlideItem key={item.id}>
+                  <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
+                </GogumaSlideItem>
+              </ListLink>
             ))}
           </GogumaSlide>
         </Section>

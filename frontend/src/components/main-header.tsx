@@ -21,7 +21,7 @@ const TitleContainer = styled.div`
   font-size: 28px;
   margin-left: 13px;
   color: "#8C5CDD";
-  font-weight: bold;
+  font-weight: 400;
   font-family: "Gaegu", cursive;
   vertical-align: middle;
   width: 50%;

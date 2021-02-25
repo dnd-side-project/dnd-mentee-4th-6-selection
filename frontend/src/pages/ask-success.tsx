@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
@@ -8,8 +7,8 @@ import GumaIcon from "../styles/img/icon_draft_guma.svg";
 import { ISimplifiedGoguamListData } from "../interface/IData";
 
 const SuccessTitle = styled.div`
-  margin-top: 12vh;
-  margin-bottom: 11vh;
+  margin-top: 15vh;
+  margin-bottom: 20px;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
   text-align: center;
@@ -25,24 +24,24 @@ const SuccessDescription = styled.p`
 
 const GogumaImg = styled.img`
   width: 122px;
-  margin: auto;
+  margin: auto auto 10px auto;
   display: block;
 `;
 
 const ViewOthersContainer = styled.div`
-  margin-top: 43px;
+  margin-top: 8px;
   text-align: center;
 `;
 
-const ViewOthers = styled.div`
+const ViewOthers = styled.p`
+  margin: 37px auto auto auto;
   font-size: 14px;
   line-height: 24px;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   color: #8c5cdd;
   text-decoration: none;
   border-bottom: 1px solid #8c5cdd;
-  display: inline-block;
-  margin: 0 25px;
+  display: table;
 `;
 
 const SectionTitle = styled.div`
@@ -60,7 +59,12 @@ const SectionDescription = styled.div`
 `;
 
 const RecentGogumaContainer = styled.div`
-  margin: 21vh 17px 10vh 17px;
+  margin: 20vh 17px 7vh 17px;
+`;
+
+const StyledLink = styled.a`
+  color: black;
+  text-decoration: none;
 `;
 
 const GogumaSlide = styled.div`
@@ -114,24 +118,26 @@ export const AskSuccess: React.FC = () => {
       </Helmet>
       <SuccessTitle>등록완료!</SuccessTitle>
       <GogumaImg src={GumaIcon} />
-      <SuccessDescription>따끈따끈한 고구마 게시글이 등록됐어요.</SuccessDescription>
-      <SuccessDescription>다른사람들의 반응을 고구마 바구니에서 확인해주세요:)</SuccessDescription>
+      <SuccessDescription>따끈따끈한 고구마글이 구워졌어요.</SuccessDescription>
+      <SuccessDescription>고구마 바구니에서 고구마 반응을 살펴보세요:)</SuccessDescription>
       <ViewOthersContainer>
-        <Link to="/goguma-list/me">
+        <StyledLink href="/goguma-list/me">
           <ViewOthers>내가 쓴 글 보기</ViewOthers>
-        </Link>
-        <Link to="/">
+        </StyledLink>
+        <StyledLink href="/">
           <ViewOthers>메인으로</ViewOthers>
-        </Link>
+        </StyledLink>
       </ViewOthersContainer>
       <RecentGogumaContainer>
         <SectionTitle>갓 구운 고구마</SectionTitle>
         <SectionDescription>지금 막 등록된 글들을 확인해보세요!</SectionDescription>
         <GogumaSlide>
           {recentGogumas.map(item => (
-            <GogumaSlideItem key={item.id}>
-              <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
-            </GogumaSlideItem>
+            <StyledLink href={`/goguma/${item.id}`} key={item.id}>
+              <GogumaSlideItem key={item.id}>
+                <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
+              </GogumaSlideItem>
+            </StyledLink>
           ))}
         </GogumaSlide>
       </RecentGogumaContainer>
