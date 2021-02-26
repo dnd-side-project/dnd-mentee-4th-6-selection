@@ -26,8 +26,12 @@ const CardContainer = styled.div`
 
 const Card = styled.div`
   width: 80vw;
+  position: relative;
+  height: 80vh;
+  padding-top: 52.5px;
   padding-left: 30px;
   @media (min-width: 1025px) {
+    height: 50vh;
     width: 15vw;
   }
   &.next {
@@ -49,7 +53,6 @@ const CardType = styled.div`
 const CardEmoji = styled.img`
   width: 50px;
   height: 50px;
-  margin-top: 52.5px;
   margin-bottom: 4.5px;
 `;
 
