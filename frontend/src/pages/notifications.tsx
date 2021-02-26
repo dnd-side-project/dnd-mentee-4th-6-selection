@@ -26,6 +26,8 @@ interface IStyleProps {
 
 interface IData {
   id: number;
+  articleId: number;
+  gogumaId: number;
   nickname: string;
   sendedTime: Date;
   title: string;
@@ -99,7 +101,10 @@ const Notification = ({ userToken, addTokenLocal }: IProps) => {
       <ContentHeader isPrev={true} isNext={false} title={"알림"} />
       <NoticeContainer>
         {dataSlice.map(notice => (
-          <NoticeLink href={`/goguma/1`} key={notice.id}>
+          <NoticeLink
+            href={`/goguma/${notice.articleId}/gogumas/${notice.gogumaId}`}
+            key={notice.id}
+          >
             <NoticeCard isChecked={false}>
               <ImgEmoji isChecked={false} src={good} />
               <NoticeContent>
