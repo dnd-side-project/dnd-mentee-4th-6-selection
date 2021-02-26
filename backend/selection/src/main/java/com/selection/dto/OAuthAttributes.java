@@ -1,9 +1,11 @@
 package com.selection.dto;
 
+import com.google.common.base.Strings;
 import com.selection.domain.user.Role;
 import com.selection.domain.user.User;
 import com.selection.security.oauth.AuthProvider;
 import java.util.Map;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,7 +25,7 @@ public class OAuthAttributes {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.email = email;
-        this.nickname = nickname;
+        this.nickname = Strings.isNullOrEmpty(nickname) ? "익명의 사용자" : nickname;
         attributes.put(SOCIAL_TYPE, authProvider);
     }
 
