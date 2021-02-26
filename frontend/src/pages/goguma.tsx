@@ -206,7 +206,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
 
   useEffect(() => {
     getData();
-  }, [id, isModify]);
+  }, [id, isModify, basketActive]);
 
   return (
     <GogumaOutContainer onScroll={scroll}>
@@ -217,7 +217,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
         <div>Loading...</div>
       ) : (
         <>
-          <ContentHeader isPrev={true} isNext={false} title={""}>
+          <ContentHeader isPrev={true} isNext={false} title={""} link={`/goguma/${id}`}>
             {gogumaData?.isOwner ? (
               <>
                 {isModify ? (

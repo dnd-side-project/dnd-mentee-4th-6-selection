@@ -9,9 +9,10 @@ interface IProps {
   isNext: boolean;
   title: string;
   children?: React.ReactChild;
+  link?: string;
 }
 
-export const ContentHeader = ({ isPrev, isNext, title, children }: IProps) => {
+export const ContentHeader = ({ isPrev, isNext, title, children, link }: IProps) => {
   const history = useHistory();
   return (
     <>
@@ -22,7 +23,7 @@ export const ContentHeader = ({ isPrev, isNext, title, children }: IProps) => {
           </LeftContainer>
         ) : (
           <LeftContainer>
-            <Link to={`/`}>
+            <Link to={link ? link : `/`}>
               <LeftImg src={icon_delete} />
             </Link>
           </LeftContainer>
