@@ -29,6 +29,7 @@ const Ask = ({ userToken, addTokenLocal }: IProps) => {
 
   const ChoiceBoxInputRef = React.createRef<HTMLInputElement>();
   const ChoiceBoxesRef = React.createRef<HTMLDivElement>();
+  const StepContainerRef = React.createRef<HTMLDivElement>();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentChoiceInputText, setCurrentChoiceInputText] = useState("");
   const [currentChoiceIndex, setCurrentChoiceIndex] = useState(-1);
@@ -104,7 +105,17 @@ const Ask = ({ userToken, addTokenLocal }: IProps) => {
   };
 
   const onRegisterClicked = () => {
-    //TODO: 비워지면 빨간색으로
+    //TODO: 더 좋은 방법이 있을것만 같다
+    gogumaData.title
+      ? StepContainerRef.current?.children[0].classList.remove("empty")
+      : StepContainerRef.current?.children[0].classList.add("empty");
+    gogumaData.content
+      ? StepContainerRef.current?.children[1].classList.remove("empty")
+      : StepContainerRef.current?.children[1].classList.add("empty");
+    gogumaData.choices.filter(({ content }) => content === "").length > 0
+      ? StepContainerRef.current?.children[2].classList.add("empty")
+      : StepContainerRef.current?.children[2].classList.remove("empty");
+
     if (!userToken.token) {
       if (localToken) {
         addTokenLocal({ token: `${localToken}` });
@@ -140,7 +151,7 @@ const Ask = ({ userToken, addTokenLocal }: IProps) => {
         )}
       </ContentHeader>
       <AskContainer>
-        <StepContainer>
+        <StepContainer ref={StepContainerRef}>
           <Step
             className={`${gogumaData.title.length > 0 ? "active" : ""} ${
               currentPage == 1 ? "current" : ""
@@ -256,6 +267,9 @@ const Step = styled.div`
   &.active {
     color: #8c5cdd;
   }
+  &.empty {
+    color: #ff2d2d;
+  }
   font-weight: 500;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   padding: 10px 0;
@@ -311,6 +325,8 @@ const ShortInput = styled.input`
   margin-top: 35px;
   outline: none;
   width: 100%;
+  padding-left: 5px;
+  padding-bottom: 5px;
 `;
 
 const ContentTextArea = styled.textarea`
