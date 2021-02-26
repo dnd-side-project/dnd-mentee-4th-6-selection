@@ -25,7 +25,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             + "FROM articles AS a "
             + "WHERE a.user_id = :userId"
     )
-    List<ArticleSummaryProjection> findAllByUserId(@Param("userId") String userId, Pageable pageable);
+    List<ArticleSummaryProjection> findAllByUserId(@Param("userId") String userId,
+        Pageable pageable);
 
     @Query(nativeQuery = true,
         value = "SELECT a.id AS id, a.title AS title, a.content AS content, "
@@ -52,5 +53,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             + "(SELECT COUNT(*) FROM gogumas AS g WHERE g.article_id = a.id) AS numOfGogumas "
             + "FROM articles AS a WHERE date(a.created_at) = :when"
     )
-    List<ArticleSummaryProjection> findHonorGogumasAtTime(@Param("when") LocalDate when, Pageable pageable);
+    List<ArticleSummaryProjection> findHonorGogumasAtTime(@Param("when") LocalDate when,
+        Pageable pageable);
+
+    List<Article> findArticleByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(
+        String content, String title, Pageable pageable);
 }
