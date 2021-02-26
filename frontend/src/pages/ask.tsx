@@ -1,20 +1,28 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
 import styled from "styled-components";
 
 export const Ask: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const onCurrentPageChange = (pageIndex: number) => {
-    setCurrentPage(pageIndex);
-  };
-  const [currentChoiceInputText, setCurrentChoiceInputText] = useState("");
   const initialGogumaData = {
     title: "",
     content: "",
-    choices: [] as string[],
+    choices: [
+      { id: 0, content: "" },
+      { id: 1, content: "" },
+    ],
   };
+
+  const ChoiceBoxInputRef = React.createRef<HTMLInputElement>();
+  const ChoiceBoxesRef = React.createRef<HTMLDivElement>();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentChoiceInputText, setCurrentChoiceInputText] = useState("");
+  const [currentChoiceIndex, setCurrentChoiceIndex] = useState(-1);
   const [gogumaData, setGogumaData] = useState(initialGogumaData);
+
+  const onCurrentPageChange = (pageIndex: number) => {
+    setCurrentPage(pageIndex);
+  };
   const onTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 30) {
       e.target.value = e.target.value.substring(0, 30);
@@ -43,21 +51,41 @@ export const Ask: React.FC = () => {
     }
 
     setCurrentChoiceInputText(e.target.value);
+    const gogumaChoiceCopy = [...gogumaData.choices];
+    //TODO: 다른방법?
+    gogumaChoiceCopy[currentChoiceIndex] = {
+      id: currentChoiceIndex,
+      content: e.target.value === "" ? `선택지${currentChoiceIndex === 0 ? 1 : 2}` : e.target.value,
+    };
+    gogumaChoiceCopy[1 - currentChoiceIndex] = {
+      id: 1 - currentChoiceIndex,
+      content:
+        gogumaData.choices[1 - currentChoiceIndex].content ??
+        `선택지${currentChoiceIndex === 0 ? 1 : 2}`,
+    };
 
     setGogumaData({
       ...gogumaData,
-      choices: [e.target.value, e.target.value],
+      choices: [...gogumaChoiceCopy],
     });
   };
 
-  const onChoiceBoxClicked = (e: MouseEvent) => {
-    console.log(e);
-    // e.target.parentElement
-    //   .querySelectorAll(".active")
-    //   .forEach((child: { classList: { remove: (arg0: string) => any } }) =>
-    //     child.classList.remove("active"),
-    //   );
-    // e.target.classList.add("active");
+  const onChoiceBoxFocused = () => {
+    if (currentChoiceIndex < 0) {
+      setCurrentChoiceIndex(0);
+      ChoiceBoxesRef.current?.children[0].classList.add("active");
+    }
+  };
+
+  const onChoiceBoxClicked = (id: number) => {
+    ChoiceBoxInputRef.current?.focus();
+    gogumaData.choices[id].content.includes("선택지") || gogumaData.choices[id].content === "" //TODO: 생각이 안남
+      ? setCurrentChoiceInputText("")
+      : setCurrentChoiceInputText(ChoiceBoxesRef.current?.children[id].innerHTML ?? "");
+    setCurrentChoiceIndex(id);
+
+    ChoiceBoxesRef.current?.children[id].classList.add("active");
+    ChoiceBoxesRef.current?.children[1 - id].classList.remove("active"); //TODO: array map 어떻게?
   };
 
   return (
@@ -87,9 +115,11 @@ export const Ask: React.FC = () => {
             <StepTitle>내용</StepTitle>
           </Step>
           <Step
-            className={`${gogumaData.choices.length > 0 ? "active" : ""} ${
-              currentPage == 3 ? "current" : ""
-            }`}
+            className={`${
+              gogumaData.choices.filter(({ content }) => content.length > 0).length > 0
+                ? "active"
+                : ""
+            } ${currentPage == 3 ? "current" : ""}`}
             onClick={() => onCurrentPageChange(3)}
           >
             <StepNumber>3</StepNumber>
@@ -121,25 +151,22 @@ export const Ask: React.FC = () => {
             글 내용에 관한 질문을 다른사람에게 물어보세요 :)
           </QuestionDescription>
           <ShortInput
+            ref={ChoiceBoxInputRef}
             onChange={onChoiceBoxInputChange}
+            onFocus={onChoiceBoxFocused}
             placeholder="여러분들 저,, 어떻게 하는게 맞을까요?"
             className="choice"
+            value={currentChoiceInputText}
           />
           <TextCounter>({currentChoiceInputText.length}/30자)</TextCounter>
           <div style={{ marginTop: "97px" }}></div>
           <Question>각 선택지의 내용을 입력해주세요.</Question>
-          <ChoiceBoxes>
-            {gogumaData.choices.length === 0
-              ? ["선택지1", "선택지2"].map((choice, index) => (
-                  <ChoiceBox key={index} onClick={onChoiceBoxClicked}>
-                    {choice}
-                  </ChoiceBox>
-                ))
-              : gogumaData.choices.map((choice, index) => (
-                  <ChoiceBox key={index} onClick={onChoiceBoxClicked}>
-                    {choice}
-                  </ChoiceBox>
-                ))}
+          <ChoiceBoxes ref={ChoiceBoxesRef}>
+            {gogumaData.choices.map(({ id, content }) => (
+              <ChoiceBox key={id} onClick={() => onChoiceBoxClicked(id)}>
+                {content === "" ? `선택지${id + 1}` : content}
+              </ChoiceBox>
+            ))}
           </ChoiceBoxes>
         </PageContainer>
       </AskContainer>
@@ -174,6 +201,7 @@ const Step = styled.div`
   &.active {
     color: #8c5cdd;
   }
+  font-weight: 500;
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   padding: 10px 0;
   color: #989898;
@@ -220,6 +248,7 @@ const ShortInput = styled.input`
   }
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 16px;
+  font-weight: 400;
   border-bottom: 2px solid #e4e4e4;
   border-top-style: hidden;
   border-right-style: hidden;
