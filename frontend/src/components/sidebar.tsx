@@ -6,7 +6,8 @@ import axios from "axios";
 import { addToken } from "../stores/userStore";
 import { BACKEND_URL } from "../constants";
 import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
-import icon_alarm from "../styles/img/icon_alarm.svg";
+import icon_alarm from "../styles/img/icon_alarm_0.svg";
+import icon_alarm_new from "../styles/img/icon_alarm.svg";
 
 interface IParams {
   token: string;
@@ -152,8 +153,11 @@ const Sidebar: React.FC<IProps> = ({ userToken, addTokenLocal, onClick, isMain }
           <NotificationLink href={`/notifications`}>
             {userName && (
               <NotificationBox>
-                <img src={icon_alarm} width={30} height={30} />
-                {isNotification && <NotificationNew />}
+                {isNotification ? (
+                  <img src={icon_alarm_new} width={30} height={30} />
+                ) : (
+                  <img src={icon_alarm} width={30} height={30} />
+                )}
               </NotificationBox>
             )}
           </NotificationLink>
@@ -293,7 +297,7 @@ const ImgBox = styled.div`
 const UserName = styled.span`
   font-family: "Gaegu", cursive;
   font-size: 18px;
-  margin-bottom: 119px;
+  margin-bottom: 79px;
 `;
 
 const NotUserTitle = styled.div`
@@ -312,7 +316,7 @@ const NotUserColor = styled.div`
 
 const UserLoginBtn = styled.a`
   text-decoration: none;
-  margin-bottom: 106px;
+  margin-bottom: 66px;
   width: 92px;
   height: 35px;
   border-radius: 24px;
@@ -353,14 +357,4 @@ const NotificationBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const NotificationNew = styled.div`
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: #8c5cdd;
-  position: absolute;
-  top: 10px;
-  right: 10px;
 `;
