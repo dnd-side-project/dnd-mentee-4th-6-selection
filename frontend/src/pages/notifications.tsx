@@ -56,13 +56,19 @@ const Notification = ({ userToken, addTokenLocal }: IProps) => {
   };
 
   const getData = async () => {
-    const { data } = await axios.get(`${BACKEND_URL}/users/me/notifications?page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${userToken.token}`,
-      },
-    });
-    if (data) {
-      setDataSlice([...dataSlice, ...data]);
+    if (userToken.token) {
+      try {
+        const { data } = await axios.get(`${BACKEND_URL}/users/me/notifications?page=${page}`, {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+        if (data) {
+          setDataSlice([...dataSlice, ...data]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
