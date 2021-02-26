@@ -43,7 +43,7 @@ public class GogumaService {
         Article article = articleService.findArticleById(articleId);
         Goguma goguma = article.lookUpGoguma(gogumaId);
 
-        if (goguma.getUserId().equals(userId)) {
+        if (article.getUserId().equals(userId)) {
             goguma.read();
         }
 
