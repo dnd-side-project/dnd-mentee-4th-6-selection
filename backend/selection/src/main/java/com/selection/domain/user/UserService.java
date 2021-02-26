@@ -2,6 +2,7 @@ package com.selection.domain.user;
 
 import com.selection.advice.exception.UserNotFoundException;
 import com.selection.dto.user.ProfileResponse;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
             .orElseThrow(() -> new UserNotFoundException(
@@ -18,8 +20,15 @@ public class UserService {
             ));
     }
 
+    @Transactional
     public ProfileResponse lookUpMyProfile(String userId) {
         User user = findByUserId(userId);
         return new ProfileResponse(user.getUserId(), user.getNickname(), user.getProvider());
+    }
+
+    @Transactional
+    public void modifyNickName(String userId, String nickname) {
+        User user = findByUserId(userId);
+        user.modifyNickname(nickname);
     }
 }
