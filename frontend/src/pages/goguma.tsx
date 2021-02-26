@@ -215,7 +215,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
 
   useEffect(() => {
     getData();
-  }, [id, isModify, basketActive]);
+  }, [id, isModify]);
 
   return (
     <GogumaOutContainer onScroll={scroll}>
