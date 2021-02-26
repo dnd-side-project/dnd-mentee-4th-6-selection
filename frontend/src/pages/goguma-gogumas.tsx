@@ -152,14 +152,18 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
   };
 
   const DeleteEmojiData = async () => {
-    try {
-      await axios.delete(`${BACKEND_URL}/articles/${gogumaId}/gogumas/${gogumasId}`, {
-        headers: {
-          Authorization: `Bearer ${userToken.token}`,
-        },
-      });
-    } catch (error) {
-      console.log(error);
+    const deleteCheck = confirm("정말로 삭제하시겠습니까?");
+    if (deleteCheck) {
+      try {
+        await axios.delete(`${BACKEND_URL}/articles/${gogumaId}/gogumas/${gogumasId}`, {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+        history.push(`/goguma/basket/${gogumaId}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
