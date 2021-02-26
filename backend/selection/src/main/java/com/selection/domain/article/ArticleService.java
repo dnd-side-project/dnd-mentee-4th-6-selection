@@ -6,6 +6,7 @@ import com.selection.domain.user.UserService;
 import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
+import com.selection.dto.article.ArticleSearchResponse;
 import com.selection.dto.article.ArticleSummaryProjection;
 import com.selection.dto.article.ArticleSummaryResponse;
 import java.time.LocalDate;
@@ -123,6 +124,19 @@ public class ArticleService {
 
         return articles.stream()
             .map(ArticleSummaryResponse::new)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ArticleSearchResponse> search(String query, PageRequest pageRequest) {
+        List<Article> articles = articleRepository
+            .findArticleByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(query, query,
+                pageRequest.of());
+        return articles.stream()
+            .map(article -> {
+                String nickname = userService.findNicknameByUserId(article.getUserId());
+                return new ArticleSearchResponse(article, nickname);
+            })
             .collect(Collectors.toList());
     }
 }

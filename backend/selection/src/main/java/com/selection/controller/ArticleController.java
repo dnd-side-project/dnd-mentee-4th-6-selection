@@ -3,14 +3,19 @@ package com.selection.controller;
 import com.selection.domain.article.ArticleService;
 import com.selection.domain.user.LoginUser;
 import com.selection.domain.user.Role.ROLES;
+import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleRequest;
 import com.selection.dto.article.ArticleResponse;
+import com.selection.dto.article.ArticleSearchResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -111,5 +117,22 @@ public class ArticleController {
         @ApiParam(hidden = true) @LoginUser String userId) {
         articleService.vote(articleId, choiceId, userId);
         return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "게시글 검색", tags = "게시글 API")
+    @ApiResponses(
+        value = {
+            @ApiResponse(code = 200, message = "게시글 검색 성공"),
+            @ApiResponse(code = 500, message = "게시글 검색 실패 이유 정보")
+        }
+    )
+    @GetMapping("/search")
+    public ResponseEntity<List<ArticleSearchResponse>> searchArticles(
+        @ApiParam(value = "키워드", required = true) @RequestParam @NotEmpty String query,
+        @ApiParam(value = "페이지 번호") @RequestParam(required = false, defaultValue = "1") int page,
+        @ApiParam(value = "페이지당 게시글 수") @RequestParam(required = false, defaultValue = "5") int size) {
+
+        PageRequest pr = new PageRequest(page, size, Direction.DESC);
+        return ResponseEntity.ok(articleService.search(query, pr));
     }
 }
