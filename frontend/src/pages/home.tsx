@@ -193,7 +193,6 @@ const GogumaSlide = styled.ul`
       outline: none;
     }
     & > div {
-      padding-left: 55px;
       box-sizing: border-box;
     }
   }
@@ -215,8 +214,7 @@ const GogumaSlideItem = styled.li`
 
 const GogumaSlideItemText = styled.a`
   font-weight: 400;
-  margin: auto;
-  padding: auto 21px;
+  margin: auto 21px;
   text-decoration: none;
   color: black;
 `;
