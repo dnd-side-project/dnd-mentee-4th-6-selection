@@ -9,7 +9,7 @@ import { Home } from "../pages/home";
 import GogumaBasket from "../pages/goguma-basket";
 import { Search } from "../pages/search";
 import { GogumaListResent } from "../pages/goguma-list-resent";
-import { Ask } from "../pages/ask";
+import Ask from "../pages/ask";
 import { AskSuccess } from "../pages/ask-success";
 import { Login } from "../pages/login";
 import MyPage from "../pages/my-page";
