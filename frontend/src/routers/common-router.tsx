@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { NotFound } from "../pages/404";
 import Goguma from "../pages/goguma";
-import { Home } from "../pages/home";
+import Home from "../pages/home";
 import GogumaBasket from "../pages/goguma-basket";
 import { Search } from "../pages/search";
 import { GogumaListResent } from "../pages/goguma-list-resent";

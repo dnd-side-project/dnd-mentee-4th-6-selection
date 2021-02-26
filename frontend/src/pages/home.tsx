@@ -11,6 +11,9 @@ import { BACKEND_URL } from "../constants";
 import axios from "axios";
 import Slider from "react-slick";
 import { ISimplifiedGoguamListData } from "../interface/IData";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
+import { connect } from "react-redux";
 
 const CardContainer = styled.div`
   height: 90%;
@@ -108,7 +111,7 @@ const ScrollText = styled.p`
 const AskContainer = styled.div`
   display: block;
   position: absolute;
-  right: 25px;
+  right: 15px;
   bottom: 15px;
 `;
 
@@ -219,7 +222,36 @@ const GogumaSlideItemText = styled.a`
   color: black;
 `;
 
-export const Home: React.FC = () => {
+interface IParams {
+  token: string;
+}
+
+interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
+}
+
+const Home = ({ userToken, addTokenLocal }: IProps) => {
+  const [userName, setUserName] = useState("");
+  const localToken = localStorage.getItem("token");
+
+  const getUser = async () => {
+    if (userToken.token) {
+      try {
+        const {
+          data: { nickname },
+        } = await axios.get(`${BACKEND_URL}/users/me/`, {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+        setUserName(nickname);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const getRecentGogumas = async () => {
     const { data } = await axios.get<ISimplifiedGoguamListData[]>(`${BACKEND_URL}/hot/drafts`);
     if (data) {
@@ -243,6 +275,18 @@ export const Home: React.FC = () => {
       setPopularGogumas([...data]);
     }
   };
+
+  useEffect(() => {
+    if (!userToken.token) {
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+    }
+  }, [userToken]);
+
+  useEffect(() => {
+    getUser();
+  }, [userToken.token]);
 
   const settings = {
     infinite: true,
@@ -288,11 +332,13 @@ export const Home: React.FC = () => {
           <ScrollText>아래로 스크롤!</ScrollText>
           <img src={openIcon} />
         </ScrollContainer>
-        <AskContainer>
-          <Link to="/ask">
-            <img src={newIcon} style={{ width: "60px", height: "60px" }} />
-          </Link>
-        </AskContainer>
+        {userName && (
+          <AskContainer>
+            <Link to="/ask">
+              <img src={newIcon} style={{ width: "60px", height: "60px" }} />
+            </Link>
+          </AskContainer>
+        )}
       </CardContainer>
       <SectionContainer id="section">
         <Section>
@@ -361,6 +407,16 @@ export const Home: React.FC = () => {
     </>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const SliderBox = styled.div`
   & > .slidera {
