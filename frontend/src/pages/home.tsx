@@ -12,39 +12,6 @@ import axios from "axios";
 import Slider from "react-slick";
 import { ISimplifiedGoguamListData } from "../interface/IData";
 
-const FAKE_MAIN_GOGUMA_DATA = [
-  {
-    id: 1,
-    title: "여러분들,, 이게 진짜 맞나요..?",
-    content:
-      "제 친한친구와 남자친구가 바람을 피는 것 같아요.. 내일 또 학교에서 마주쳐야하는데 도대체어떻게 해야 좋을까요.. ㅠㅠ",
-  },
-  {
-    id: 2,
-    title: "여러분들,, 이게 진짜 맞나요..?",
-    content:
-      "제 친한친구와 남자친구가 바람을 피는 것 같아요.. 내일 또 학교에서 마주쳐야하는데 도대체어떻게 해야 좋을까요.. ㅠㅠ",
-  },
-  {
-    id: 3,
-    title: "여러분들,, 이게 진짜 맞나요..?",
-    content:
-      "제 친한친구와 남자친구가 바람을 피는 것 같아요.. 내일 또 학교에서 마주쳐야하는데 도대체어떻게 해야 좋을까요.. ㅠㅠ",
-  },
-  {
-    id: 4,
-    title: "여러분들,, 이게 진짜 맞나요..?",
-    content:
-      "제 친한친구와 남자친구가 바람을 피는 것 같아요.. 내일 또 학교에서 마주쳐야하는데 도대체어떻게 해야 좋을까요.. ㅠㅠ",
-  },
-  {
-    id: 5,
-    title: "여러분들,, 이게 진짜 맞나요..?",
-    content:
-      "제 친한친구와 남자친구가 바람을 피는 것 같아요.. 내일 또 학교에서 마주쳐야하는데 도대체어떻게 해야 좋을까요.. ㅠㅠ",
-  },
-];
-
 const CardContainer = styled.div`
   height: 90%;
   background-image: url(${background_img});
@@ -166,6 +133,7 @@ const SectionSeeMore = styled.span`
 `;
 
 const ListLink = styled.a`
+  outline: none;
   color: black;
   text-decoration: none;
 `;
@@ -201,7 +169,6 @@ const GogumaSlide = styled.ul`
   grid-template-columns: repeat(5, auto);
   grid-gap: 0 9px;
   display: grid;
-  cursor: grab;
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -218,7 +185,6 @@ const GogumaSlideItem = styled.li`
   display: inline-grid;
   text-align: center;
   vertical-align: middle;
-  cursor: grab;
   overflow: auto;
   text-align: center;
 `;
@@ -280,13 +246,15 @@ export const Home: React.FC = () => {
       <CardContainer>
         <SliderBox>
           <Slider {...settings}>
-            {FAKE_MAIN_GOGUMA_DATA.map((item, index) => (
-              <Card key={index}>
-                <CardEmoji src={fireguma} />
-                <CardType>불타는 고구마!</CardType>
-                <CardTitle>{item.title}</CardTitle>
-                <CardContents>{item.content}</CardContents>
-              </Card>
+            {popularGogumas.map(item => (
+              <ListLink href={`/goguma/${item.id}`} key={item.id}>
+                <Card key={item.id}>
+                  <CardEmoji src={fireguma} />
+                  <CardType>불타는 고구마!</CardType>
+                  <CardTitle>{item.title}</CardTitle>
+                  <CardContents>{item.content}</CardContents>
+                </Card>
+              </ListLink>
             ))}
           </Slider>
         </SliderBox>
