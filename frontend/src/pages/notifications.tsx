@@ -119,6 +119,7 @@ const Notification = ({ userToken, addTokenLocal }: IProps) => {
             </NoticeCard>
           </NoticeLink>
         ))}
+        {dataSlice.length === 0 && <NotNotice>알림이 없습니다 ;)</NotNotice>}
       </NoticeContainer>
     </ListContainer>
   );
@@ -205,4 +206,14 @@ const NoticeDate = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 10px;
   color: ${(props: IStyleProps) => (props.isChecked ? "#989898" : "#898989")};
+`;
+
+const NotNotice = styled.div`
+  padding-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  color: #595959;
 `;
