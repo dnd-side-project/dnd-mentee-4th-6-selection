@@ -176,6 +176,16 @@ const GogumaSlide = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
+  & > .slidera {
+    overflow-x: hidden;
+    & div {
+      outline: none;
+    }
+    & > div {
+      padding-left: 55px;
+      box-sizing: border-box;
+    }
+  }
 `;
 
 const GogumaSlideItem = styled.li`
@@ -192,9 +202,12 @@ const GogumaSlideItem = styled.li`
   text-align: center;
 `;
 
-const GogumaSlideItemText = styled.p`
+const GogumaSlideItemText = styled.a`
   font-weight: 400;
-  margin: auto 21px;
+  margin: auto;
+  padding: auto 21px;
+  text-decoration: none;
+  color: black;
 `;
 
 export const Home: React.FC = () => {
@@ -250,14 +263,14 @@ export const Home: React.FC = () => {
         <SliderBox>
           <Slider {...settings}>
             {popularGogumas.map(item => (
-              <ListLink href={`/goguma/${item.id}`} key={item.id}>
-                <Card key={item.id}>
-                  <CardEmoji src={fireguma} />
-                  <CardType>불타는 고구마!</CardType>
+              <Card key={item.id}>
+                <CardEmoji src={fireguma} />
+                <CardType>불타는 고구마!</CardType>
+                <ListLink href={`/goguma/${item.id}`} key={item.id}>
                   <CardTitle>{item.title}</CardTitle>
                   <CardContents>{item.content}</CardContents>
-                </Card>
-              </ListLink>
+                </ListLink>
+              </Card>
             ))}
           </Slider>
         </SliderBox>
@@ -328,11 +341,9 @@ export const Home: React.FC = () => {
           </SectionTitleContainer>
           <GogumaSlide>
             {honoredGogumas.map(item => (
-              <ListLink href={`/goguma/${item.id}`} key={item.id}>
-                <GogumaSlideItem key={item.id}>
-                  <GogumaSlideItemText>{item.title}</GogumaSlideItemText>
-                </GogumaSlideItem>
-              </ListLink>
+              <GogumaSlideItem key={item.id}>
+                <GogumaSlideItemText href={`/goguma/${item.id}`}>{item.title}</GogumaSlideItemText>
+              </GogumaSlideItem>
             ))}
           </GogumaSlide>
         </Section>
