@@ -121,6 +121,7 @@ const Ask = ({ userToken, addTokenLocal }: IProps) => {
           Authorization: `Bearer ${userToken.token}`,
         },
       });
+      window.location.href = "/ask/success";
     } catch (error) {
       console.log(error);
     }
@@ -131,7 +132,13 @@ const Ask = ({ userToken, addTokenLocal }: IProps) => {
       <Helmet>
         <title>고구마 등록하기 - 고구마</title>
       </Helmet>
-      <ContentHeader isPrev={false} isNext={true} title={"등록하기"} />
+      <ContentHeader isPrev={false} isNext={false} title={"등록하기"}>
+        {currentPage == 3 ? (
+          <HeaderChild onClick={onRegisterClicked}>등록</HeaderChild>
+        ) : (
+          <HeaderChild onClick={() => onCurrentPageChange(currentPage + 1)}>다음</HeaderChild>
+        )}
+      </ContentHeader>
       <AskContainer>
         <StepContainer>
           <Step
@@ -206,7 +213,6 @@ const Ask = ({ userToken, addTokenLocal }: IProps) => {
               </ChoiceBox>
             ))}
           </ChoiceBoxes>
-          <button onClick={onRegisterClicked}>등록</button>
         </PageContainer>
       </AskContainer>
     </>
@@ -365,4 +371,10 @@ const ChoiceBox = styled.div`
   height: 100%;
   padding: 0 15px;
   text-align: center;
+`;
+
+const HeaderChild = styled.div`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  font-weight: 400;
 `;
