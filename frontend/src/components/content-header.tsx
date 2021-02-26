@@ -18,8 +18,20 @@ export const ContentHeader = ({ isPrev, isNext, title, children, link }: IProps)
     <>
       <Container>
         {isPrev ? (
+          link ? (
+            <LeftContainer>
+              <Link to={link}>
+                <LeftImg src={icon_back} />
+              </Link>
+            </LeftContainer>
+          ) : (
+            <LeftContainer>
+              <LeftImg src={icon_back} onClick={() => history.goBack()} />
+            </LeftContainer>
+          )
+        ) : link === "back" ? (
           <LeftContainer>
-            <LeftImg src={icon_back} onClick={() => history.goBack()} />
+            <LeftImg src={icon_delete} onClick={() => history.goBack()} />
           </LeftContainer>
         ) : (
           <LeftContainer>

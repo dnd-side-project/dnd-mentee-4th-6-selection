@@ -114,7 +114,7 @@ const GogumaBasket = ({ userToken, addTokenLocal }: IProps) => {
       <Helmet>
         <title>고구마 바구니 - GO!GUMA</title>
       </Helmet>
-      <ContentHeader isPrev={false} isNext={false} title={"고구마 바구니"} />
+      <ContentHeader isPrev={false} isNext={false} title={"고구마 바구니"} link={`back`} />
       <ImageContainer>
         {gogumasData && gogumasData.length === 0 ? (
           <img src={empty_basket} width={61} height={61} />

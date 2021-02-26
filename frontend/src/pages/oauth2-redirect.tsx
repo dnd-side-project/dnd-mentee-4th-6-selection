@@ -1,7 +1,7 @@
 import React from "react";
 import queryString from "query-string";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { addToken } from "../stores/userStore";
 import { Dispatch } from "redux";
 
@@ -16,6 +16,7 @@ interface IProps {
 
 const OAuth2Redirect = ({ addTokenLocal }: IProps) => {
   const { token } = queryString.parse(location.search);
+  const history = useHistory();
 
   if (token) {
     const tokenObj = {
@@ -25,7 +26,9 @@ const OAuth2Redirect = ({ addTokenLocal }: IProps) => {
     addTokenLocal(tokenObj);
   } else {
     //console.log(error);
+    localStorage.removeItem("token");
     alert("로그인 실패!");
+    history.push(`/`);
   }
   return (
     <>

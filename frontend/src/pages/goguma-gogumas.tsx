@@ -160,7 +160,7 @@ const Gogumas = ({ userToken, addTokenLocal }: IProps) => {
             Authorization: `Bearer ${userToken.token}`,
           },
         });
-        history.push(`/goguma/basket/${gogumaId}`);
+        history.goBack();
       } catch (error) {
         console.log(error);
       }

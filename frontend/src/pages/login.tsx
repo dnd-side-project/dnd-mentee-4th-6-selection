@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { BACKEND_URL, FRONTEND_URL } from "../constants";
@@ -9,54 +8,51 @@ import icon_google from "../styles/img/icon_google_logo.jpeg";
 import icon_naver from "../styles/img/icon_naver_logo.png";
 import icon_kakao from "../styles/img/icon_kakao_logo.png";
 
-interface IProps {
-  authenticated: boolean;
-}
-
-export const Login: React.FC<IProps> = ({ authenticated }: IProps) => {
+export const Login: React.FC = () => {
+  const localToken = localStorage.getItem("token");
+  if (localToken) {
+    localStorage.removeItem("token");
+  }
   return (
     <ListContainer>
-      {authenticated && <Redirect to={`/`} />}
-      {!authenticated && (
+      <div>
+        <Helmet>
+          <title>로그인 - GO!GUMA</title>
+        </Helmet>
+        <ContentHeader isPrev={false} isNext={false} title={""} />
         <div>
-          <Helmet>
-            <title>로그인 - GO!GUMA</title>
-          </Helmet>
-          <ContentHeader isPrev={false} isNext={false} title={""} />
-          <div>
-            <LoginTitleContainer>
-              <LoginImg src={icon_purpleguma} />
-              <LoginTitle>고구마</LoginTitle>
-              <LoginSubtitle>
-                고민, 그만!
-                <br />
-                고구마에서 다~ 털어놓고가세요
-              </LoginSubtitle>
-            </LoginTitleContainer>
-            <LoginContainer>
-              <SocialLink
-                className={"google"}
-                href={`${BACKEND_URL}/oauth2/authorize/google?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
-              >
-                <img src={icon_google} width={34} height={34} />
-                <div>구글 계정으로 로그인</div>
-              </SocialLink>
-              <SocialLink
-                href={`${BACKEND_URL}/oauth2/authorize/naver?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
-              >
-                <img src={icon_naver} width={34} height={34} />
-                <div>네이버 계정으로 로그인</div>
-              </SocialLink>
-              <SocialLink
-                href={`${BACKEND_URL}/oauth2/authorize/kakao?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
-              >
-                <img src={icon_kakao} width={34} height={34} />
-                <div>카카오 계정으로 로그인</div>
-              </SocialLink>
-            </LoginContainer>
-          </div>
+          <LoginTitleContainer>
+            <LoginImg src={icon_purpleguma} />
+            <LoginTitle>고구마</LoginTitle>
+            <LoginSubtitle>
+              고민, 그만!
+              <br />
+              고구마에서 다~ 털어놓고가세요
+            </LoginSubtitle>
+          </LoginTitleContainer>
+          <LoginContainer>
+            <SocialLink
+              className={"google"}
+              href={`${BACKEND_URL}/oauth2/authorize/google?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
+            >
+              <img src={icon_google} width={34} height={34} />
+              <div>구글 계정으로 로그인</div>
+            </SocialLink>
+            <SocialLink
+              href={`${BACKEND_URL}/oauth2/authorize/naver?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
+            >
+              <img src={icon_naver} width={34} height={34} />
+              <div>네이버 계정으로 로그인</div>
+            </SocialLink>
+            <SocialLink
+              href={`${BACKEND_URL}/oauth2/authorize/kakao?redirect_uri=${FRONTEND_URL}/oauth2/redirect`}
+            >
+              <img src={icon_kakao} width={34} height={34} />
+              <div>카카오 계정으로 로그인</div>
+            </SocialLink>
+          </LoginContainer>
         </div>
-      )}
+      </div>
     </ListContainer>
   );
 };
