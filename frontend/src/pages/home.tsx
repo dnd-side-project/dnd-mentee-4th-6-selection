@@ -368,10 +368,13 @@ export const Home: React.FC = () => {
 
 const SliderBox = styled.div`
   & > .slidera {
+    overflow-x: hidden;
     & div {
-      overflow: visible;
-      left: 30px;
       outline: none;
+    }
+    & > div {
+      padding-left: 55px;
+      box-sizing: border-box;
     }
   }
 `;
