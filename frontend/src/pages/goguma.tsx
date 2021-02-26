@@ -187,8 +187,17 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
   const onDelete = async () => {
     const gogumaConfirm = confirm("정말 게시글을 삭제 하시겠어요?");
     if (gogumaConfirm) {
-      await axios.delete(`${BACKEND_URL}/articles/${id}`);
-      history.push(`/`);
+      try {
+        await axios.delete(`${BACKEND_URL}/articles/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        });
+        history.push(`/`);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
