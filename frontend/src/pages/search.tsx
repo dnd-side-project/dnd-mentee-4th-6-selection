@@ -1,112 +1,156 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import mini_del from "../styles/img/icon_mini_del.svg";
-
-const FAKE_GOGUMA_DATA = {
-  goguma: [
-    {
-      id: 1,
-      user: "김모모",
-      title: "제 얘기좀 듣고 가세요",
-      content: `바로 어제 있었던 일입니다. 방학이 방학인 만큼 도서관에 갔어요. 그런데 세상에나;;; 바로 옆자리에 전여자친구 가방이 있는거에요. 지정좌석제내용내용내용내용내용내용내용내용내용`,
-    },
-    {
-      id: 2,
-      user: "김칠득",
-      title: "제 얘기좀 듣고 가세요;;",
-      content: `아니 글쎄 말이죠 내용내용내용내용내용내용내용내용내용내용`,
-    },
-    {
-      id: 3,
-      user: "박영감",
-      title: "인생 역대급 인연을 만나고 있습니다...",
-      content: `아야어여오요우유으이의위왜웨워와내용내용내용내용내용`,
-    },
-    {
-      id: 4,
-      user: "방금보",
-      title: "최준ㅋㅋㅋ영상아세요?",
-      content: `바로 어제 있었던 일입니다. 방학이 방학인 만큼 도서관에 갔어요. 그런데 세상에나;;; 바로 옆자리에 전여자친구 가방이 있는거에요. 지정좌석제내용내용내용내용내용내용내용내용내용`,
-    },
-    {
-      id: 5,
-      user: "최고모",
-      title: "눈치 없는 남자친구 ㅠ……어쩌죠",
-      content: `바로 어제 있었던 일입니다. 방학이 방학인 만큼 도서관에 갔어요. 그런데 세상에나;;; 바로 옆자리에 전여자친구 가방이 있는거에요.바로 옆자리에 전여자친구 가방이 있는거에요.바로 옆자리에 전여자친구 가방이 있는거에요.바로 옆자리에 전여자친구 가방이 있는거에요.바로 옆자리에 전여자친구 가방이 있는거에요.`,
-    },
-  ],
-};
-
-interface IData {
-  id: number;
-  user: string;
-  title: string;
-  content: string;
-}
+import axios from "axios";
+import { BACKEND_URL } from "../constants";
+import { DisplayTime } from "../components/display-time";
 
 interface ISearchForm {
   query: string;
 }
 
+interface IData {
+  content: string;
+  createdAt: string;
+  id: number;
+  nickname: string;
+  title: string;
+}
+
 export const Search = () => {
+  const [queryValue, setQueryValue] = useState("");
   const [data, setData] = useState<IData[]>([]);
-  const { register, getValues, setValue } = useForm<ISearchForm>({
+  const [page, setPage] = useState(1);
+  const [notValue, setNotValue] = useState(false);
+  const { register, getValues } = useForm<ISearchForm>({
     mode: "onChange",
   });
 
+  const scroll = (event: React.UIEvent<HTMLElement>) => {
+    event.stopPropagation();
+    const scrollTop = event.currentTarget.scrollTop;
+    const clientHeight = event.currentTarget.clientHeight;
+    const scrollHeight = event.currentTarget.scrollHeight;
+    if (scrollTop + clientHeight >= scrollHeight && data.length >= page * 15) {
+      setPage(page => page + 1);
+    }
+  };
+
   const handleChange = () => {
     const { query } = getValues();
-    if (query.length < 2) {
-      setData([]);
-      return;
-    }
-    const data = FAKE_GOGUMA_DATA.goguma.filter(goguma => goguma.title.includes(query));
-
-    setData(data);
+    setQueryValue(query);
   };
 
   const onExit = () => {
-    setValue("query", "");
-    setData([]);
+    setQueryValue("");
   };
 
+  const getNewData = async () => {
+    try {
+      if (queryValue.length > 0) {
+        const { data: newData } = await axios.get<IData[]>(
+          `${BACKEND_URL}/articles/search?page=${page}&size=${15}&query=${queryValue}`,
+        );
+        if (page === 1) {
+          if (newData.length > 0) {
+            setData([...newData]);
+            setNotValue(false);
+          } else {
+            setData([]);
+            setNotValue(true);
+          }
+        } else {
+          if (newData) {
+            setData([...data, ...newData]);
+          }
+        }
+      } else {
+        setData([]);
+        setNotValue(false);
+      }
+    } catch {
+      setData([]);
+      setNotValue(true);
+    }
+  };
+
+  useEffect(() => {
+    getNewData();
+  }, [page]);
+
+  useEffect(() => {
+    if (page === 1) {
+      getNewData();
+    } else {
+      setPage(1);
+    }
+  }, [queryValue]);
+
   return (
-    <OuterContainer>
-      <Helmet>
-        <title>검색 - GO!GUMA</title>
-      </Helmet>
-      <MainContainer>
-        <InputContainer>
-          <SearchInput
-            ref={register({ minLength: 2 })}
-            name="query"
-            onChange={handleChange}
-            placeholder="고구마 검색"
-          />
-          <Delbtn onClick={onExit}>
-            <img src={mini_del} />
-          </Delbtn>
-        </InputContainer>
-        <CancleBtn href={`/`}>취소</CancleBtn>
-      </MainContainer>
-      {data.length > 0 && (
-        <ResultContainer>
-          {data.map(goguma => (
-            <ResultCard key={goguma.id}>
-              <ResultTitle>{goguma.title}</ResultTitle>
-              <ResultContent>
-                {goguma.content.length >= 60 ? `${goguma.content.slice(0, 60)}...` : goguma.content}
-              </ResultContent>
-              <ResultContent>by {goguma.user}</ResultContent>
-            </ResultCard>
-          ))}
-        </ResultContainer>
-      )}
-    </OuterContainer>
+    <ListContainer onScroll={scroll}>
+      <OuterContainer>
+        <Helmet>
+          <title>검색 - 고구마</title>
+        </Helmet>
+        <MainContainer>
+          <InputContainer>
+            <SearchInput
+              ref={register}
+              name="query"
+              onChange={handleChange}
+              value={queryValue}
+              placeholder="고구마 검색"
+            />
+            <Delbtn onClick={onExit}>
+              <img src={mini_del} />
+            </Delbtn>
+          </InputContainer>
+          <CancleBtn href={`/`}>취소</CancleBtn>
+        </MainContainer>
+        {data.length > 0 && (
+          <ResultContainer>
+            {data.map(goguma => (
+              <ResultLink href={`/goguma/${goguma.id}`} key={goguma.id}>
+                <ResultCard>
+                  <ResultTitle>
+                    {goguma.title.length >= 21 ? `${goguma.title.slice(0, 21)}...` : goguma.title}
+                  </ResultTitle>
+                  <ResultContent>
+                    {goguma.content.length >= 65
+                      ? `${goguma.content.slice(0, 65)}...`
+                      : goguma.content}
+                  </ResultContent>
+                  <ResultContent>
+                    <span style={{ marginRight: 15 }}>{goguma.nickname}</span>
+                    <DisplayTime createdAt={new Date(goguma.createdAt)} />
+                  </ResultContent>
+                </ResultCard>
+              </ResultLink>
+            ))}
+          </ResultContainer>
+        )}
+        {notValue && <NotResult>검색 결과가 없습니다!</NotResult>}
+      </OuterContainer>
+    </ListContainer>
   );
 };
+
+const ListContainer = styled.div`
+  width: 354px;
+  height: 732px;
+  margin: 0 -13px;
+  @media (max-width: 1024px) {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -118,12 +162,14 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 30px;
   padding-top: 50px;
-  margin-bottom: 30px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 `;
 
 const InputContainer = styled.div`
-  width: 80%;
+  width: 100%;
   max-width: 480px;
   position: relative;
   margin-right: 15px;
@@ -159,7 +205,10 @@ const Delbtn = styled.div`
 `;
 
 const CancleBtn = styled.a`
+  width: 30px;
   text-decoration: none;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
   color: black;
 `;
 
@@ -167,16 +216,16 @@ const ResultContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 0 30px;
   box-sizing: border-box;
-  align-items: center;
 `;
 
 const ResultCard = styled.div`
-  width: 90%;
-  max-width: 540px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 35px;
+  padding-top: 20px;
+  padding-bottom: 15px;
 `;
 
 const ResultTitle = styled.div`
@@ -188,6 +237,22 @@ const ResultTitle = styled.div`
 const ResultContent = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
-  color: #595959;
+  color: #989898;
+  font-weight: 300;
   margin-bottom: 5px;
+`;
+
+const NotResult = styled.div`
+  padding-top: 45px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  color: #595959;
+`;
+
+const ResultLink = styled.a`
+  text-decoration: none;
+  color: black;
 `;
