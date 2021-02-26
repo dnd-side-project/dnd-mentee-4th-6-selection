@@ -9,12 +9,14 @@ import com.selection.domain.user.UserService;
 import com.selection.dto.PageRequest;
 import com.selection.dto.article.ArticleSummaryResponse;
 import com.selection.dto.notification.NotificationResponse;
+import com.selection.dto.user.ProfileRequest;
 import com.selection.dto.user.ProfileResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -120,5 +124,21 @@ public class UserController {
     public void deleteNotification(
         @ApiParam(value = "알림 번호", required = true) @PathVariable Long notificationId) {
         notificationService.delete(notificationId);
+    }
+
+    @ApiOperation(value = "닉네임 변경", tags = "마이페이지 API")
+    @ApiResponses(
+        value = {
+            @ApiResponse(code = 200, message = "닉네임 변경 성공"),
+            @ApiResponse(code = 401, message = "올바르지 않은 접근 경로(인증문제)"),
+            @ApiResponse(code = 500, message = "닉네임 변경 실패 이유 정보"),
+        }
+    )
+    @PostMapping("/me")
+    public ResponseEntity<?> modifyNickname(
+        @ApiParam(value = "닉네임", required = true) @RequestBody @Valid ProfileRequest profileRequest,
+        @ApiParam(hidden = true) @LoginUser String userId) {
+        userService.modifyNickName(userId, profileRequest.getNickname());
+        return ResponseEntity.ok().build();
     }
 }
