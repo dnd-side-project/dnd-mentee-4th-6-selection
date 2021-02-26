@@ -286,7 +286,9 @@ export const Home: React.FC = () => {
             {popularGogumas.map(item => (
               <GogumaListItem key={item.id}>
                 <ListLink href={`/goguma/${item.id}`} key={item.id}>
-                  <GogumaListItemText>{item.title}</GogumaListItemText>
+                  <GogumaListItemText>
+                    {item.title.length >= 22 ? `${item.title.slice(0, 22)}...` : item.title}
+                  </GogumaListItemText>
                 </ListLink>
               </GogumaListItem>
             ))}
@@ -306,7 +308,9 @@ export const Home: React.FC = () => {
             {recentGogumas.map(item => (
               <GogumaListItem key={item.id}>
                 <ListLink href={`/goguma/${item.id}`} key={item.id}>
-                  <GogumaListItemText>{item.title}</GogumaListItemText>
+                  <GogumaListItemText>
+                    {item.title.length >= 22 ? `${item.title.slice(0, 22)}...` : item.title}
+                  </GogumaListItemText>
                 </ListLink>
               </GogumaListItem>
             ))}
