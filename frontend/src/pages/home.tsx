@@ -85,6 +85,7 @@ const Card = styled.div`
 const CardType = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 10px;
+  font-weight: 400;
   color: #727272;
   padding: 0;
   margin: 0;
@@ -97,7 +98,7 @@ const CardEmoji = styled.img`
 
 const CardTitle = styled.div`
   font-family: "Gaegu", cursive;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 30px;
   line-height: 36px;
   color: #2f2f2f;
@@ -110,6 +111,7 @@ const CardContents = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 14px;
   line-height: 24px;
+  font-weight: 300;
   color: #000000;
   word-break: keep-all;
   padding-top: 12%;
@@ -127,6 +129,7 @@ const ScrollContainer = styled.div`
 
 const ScrollText = styled.p`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 500;
   font-size: 12px;
   color: #8c5cdd;
   margin: 0;
@@ -161,12 +164,14 @@ const SectionTitle = styled.div`
 
 const SectionDescription = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 400;
   font-size: 12px;
   color: #595959;
   padding-bottom: 10px;
 `;
 
 const SectionSeeMore = styled.span`
+  font-weight: 500;
   color: #8c5cdd;
   float: right;
 `;
@@ -191,6 +196,7 @@ const GogumaListItem = styled.li`
 
 const GogumaListItemText = styled.p`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 400;
   font-size: 15px;
   padding-left: 5px;
   width: 100%;
@@ -222,7 +228,6 @@ const GogumaSlideItem = styled.li`
   height: 120px;
   display: inline-grid;
   text-align: center;
-  word-break: keep-all;
   vertical-align: middle;
   cursor: grab;
   overflow: auto;
@@ -230,6 +235,7 @@ const GogumaSlideItem = styled.li`
 `;
 
 const GogumaSlideItemText = styled.p`
+  font-weight: 400;
   margin: auto 21px;
 `;
 

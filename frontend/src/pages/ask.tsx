@@ -150,6 +150,7 @@ export const Ask: React.FC = () => {
 const QuestionDescription = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 12px;
+  font-weight: 400;
   line-height: 15px;
   margin-top: 5px;
   color: #c1c1c1;
@@ -201,6 +202,7 @@ const PageContainer = styled.div`
 const Question = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 18px;
+  font-weight: 400;
 `;
 
 const ShortInput = styled.input`
@@ -249,6 +251,8 @@ const TextCounter = styled.div`
   color: #989898;
   float: right;
   display: block;
+  font-weight: 400;
+  margin-top: 3px;
 `;
 
 const ChoiceBoxes = styled.div`
