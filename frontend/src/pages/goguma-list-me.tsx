@@ -47,17 +47,22 @@ const GogumaListMe = ({ userToken, addTokenLocal }: IProps) => {
   };
 
   const getData = async () => {
-    const { data } = await axios.get<IData[]>(
-      `${BACKEND_URL}/users/me/article?page=${page}&size=15`,
-      {
-        headers: {
-          Authorization: `Bearer ${userToken.token}`,
+    try {
+      const { data } = await axios.get<IData[]>(
+        `${BACKEND_URL}/users/me/article?page=${page}&size=15`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
         },
-      },
-    );
-
-    if (data) {
-      setDataSlice([...dataSlice, ...data]);
+      );
+      if (data) {
+        setDataSlice([...dataSlice, ...data]);
+      }
+    } catch {
+      localStorage.removeItem("token");
+      addTokenLocal({ token: "" });
+      history.push(`/`);
     }
   };
 

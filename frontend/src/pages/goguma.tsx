@@ -226,7 +226,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
         <div>Loading...</div>
       ) : (
         <>
-          <ContentHeader isPrev={true} isNext={false} title={""} link={`/goguma/${id}`}>
+          <ContentHeader isPrev={true} isNext={false} title={""}>
             {gogumaData?.isOwner ? (
               <>
                 {isModify ? (
@@ -235,7 +235,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
                       등록
                     </div>
                     <div
-                      style={{ marginRight: 20, cursor: "pointer" }}
+                      style={{ marginRight: 5, cursor: "pointer" }}
                       onClick={() => setIsModify(false)}
                     >
                       취소
@@ -249,7 +249,7 @@ const Goguma = ({ userToken, addTokenLocal }: IProps) => {
                     >
                       편집
                     </div>
-                    <div style={{ marginRight: 20, cursor: "pointer" }} onClick={onDelete}>
+                    <div style={{ marginRight: 5, cursor: "pointer" }} onClick={onDelete}>
                       삭제
                     </div>
                   </>

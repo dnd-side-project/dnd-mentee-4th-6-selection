@@ -50,6 +50,7 @@ const Notification = ({ userToken, addTokenLocal }: IProps) => {
       } catch {
         localStorage.removeItem("token");
         addTokenLocal({ token: "" });
+        history.push(`/`);
       }
     }
   };
