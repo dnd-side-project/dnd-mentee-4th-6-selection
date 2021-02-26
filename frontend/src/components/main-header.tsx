@@ -6,8 +6,17 @@ import menu from "../styles/img/icon_menu.svg";
 import search from "../styles/img/icon_search.svg";
 
 const Container = styled.div`
-  padding: 1rem 0;
+  padding: 5px 0;
   display: flex;
+`;
+
+const Divider = styled.div`
+  border-bottom: 1px solid #f2f2f2;
+  padding: 0;
+  margin: 0;
+  @media (min-width: 1025px) {
+    margin: 0 -13px;
+  }
 `;
 
 const SidebarButtonContainer = styled.div`
@@ -45,25 +54,28 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <Container>
-      <SidebarButtonContainer onClick={sidebarOnClick}>
-        <img src={menu} />
-      </SidebarButtonContainer>
-      <TitleContainer>
-        <Link to="/" style={{ textDecoration: "none", color: "#8C5CDD" }}>
-          고구마
-        </Link>
-      </TitleContainer>
-      <SearchContainer>
-        <Link to="/search">
-          <img src={search} />
-        </Link>
-      </SearchContainer>
-      {toggleSidebar && (
-        <>
-          <Sidebar onClick={sidebarOnClick} isMain={true} />
-        </>
-      )}
-    </Container>
+    <>
+      <Container>
+        <SidebarButtonContainer onClick={sidebarOnClick}>
+          <img src={menu} />
+        </SidebarButtonContainer>
+        <TitleContainer>
+          <Link to="/" style={{ textDecoration: "none", color: "#8C5CDD" }}>
+            고구마
+          </Link>
+        </TitleContainer>
+        <SearchContainer>
+          <Link to="/search">
+            <img src={search} />
+          </Link>
+        </SearchContainer>
+        {toggleSidebar && (
+          <>
+            <Sidebar onClick={sidebarOnClick} isMain={true} />
+          </>
+        )}
+      </Container>
+      <Divider />
+    </>
   );
 };
