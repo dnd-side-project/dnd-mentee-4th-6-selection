@@ -33,8 +33,15 @@ const MyPage = ({ userToken, addTokenLocal }: IProps) => {
     mode: "onChange",
   });
 
-  const onClick = () => {
-    console.log(userName);
+  const onClick = async () => {
+    const data = {
+      nickname: userName,
+    };
+    await axios.post(`${BACKEND_URL}/users/me/`, data, {
+      headers: {
+        Authorization: `Bearer ${userToken.token}`,
+      },
+    });
   };
 
   const onChange = () => {
