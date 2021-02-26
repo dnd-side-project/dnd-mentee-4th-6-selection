@@ -9,6 +9,7 @@ import openIcon from "../styles/img/icon_small_open.svg";
 import background_img from "../styles/img/watercolor-paper-texture.png";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
+import Slider from "react-slick";
 import { ISimplifiedGoguamListData } from "../interface/IData";
 
 const FAKE_MAIN_GOGUMA_DATA = [
@@ -56,23 +57,9 @@ const CardContainer = styled.div`
   }
 `;
 
-const CardSlider = styled.div`
-  vertical-align: middle;
-  padding: 52px 0;
-  overflow-x: scroll;
-  grid-template-columns: repeat(5, auto);
-  display: grid;
-  cursor: grab;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 const Card = styled.div`
-  height: 70%;
   width: 80vw;
-  padding-left: 17px;
+  padding-left: 30px;
   @media (min-width: 1025px) {
     width: 15vw;
   }
@@ -89,11 +76,14 @@ const CardType = styled.div`
   color: #727272;
   padding: 0;
   margin: 0;
+  margin-bottom: 23px;
 `;
 
 const CardEmoji = styled.img`
   width: 50px;
   height: 50px;
+  margin-top: 52.5px;
+  margin-bottom: 4.5px;
 `;
 
 const CardTitle = styled.div`
@@ -103,7 +93,6 @@ const CardTitle = styled.div`
   line-height: 36px;
   color: #2f2f2f;
   word-break: keep-all;
-  padding-top: 3%;
   width: 64%;
 `;
 
@@ -114,7 +103,7 @@ const CardContents = styled.div`
   font-weight: 300;
   color: #000000;
   word-break: keep-all;
-  padding-top: 12%;
+  padding-top: 49px;
   width: 68%;
 `;
 
@@ -264,6 +253,14 @@ export const Home: React.FC = () => {
     }
   };
 
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1.2,
+    slidesToScroll: 1,
+    className: "slidera",
+  };
+
   useEffect(() => {
     getRecentGogumas();
     getPopularGogumas();
@@ -281,16 +278,18 @@ export const Home: React.FC = () => {
       </Helmet>
       <Header />
       <CardContainer>
-        <CardSlider>
-          {FAKE_MAIN_GOGUMA_DATA.map((item, index) => (
-            <Card key={index}>
-              <CardEmoji src={fireguma} />
-              <CardType>불타는 고구마!</CardType>
-              <CardTitle>{item.title}</CardTitle>
-              <CardContents>{item.content}</CardContents>
-            </Card>
-          ))}
-        </CardSlider>
+        <SliderBox>
+          <Slider {...settings}>
+            {FAKE_MAIN_GOGUMA_DATA.map((item, index) => (
+              <Card key={index}>
+                <CardEmoji src={fireguma} />
+                <CardType>불타는 고구마!</CardType>
+                <CardTitle>{item.title}</CardTitle>
+                <CardContents>{item.content}</CardContents>
+              </Card>
+            ))}
+          </Slider>
+        </SliderBox>
         <ScrollContainer>
           <ScrollText>아래로 스크롤!</ScrollText>
           <img src={openIcon} />
@@ -366,3 +365,16 @@ export const Home: React.FC = () => {
     </>
   );
 };
+
+const SliderBox = styled.div`
+  & > .slidera {
+    overflow-x: hidden;
+    & div {
+      outline: none;
+    }
+    & > div {
+      padding-left: 55px;
+      box-sizing: border-box;
+    }
+  }
+`;
