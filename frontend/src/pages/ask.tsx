@@ -2,8 +2,22 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ContentHeader } from "../components/content-header";
 import styled from "styled-components";
+import axios from "axios";
+import { BACKEND_URL } from "../constants";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { addToken } from "../stores/userStore";
 
-export const Ask: React.FC = () => {
+interface IParams {
+  token: string;
+}
+
+interface IProps {
+  userToken: IParams;
+  addTokenLocal: (token: IParams) => void;
+}
+
+const Ask = ({ userToken, addTokenLocal }: IProps) => {
   const initialGogumaData = {
     title: "",
     content: "",
@@ -19,6 +33,7 @@ export const Ask: React.FC = () => {
   const [currentChoiceInputText, setCurrentChoiceInputText] = useState("");
   const [currentChoiceIndex, setCurrentChoiceIndex] = useState(-1);
   const [gogumaData, setGogumaData] = useState(initialGogumaData);
+  const localToken = localStorage.getItem("token");
 
   const onCurrentPageChange = (pageIndex: number) => {
     setCurrentPage(pageIndex);
@@ -88,12 +103,42 @@ export const Ask: React.FC = () => {
     ChoiceBoxesRef.current?.children[1 - id].classList.remove("active"); //TODO: array map 어떻게?
   };
 
+  const onRegisterClicked = () => {
+    //TODO: 비워지면 빨간색으로
+    if (!userToken.token) {
+      if (localToken) {
+        addTokenLocal({ token: `${localToken}` });
+      }
+    }
+    onSubmit();
+  };
+
+  const onSubmit = async () => {
+    try {
+      await axios.post(`${BACKEND_URL}/articles`, gogumaData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken.token}`,
+        },
+      });
+      window.location.href = "/ask/success";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Helmet>
         <title>고구마 등록하기 - 고구마</title>
       </Helmet>
-      <ContentHeader isPrev={false} isNext={true} title={"등록하기"} />
+      <ContentHeader isPrev={false} isNext={false} title={"등록하기"}>
+        {currentPage == 3 ? (
+          <HeaderChild onClick={onRegisterClicked}>등록</HeaderChild>
+        ) : (
+          <HeaderChild onClick={() => onCurrentPageChange(currentPage + 1)}>다음</HeaderChild>
+        )}
+      </ContentHeader>
       <AskContainer>
         <StepContainer>
           <Step
@@ -173,6 +218,16 @@ export const Ask: React.FC = () => {
     </>
   );
 };
+
+const mapStateToProps = (state: IParams) => {
+  return { userToken: state };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { addTokenLocal: (token: IParams) => dispatch(addToken(token)) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Ask);
 
 const QuestionDescription = styled.div`
   font-family: "Spoqa Han Sans Neo", "sans-serif";
@@ -316,4 +371,10 @@ const ChoiceBox = styled.div`
   height: 100%;
   padding: 0 15px;
   text-align: center;
+`;
+
+const HeaderChild = styled.div`
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-size: 14px;
+  font-weight: 400;
 `;
