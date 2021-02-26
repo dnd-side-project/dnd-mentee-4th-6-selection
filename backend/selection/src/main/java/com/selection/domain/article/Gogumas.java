@@ -35,14 +35,6 @@ public class Gogumas {
         this.gogumas.add(goguma);
     }
 
-    private void validationExist(Goguma goguma, Long gogumaId) {
-        if (!goguma.getId().equals(gogumaId)) {
-            throw new GogumaNotFoundException(
-                String.format("해당 고구마(%s)는 존재하지 않습니다.", gogumaId)
-            );
-        }
-    }
-
     protected void validationAccess(Goguma goguma, String userId) {
         if (!goguma.getUserId().equals(userId)) {
             throw new GogumaAccessException(
@@ -53,9 +45,12 @@ public class Gogumas {
 
     protected void delete(Long gogumaId, String userId) {
         gogumas.removeIf(originGoguma -> {
-            validationExist(originGoguma, gogumaId);
-            validationAccess(originGoguma, userId);
-            return originGoguma.getId().equals(gogumaId) && originGoguma.getUserId().equals(userId);
+            if (originGoguma.getId().equals(gogumaId)) {
+                validationAccess(originGoguma, userId);
+                return true;
+            } else {
+                return false;
+            }
         });
     }
 
