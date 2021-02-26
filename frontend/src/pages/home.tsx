@@ -24,6 +24,17 @@ const CardContainer = styled.div`
   }
 `;
 
+const CardBackground = styled.div`
+  background-color: rgba(214, 214, 214, 0.5);
+  position: absolute;
+  right: 0;
+  width: 20vw;
+  height: 100%;
+  @media (min-width: 1025px) {
+    width: 3vw;
+  }
+`;
+
 const Card = styled.div`
   width: 80vw;
   position: relative;
@@ -260,6 +271,7 @@ export const Home: React.FC = () => {
       </Helmet>
       <Header />
       <CardContainer>
+        <CardBackground />
         <SliderBox>
           <Slider {...settings}>
             {popularGogumas.map(item => (
