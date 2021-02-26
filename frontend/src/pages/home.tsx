@@ -63,7 +63,7 @@ const CardTitle = styled.div`
   line-height: 36px;
   color: #2f2f2f;
   word-break: keep-all;
-  width: 64%;
+  width: 68%;
 `;
 
 const CardContents = styled.div`
@@ -74,7 +74,7 @@ const CardContents = styled.div`
   color: #000000;
   word-break: keep-all;
   padding-top: 49px;
-  width: 68%;
+  width: 72%;
 `;
 
 const ScrollContainer = styled.div`
