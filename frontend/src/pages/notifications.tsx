@@ -98,7 +98,7 @@ const Notification = ({ userToken, addTokenLocal }: IProps) => {
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, userToken.token]);
 
   return (
     <ListContainer onScroll={scroll}>
@@ -164,11 +164,7 @@ const NoticeLink = styled.a`
 
 const NoticeContainer = styled.div`
   width: 100%;
-  max-width: 600px;
   margin: 0;
-  @media (min-width: 600px) {
-    margin: 0;
-  }
 `;
 
 const NoticeCard = styled.div`
