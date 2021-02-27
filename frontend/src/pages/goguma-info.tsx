@@ -6,7 +6,6 @@ import angry from "../styles/img/icon_emotion_angry.svg";
 import goguma from "../styles/img/icon_emotion_goguma.svg";
 import surprised from "../styles/img/icon_emotion_surprised.svg";
 import relax from "../styles/img/icon_emotion_relax.svg";
-import veryhappy from "../styles/img/icon_emotion_veryhappy.svg";
 import { ContentHeader } from "../components/content-header";
 
 export const GogumaInfo = () => {
@@ -57,11 +56,6 @@ export const GogumaInfo = () => {
             <InfoPersonImg src={relax} />
             <InfoPersonPosition>Front - end</InfoPersonPosition>
             <div>류정상</div>
-          </InfoPerson>
-          <InfoPerson>
-            <InfoPersonImg src={veryhappy} />
-            <InfoPersonPosition>Back - end</InfoPersonPosition>
-            <div>김예림</div>
           </InfoPerson>
         </InfoPeople>
       </InfoMainContainer>
