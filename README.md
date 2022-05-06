@@ -17,7 +17,7 @@
 - 📕 [팀 노션](https://www.notion.so/DND-4-6-ed7064bca9be45b887a39240e27f7c2b)
 
 ## 기본 정보
-- [백엔드](https://github.com/dnd-side-project/dnd-mentee-4th-6-selection/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90)
+- [백엔드](https://github.com/dnd-side-project/dnd-mentee-4th-6-selection/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90#back-end)
 
 ## 🧨 컨벤션
 - 프론트엔드
