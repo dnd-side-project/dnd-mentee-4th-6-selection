@@ -6,6 +6,9 @@ import fireguma from "../styles/img/icon_fireguma_max.svg";
 import { Header } from "../components/main-header";
 import newIcon from "../styles/img/icon_new.svg";
 import openIcon from "../styles/img/icon_small_open.svg";
+import honorIcon from "../styles/img/honor.png";
+import burningIcon from "../styles/img/burning.png";
+import recentIcon from "../styles/img/recent.png";
 import background_img from "../styles/img/watercolor-paper-texture.png";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
@@ -123,6 +126,13 @@ const Section = styled.div`
   margin: 15% auto;
 `;
 
+const SectionIcon = styled.img`
+  display: inline-block;
+  vertical-align: middle;
+  width: 18px;
+  padding-right: 2px;
+`;
+
 const SectionTitleContainer = styled.div`
   border-bottom: 1.5px solid #8c5cdd;
 `;
@@ -132,7 +142,9 @@ const SectionTitle = styled.div`
   font-size: 18px;
   font-weight: 500;
   color: #000000;
+  display: inline-block;
   line-height: 28px;
+  vertical-align: middle;
 `;
 
 const SectionDescription = styled.div`
@@ -343,7 +355,8 @@ const Home = ({ userToken, addTokenLocal }: IProps) => {
       <SectionContainer id="section">
         <Section>
           <SectionTitleContainer>
-            <SectionTitle>🔥 불타는 고구마</SectionTitle>
+            <SectionIcon src={burningIcon} />
+            <SectionTitle>불타는 고구마</SectionTitle>
             <SectionDescription>
               실시간으로 불타오르는 인기 글이에요.
               <Link to="/goguma-list/popular">
@@ -365,7 +378,8 @@ const Home = ({ userToken, addTokenLocal }: IProps) => {
         </Section>
         <Section>
           <SectionTitleContainer>
-            <SectionTitle>🍠 갓 구운 고구마</SectionTitle>
+            <SectionIcon src={recentIcon} />
+            <SectionTitle>갓 구운 고구마</SectionTitle>
             <SectionDescription>
               가장 최근에 등록된 답답한 고구마 글들이에요.
               <Link to="/goguma-list/resent">
@@ -387,7 +401,8 @@ const Home = ({ userToken, addTokenLocal }: IProps) => {
         </Section>
         <Section>
           <SectionTitleContainer>
-            <SectionTitle>🏆 명예 고구마</SectionTitle>
+            <SectionIcon src={honorIcon} />
+            <SectionTitle>명예 고구마</SectionTitle>
             <SectionDescription>
               전설급의 고구마사연들이 모여있어요!
               <Link to="/goguma-list/honor">
