@@ -1,5 +1,5 @@
 # 서비스 명 - Selection
-가벼운 호불호, 화제가 되는 이슈를 밸런스게임으로 즐길 수 있는 킬링타임용 사이트
+현대인들의 연애 고민을 해소하여 주는 플랫폼
 
 # ✔ 조명(6조) - 육육에삼십육조
 
@@ -16,10 +16,10 @@
 ## 협업 일정 관리
 - 📕 [팀 노션](https://www.notion.so/DND-4-6-ed7064bca9be45b887a39240e27f7c2b)
 
+## 기본 정보
+- [백엔드](https://github.com/WonJongWoon/dnd-mentee-4th-6-selection/wiki/%EB%B0%B1%EC%97%94%EB%93%9C-%EC%A0%95%EB%B3%B4)
+
 ## 🧨 컨벤션
 - 프론트엔드
-- 백엔드
-- [커밋 메세지](https://meetup.toast.com/posts/106)
-
-## 📢 브랜치 전략
-- 작성 중..
+- [백엔드](https://google.github.io/styleguide/javaguide.html) (Google Java Code Convention 을 기본적으로 따릅니다.)
+- [커밋 메세지](https://meetup.toast.com/posts/106) (최대한 따를려고 노력한다.)
